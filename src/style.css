@@ -1,0 +1,28 @@
+
+#app {
+  width: 100%; /* 填满整个页面 */
+  margin: 0; /* 去掉左右居中 */
+  padding: 0; /* 根据需要清除 */
+  text-align: left; /* 默认左对齐 */
+}
+
+/* 默认手机端样式 */
+body {
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+/* 平板及以上 */
+@media (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* 电脑端 */
+/* @media (min-width: 1024px) {
+  body {
+    font-size: 18px;
+  }
+} */
