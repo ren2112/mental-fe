@@ -105,6 +105,21 @@ const router = createRouter({
               meta:{requiresAuth:true, title:'删帖记录'}
             }
           ]
+        },
+      ]
+    },
+    {
+      path: '/mob',
+      children:[
+        {
+          path:'index',
+          component:()=> import('../views/moble/index.vue'),
+          meta:{requiresAuth:false, title:'首页'}
+        },
+        {
+          path:'my-home-page',
+          component:()=> import('../views/moble/myHomePage.vue'),
+          meta:{requiresAuth:false, title:'个人主页'}
         }
       ]
     }
