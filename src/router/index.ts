@@ -112,6 +112,31 @@ const router = createRouter({
       path: '/mob',
       children:[
         {
+          path:'beginning',
+          component:()=>import('../views/moble/beginningPage.vue'),
+          meta:{requiresAuth:false, title:'欢迎访问'}
+        },
+        {
+          path:'login',
+          component:()=>import('../views/moble/loginPage.vue'),
+          meta:{requiresAuth:false, title:'登录'}
+        },
+        {
+          path:'register',
+          component:()=>import('../views/moble/registerPage.vue'),
+          meta:{requiresAuth:false, title:'注册'}
+        },
+        {
+          path:'videoPost',
+          component:()=>import('../views/moble/videoPostPage.vue'),
+          meta:{requiresAuth:false, title:'视频贴子发布'}
+        },
+        {
+          path:'txtimgPost',
+          component:()=>import('../views/moble/txtimgPostPage.vue'),
+          meta:{requiresAuth:false, title:'图文贴子发布'}
+        },
+        {
           path:'index',
           component:()=> import('../views/moble/index.vue'),
           meta:{requiresAuth:false, title:'首页'}

@@ -14,7 +14,7 @@
   // 固定的导航项
   const navItems = [
     { name: "分区选择", path: "/categories" },
-    { name: "发布帖子", path: "/post" },
+    { name: "发布帖子", path: "/mob/videoPost" },
     { name: "个人主页", path: "/profile" },
   ];
   
