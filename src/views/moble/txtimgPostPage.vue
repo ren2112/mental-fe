@@ -169,11 +169,11 @@ const uploadImage = async (event) => {  //向服务器上传 要向贴子内容�
         try {
             const response = await uploadFileAPI(formData);
             if (response.code === 0) {
-            const fileUrl = response.data.fileUrl;
-            insertImage(fileUrl);
+                const fileUrl = response.data.fileUrl;
+                insertImage(fileUrl);
             } else {
-            ElMessage.error("图片上传失败");
-            console.error('上传失败:', response.msg);
+                ElMessage.error("图片上传失败");
+                console.error('上传失败:', response.msg);
             }
         } catch (error) {
             ElMessage.error("图片上传出错");
@@ -194,7 +194,7 @@ const hidePlaceholder = () => {  //隐藏内容中的提示文字
 };
 const showPlaceholder = () => {  //显示内容中的提示文字
     if (!content.value.trim()) {
-    showPlaceholderText.value = true;
+        showPlaceholderText.value = true;
     }
 };
 </script>
