@@ -145,7 +145,12 @@ const router = createRouter({
           path:'my-home-page',
           component:()=> import('../views/moble/myHomePage.vue'),
           meta:{requiresAuth:false, title:'个人主页'}
-        }
+        },
+        {
+          path: 'content',
+          component: () => import('../views/moble/Content.vue'),
+          meta:{requiresAuth:false, title:'帖子详情'}
+        },
       ]
     }
   ]
