@@ -1,44 +1,105 @@
 <template>
-    <div class="post-item">
-      <div class="post-content">
-        <h3>{{ post.title }}</h3>
-        <p>{{ post.summary }}</p>
+  <div class="post-item">
+    <RouterLink
+      :to="{ name: 'content', query: { postID: post.id, check: 2, ...(curTab ? { curTab } : {}) } }"
+      class="post-link"
+    >
+    
+    <!-- 帖子封面 -->
+    <div class="post-media">
+      <div class="image-placeholder" v-if="post.cover">
+        <img
+          :src="post.cover"
+          alt="帖子封面"
+          class="post-image"
+        />
       </div>
-      <img class="post-image" :src="post.image" alt="帖子图片" />
     </div>
-  </template>
-  
-  <script setup>
-  defineProps({
-    post: Object
-  });
-  </script>
-  
-  <style scoped>
-  .post-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .post-content h3 {
-    margin: 0;
-    font-size: 16px;
-  }
-  
-  .post-content p {
-    margin: 4px 0 0;
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .post-image {
-    width: 100px; /* 适当调整宽度 */
-    height: 70px; /* 适当调整高度 */
-    border-radius: 8px;
-    object-fit: cover;
-  }
-  </style>
-  
+      <!-- 帖子内容 -->
+      <div class="post-content">
+        <h3 class="post-title">{{ truncatedTitle }}</h3>
+        <p class="post-summary">{{ truncatedContent }}</p>
+      </div>
+    </RouterLink>
+  </div>
+</template>
+
+<script setup>
+import { computed } from "vue";
+
+// 定义接收的属性
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+  curTab: {
+    type: Number,
+    required: false,
+  },
+});
+
+// 计算属性：限制标题长度
+const truncatedTitle = computed(() => {
+  if (!props.post.title) return "";
+  return props.post.title.length > 18
+    ? props.post.title.slice(0, 18) + " ..."
+    : props.post.title;
+});
+
+// 工具函数：移除 HTML 标签并转义字符
+const stripHtmlAndDecode = (html) => {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html;
+  return tempDiv.textContent || tempDiv.innerText || "";
+};
+
+// 计算属性：限制内容长度，忽略 HTML 标签
+const truncatedContent = computed(() => {
+  if (!props.post.content) return "";
+  const plainText = stripHtmlAndDecode(props.post.content);
+  return plainText.length > 65 ? plainText.slice(0, 65) + "..." : plainText;
+});
+</script>
+
+<style scoped>
+.post-link {
+  text-decoration: none;
+  display: flex;
+  flex-direction: row-reverse; /* 让图片在右边 */
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+
+.post-content {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.post-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+
+.post-summary {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #666;
+}
+
+.post-media {
+  flex-shrink: 0;
+}
+
+.post-image {
+  width: 100px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+</style>

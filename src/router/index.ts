@@ -120,6 +120,11 @@ const router = createRouter({
           path:'my-home-page',
           component:()=> import('../views/moble/myHomePage.vue'),
           meta:{requiresAuth:false, title:'个人主页'}
+        },
+        {
+          path:'edit',
+          component:()=> import('../views/moble/edit.vue'),
+          meta:{requiresAuth:false, title:'编辑个人信息'}
         }
       ]
     }
