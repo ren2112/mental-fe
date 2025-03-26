@@ -1,8 +1,9 @@
 <template>
   <nav class="footer">
-    <el-dropdown @command="handlePartSelect">
+    <!-- 使用 el-dropdown 来展示分区选择 -->
+    <el-dropdown v-if="isHomePage" @command="handlePartSelect">
       <div class="dropdown-trigger">
-        <span>{{ selectedPart }}</span> <!-- 这里会变成选中的分区名称 -->
+        <span>{{ selectedPart }}</span>
       </div>
       <template #dropdown>
         <el-dropdown-menu>
@@ -13,22 +14,28 @@
       </template>
     </el-dropdown>
 
-    <div @click="navigateTo('/post')">
-      <span>发布帖子</span>
-    </div>
-    <div @click="navigateTo('/mob/my-home-page')">
-      <span>个人主页</span>
+    <!-- 其他固定导航项 -->
+    <div v-for="item in dynamicNavItems" :key="item.path" @click="navigateTo(item.path)">
+      <span>{{ item.name }}</span>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { ref, defineEmits } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { computed, ref } from "vue";
 
+// 初始化路由
 const router = useRouter();
-const emit = defineEmits(["part-selected"]); // 声明自定义事件
+const route = useRoute();
 
+// 基础导航项配置
+const baseNavItems = [
+  { name: "发布帖子", path: "/mob/videoPost" },
+  { name: "个人主页", path: "/mob/my-home-page" },
+];
+
+// 分区选项
 const navOptions = [
   "理论学习",
   "走进高新",
@@ -38,15 +45,34 @@ const navOptions = [
   "社会实践",
 ];
 
-const selectedPart = ref("分区选择"); // 默认显示“分区选择”
+// 选中的分区
+const selectedPart = ref("分区选择");
 
+// 动态计算导航项
+const dynamicNavItems = computed(() => {
+  const isHomePage = route.path === "/mob/index";
+  const firstItem = { name: "返回首页", path: "/mob/index" };
+  if(!isHomePage){
+    return [firstItem, ...baseNavItems];
+  }else{
+    return baseNavItems;
+  }
+
+});
+
+// 判断是否是首页
+const isHomePage = computed(() => route.path === "/mob/index");
+
+// 导航跳转函数
 const navigateTo = (path) => {
-  router.push(path);
+  if (path !== "#") {
+    router.push(path);
+  }
 };
 
+// 处理分区选择
 const handlePartSelect = (index) => {
-  selectedPart.value = navOptions[index]; // 选中后修改显示的文本
-  emit("part-selected", index); // 发送选择的分区索引
+  selectedPart.value = navOptions[index]; // 更新选中的分区
 };
 </script>
 
@@ -62,6 +88,12 @@ const handlePartSelect = (index) => {
 }
 
 .footer div {
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown-trigger {
   color: white;
   font-size: 14px;
   cursor: pointer;
