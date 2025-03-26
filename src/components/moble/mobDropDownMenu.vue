@@ -53,7 +53,7 @@
         hideDropdown();
       }
       const hideDropdown = () => {
-        isOpen.value = false;
+        isOpen.value = true;
       };
 
       onMounted(() => {

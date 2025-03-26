@@ -37,7 +37,7 @@ import mobDropDownMenu from "../../components/moble/mobDropDownMenu.vue";
 import videoUploadComponent from "../../components/moble/videoUploadComponent.vue";
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import {uploadFileAPI,publishPostAPI} from '@/api/post'
+import {uploadFileAPI } from '@/api/post'
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -46,7 +46,6 @@ const title = ref(''); // 帖子标题
 const content = ref(''); // 帖子简介
 const selectedIndex = ref(-1); // 响应式变量存储下拉菜单选中的索引值
 const videofile = ref(null); //视频文件
-const videourl = ref(); //视频在服务器中的url
 
 const handlePost = async () => {  //发布贴子逻辑
     // 判断上传文件和标题是否为空
@@ -60,6 +59,7 @@ const handlePost = async () => {  //发布贴子逻辑
     }
     if(!content.value.trim()){
         ElMessage.warning('贴子内容不能为空');
+        return;
     }
     if (selectedIndex.value === -1) {
         ElMessage.warning('请选择一个活动分区');
@@ -68,38 +68,25 @@ const handlePost = async () => {  //发布贴子逻辑
 
     // 创建 FormData 对象
     const formData = new FormData();
-    formData.append('file', videofile.value);
-    try {   //向服务器传递视频文件，然后将获得的视频url传递给 videourl
-        const response = await uploadFileAPI(formData);
-        if (response.code === 0 && response.data?.fileUrl) {
-            videourl.value = response.data.fileUrl
-        } else {
-            ElMessage.error(response.msg || '视频上传失败');
-        }
-    } catch (error) {
-        ElMessage.error('上传失败，请重试');
-        console.log(error)
-    }
-
-    const params = {
-        type: 1,
-        part: selectedIndex.value,
-        title: title.value,
-        content: content.value,
-        video: videourl.value
-    }
+    formData.append('file', videofile.value);  //视频文件
+    formData.append('type',1);  //视频贴子
+    formData.append('title', title.value); // 添加标题
+    formData.append('content', content.value); // 添加简介
+    formData.append('part',selectedIndex.value);  //贴子分区
     try {
         // 调用接口
-        const response = await publishPostAPI(params);
+        const response = await uploadFileAPI(formData);
         if(response.code===0){
             ElMessage.success(response.msg);
             setTimeout(() => {
-                router.push('/mob/index'); 
+                router.push('/mob/index');
             }, 1000);
         }
-    } catch (error) {
+    }
+    catch (error) {
         ElMessage.error('错误信息:', error);
     }
+
 };
 </script>
 

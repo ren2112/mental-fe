@@ -84,7 +84,7 @@ const uploadcover = async()=>{  // 上传封面图片（coverfile），然后返
     try{
         const response = await uploadFileAPI(formData);
         if(response.code===0){
-            cover.value = response.data.fileUrl;
+            cover.value = response.data.picUrl;
             return cover.value;
         }else{
             ElMessage.error(response.msg);
@@ -122,14 +122,14 @@ const handlePost = async()=>{  // 发布贴子函数
             content:content.value,
             part:selectedIndex.value,
             cover:cover.value,
-            type: 0,
+            type:0
         };
 
         const response = await publishPostAPI(body);
         if(response.code === 0){
-            ElMessage(response.msg);
             setTimeout(() => {
-            router.push('/mob/index'); 
+                ElMessage.success(response.msg);
+                router.push('/mob/index'); 
             }, 1000);
         }else{
             ElMessage(response.msg);
