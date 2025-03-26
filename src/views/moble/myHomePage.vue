@@ -6,14 +6,14 @@
       <div class="profile">
         <div class="avatar" :style="{ backgroundImage: `url(${userInfo.avatar || '默认头像URL'})` }"></div>
         <div class="info">
-          <p>姓名: {{ userInfo.name }}</p>
+          <p>姓名: {{ userInfo.username }}</p>
           <p>邮箱: {{ userInfo.email }}</p>
           <p>部门: {{ departmentName }}</p>
         </div>
       </div>
       <div class="buttons">
-        <el-button type="success" class="edit">编辑资料</el-button>
-        <el-button type="success" class="manage">管理系统</el-button>
+        <el-button type="success" class="edit" @click="goToEditProfile">编辑资料</el-button>
+        <el-button type="success" class="manage" @click="goToAdminPanel">管理系统</el-button>
         <el-button type="danger" class="logout" @click="logout">退出登录</el-button>
       </div>
     </header>
@@ -46,7 +46,7 @@ import { useRoute, useRouter } from "vue-router";
 import { getSelfPostsAPI, getdelPostsAPI } from "@/api/post";
 import { getUserAPI } from "@/api/user";
 import { useAuthStore } from "@/stores/auth";
-import PostItem from "@/components/PostCard.vue";
+import PostItem from "@/components/moble/postCard.vue";
 import FooterNav from "@/views/moble/footer.vue"; // 导入底部导航组件
 import { ElMessage } from "element-plus";
 
@@ -56,7 +56,7 @@ const userId = route.query.id;
 const posts = ref([]);
 const activeTab = ref("published");
 const userInfo = ref({
-  name: "加载中...",
+  username: "加载中...",
   email: "",
   department: "",
   avatar: "",
@@ -125,7 +125,17 @@ const changeFetchPosts = async () => {
   await fetchPosts();
 };
 
-// 退出登录
+// **跳转到编辑资料**
+const goToEditProfile = () => {
+  router.push({ path: "/mob/edit", query: { id: userId } });
+};
+
+// **跳转到管理系统**
+const goToAdminPanel = () => {
+  router.push("/mob/");
+};
+
+// **退出登录**
 const logout = () => {
   authStore.clearToken();
   router.push("/");
