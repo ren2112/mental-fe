@@ -12,7 +12,7 @@
       <!-- 创建时间放置在按钮上方 -->
       <div class="post-actions">
         <div class="article-created-at">创建于：{{ formattedCreateAt }}</div>
-        <el-button v-if="isCurrentUser" class="edit-btn" @click="toModifyPost">修改帖子</el-button>
+        <el-button v-if="isCurrentUser" class="edit-btn" @click="EditPost">修改帖子</el-button>
       </div>
     </header>
 
@@ -32,7 +32,7 @@
 
     <!-- 底部导航 -->
     <footer class="footer-nav">
-      <el-button class="nav-btn" @click="router.push('/index')">返回首页</el-button>
+      <el-button class="nav-btn" @click="router.push('/mob/index')">返回首页</el-button>
       <el-button class="nav-btn" @click="toModifyPost">发布帖子</el-button>
       <el-button class="nav-btn" @click="navigateToProfile">个人主页</el-button>
     </footer>
@@ -63,7 +63,7 @@
   width: 100%;
   max-width: 640px;
   min-width: 320px;
-  background: #48A143;
+  background: rgba(0, 130, 65, 1);
   color: white;
   display: flex;
   align-items: center;
@@ -111,7 +111,7 @@
 
 .edit-btn {
   background: white;
-  color: #48A143;
+  color: rgba(0, 130, 65, 1);
   font-size: 14px;
   border-radius: 15px;
   padding: 5px 10px;
@@ -175,7 +175,7 @@
   width: 100%;
   max-width: 640px;
   min-width:320px;
-  background: #48A143;
+  background: rgba(0, 130, 65, 1);
   display: flex;
   justify-content: space-around;
   padding: 1rem;
@@ -187,7 +187,7 @@
   margin: 0 0.5rem;  /* 左右间距 */
   background: transparent;
   color: white;
-  border: 0.0625rem solid #48A143;
+  border: 0.0625rem solid rgba(0, 130, 65, 1);
   font-size: 1rem;
   border-radius: 0.5rem;
   padding: 0.75rem;
@@ -198,7 +198,7 @@
 
 /* 悬停效果 */
 .nav-btn:hover {
-  background-color: #48A143;  /* 按钮悬停时背景色 */
+  background-color: rgba(0, 130, 65, 1);  /* 按钮悬停时背景色 */
   color: white;  /* 悬停时文字颜色 */
   cursor: pointer;  /* 悬停时显示手指光标 */
   transform: scale(1.2);  /* 按钮悬停时轻微放大 */
@@ -316,8 +316,18 @@ const fetchPostData = async () => {
   }
 };
 
-const navigateToProfile = () => router.push({ name: 'my-home-page', query: { id: author.value.id } });
+const navigateToProfile = () => router.push({ path: '/mob/my-home-page', query: { id: author.value.id } });
 const toModifyPost = () => {
+  router.push({
+    // name: article.value.video ? 'edit-video-post' : 'edit-txt-img-post',
+    path: `/mob/${article.value.video ? 'videoPost' : 'txtimgPost'}`,
+    query: {
+      postID: article.value.id,
+      source: 'detail'
+    }
+  });
+};
+const EditPost = () => {
   router.push({
     name: article.value.video ? 'edit-video-post' : 'edit-txt-img-post',
     query: {
