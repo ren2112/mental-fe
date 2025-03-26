@@ -84,7 +84,7 @@ export const approvePostAPI = async (data: {
 };
 
 export const deletePostAPI = async (postID: number) => {
-    return service.delete('/api/auth/admin/delete-post', {
+    return service.delete('/api/auth/delete-post', {
         data: { postID: postID }, // 将 postID 作为请求体传递
     });
 };
