@@ -11,14 +11,15 @@
       </div>
       <!-- 创建时间放置在按钮上方 -->
       <div class="post-actions">
-        <div class="article-created-at">创建于：{{ formattedCreateAt }}</div>
         <el-button v-if="isCurrentUser" class="edit-btn" @click="EditPost">修改帖子</el-button>
+        <el-button v-if="isCurrentUser" class="delete-btn" type="danger" @click="DelPost">删除帖子</el-button>
       </div>
     </header>
 
     <!-- 帖子标题 -->
     <div class="title-container">
       <h1 class="title">{{ article.title }}</h1>
+      <div class="article-created-at">创建于：{{ formattedCreateAt }}</div>
     </div>
 
     <!-- 内容区（包含多媒体和文章） -->
@@ -46,7 +47,7 @@
   max-width: 640px;
   min-width: 320px;
   margin: 0 auto;
-  background: #f0f0f0;
+  background: #f5f5f5;
   padding-top: 6rem; /* rem 替代 px */
   padding-bottom: 6rem; /* 预留底部导航空间 */
   box-sizing: border-box;
@@ -56,6 +57,7 @@
 
 /* 顶部导航栏（包含发布者信息） */
 .header {
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 50%;
@@ -109,16 +111,49 @@
   opacity: 0.8;
 }
 
+/* 修改按钮 - 绿色（修改按钮） */
 .edit-btn {
-  background: white;
-  color: rgba(0, 130, 65, 1);
+  background: linear-gradient(135deg, #008241, #00a86b); /* 渐变绿色 */
+  color: white;
   font-size: 14px;
-  border-radius: 15px;
-  padding: 5px 10px;
+  border-radius: 20px; /* 让按钮更圆润 */
+  padding: 8px 16px; /* 让按钮更大些 */
+  border: none;
+  box-shadow: 2px 2px 8px rgba(0, 130, 65, 0.3); /* 轻微阴影 */
+  transition: all 0.3s ease-in-out;
+}
+
+.edit-btn:hover {
+  background: linear-gradient(135deg, #007737, #009f62); /* 悬停时颜色稍微加深 */
+  box-shadow: 2px 4px 12px rgba(0, 130, 65, 0.5); /* 增强阴影 */
+  transform: scale(1.05); /* 悬停时稍微放大 */
+}
+
+/* 删除按钮 - 红色橙色渐变 */
+.delete-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #ff6a00, #ff3c00); /* 橙色渐变，增强视觉冲击力 */
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  border: none;
+  box-shadow: 2px 2px 8px rgba(255, 102, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.delete-btn:hover {
+  background: linear-gradient(135deg, #e65c00, #e62e00); /* 悬停时颜色稍微加深 */
+  box-shadow: 2px 4px 12px rgba(255, 102, 0, 0.5);
+  transform: scale(1.05);
 }
 
 /* 帖子标题样式 */
 .title-container {
+  display: flex;
+  justify-content: space-between; /* 左右对齐 */
+  align-items: center; /* 垂直居中 */
+
+
   background: white;
   margin: 1rem;
   padding: 1rem;
@@ -336,6 +371,19 @@ const EditPost = () => {
     }
   });
 };
+async function DelPost(){
+  const postID = article.value.id; // 获取当前帖子的 ID
+  if(!postID){
+    ElMessage.error('帖子ID不存在')
+  }
+  const res = await delSelfPostAPI(postID)
+  if(res.code === 0){
+    ElMessage.success(res.msg)
+    router.push('/index')
+  }else{
+    ElMessage.warning(res.msg)
+  }
+}
 const goBack = () => router.back();
 const formattedCreateAt = computed(() => article.value.createAt ? new Date(article.value.createAt).toLocaleDateString() : '');
 
