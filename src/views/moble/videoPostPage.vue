@@ -125,10 +125,9 @@ const onFileChange = async (event) => {  //用户上传视频触发的函数
 
     try {
         const response = await uploadFileAPI(formData);
-        console.log("上传视频回复：",response);
         if (response.code === 0 && response.data?.fileUrl) {
             videoUrl.value = response.data.fileUrl;
-            insertVideo(video.value);
+            insertVideo(videoUrl.value);
             ElMessage.success('视频上传成功');
         } else {
             ElMessage.error(response.msg || '视频上传失败');

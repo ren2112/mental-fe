@@ -138,7 +138,7 @@ const goToAdminPanel = () => {
 // **退出登录**
 const logout = () => {
   authStore.clearToken();
-  router.push("/");
+  router.push("/mob/beginning");
 };
 
 // 页面初始化时获取用户信息和帖子

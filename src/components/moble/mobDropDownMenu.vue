@@ -101,6 +101,7 @@
 
 .dropdown-content {
   position: absolute;
+  z-index: 1000;
   width: 100%;
   max-height: 300px;
   overflow-y: auto;
