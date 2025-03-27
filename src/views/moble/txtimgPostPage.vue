@@ -4,8 +4,11 @@
             <div class="header-box">
                 <h3>图文贴子发布</h3>
                 <div class="btnbox">
-                    <RouterLink to="/mob/videoPost" class="headerbtn">发布视频</RouterLink>
-                    <button class="headerbtn" @click="handlePost">立即发布</button>
+                    <RouterLink to="/mob/videoPost" class="headerbtn">
+                        发布视频
+                        <el-icon><Position /></el-icon>
+                    </RouterLink>
+                    <button class="headerbtn" @click="handlePost">立即发布!</button>
                 </div>
             </div>
         </div>
@@ -169,7 +172,7 @@ const uploadImage = async (event) => {  //向服务器上传 要向贴子内容�
         try {
             const response = await uploadFileAPI(formData);
             if (response.code === 0) {
-                const fileUrl = response.data.fileUrl;
+                const fileUrl = response.data.picUrl;
                 insertImage(fileUrl);
             } else {
                 ElMessage.error("图片上传失败");
@@ -230,7 +233,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
     }
     .btnbox{
         display: flex;
-        gap: 10px;
+        gap: 20px;
         padding: 2px 5px;
     }
     .headerbtn{
@@ -272,9 +275,12 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         align-items: center;
     }
     .uploadimgbox{
-        margin: 0 10px;
+        width: 40%;
+        display: flex;
+        align-items: center;
     }
     .uploadimgbtn{
+        width: 90%;
         border: transparent;
         background-color: rgba(0, 130, 65, 1);
         color: white;
@@ -292,12 +298,12 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         width: 90%;
         margin: 0 5%;
         border-bottom: 2px solid rgba(0, 130, 65, 1);
-        min-height: 250px;
+        min-height: 400px;
         max-height: 600px;
     }
     .text_part{
         width: 100%;
-        min-height: 250px;
+        min-height: 400px;
         max-height: 600px;
         display: flex;
         justify-content: center;
@@ -306,7 +312,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
     .editable-content {
         width: 100%;
         border: 1px solid #ccc;
-        min-height: 250px;
+        min-height: 400px;
         overflow-y: auto;
         line-height: 1.5;
     }

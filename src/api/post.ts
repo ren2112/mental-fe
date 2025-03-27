@@ -46,7 +46,6 @@ export const uploadFileAPI = async (formData: FormData) => {
     return await service.post('/api/auth/upload-file', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MiwiZXhwIjoxNzM0MDgyMzkwLCJyb2xlIjowfQ.nXwRFPuIyJqKvnbmo6TU8HEdWAiIVpu133u4YW4rYig',
         },
     });
 };
