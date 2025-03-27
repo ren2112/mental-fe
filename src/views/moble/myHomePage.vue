@@ -4,7 +4,9 @@
     <header class="header">
       <!-- 头部用户信息展示 -->
       <div class="profile">
-        <div class="avatar" :style="{ backgroundImage: `url(${userInfo.avatar || '默认头像URL'})` }"></div>
+        <div class="avatar">
+          <img v-if="userInfo.avatar" :src="userInfo.avatar" alt="Avatar" />
+        </div>
         <div class="info">
           <p>姓名: {{ userInfo.username }}</p>
           <p>邮箱: {{ userInfo.email }}</p>
@@ -192,8 +194,16 @@ onMounted(async () => {
   height: 60px;
   background: white;
   border-radius: 50%;
+  overflow: hidden; /* 确保图片超出部分不显示 */
   margin-right: 15px;
 }
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片填充容器并且居中 */
+}
+
 
 .info p {
   margin: 4px 0;

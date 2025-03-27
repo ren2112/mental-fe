@@ -1,9 +1,13 @@
 <template>
   <div class="post-item">
     <RouterLink
-      :to="{ name: 'content', query: { postID: post.id, check: 2, ...(curTab ? { curTab } : {}) } }"
+      :to="{
+        path: '/mob/content', 
+        query: { postID: post.id, check: 2, ...(curTab ? { curTab } : {}) }
+      }"
       class="post-link"
     >
+
     
     <!-- 帖子封面 -->
     <div class="post-media">

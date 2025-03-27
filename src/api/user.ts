@@ -52,6 +52,21 @@ export const getUserListAPI = async (
     });
 };
 
+// 更新自己用户接口 (/api/auth/user-update)
+export const updateSelfUserAPI = async (
+    data: {
+        id: number | undefined;
+        username?: string;
+        password?: string;
+        email?: string;
+        phone?: string;
+        department?: number | undefined;
+        avatar?:string
+    }) => {
+    return await service.put('/api/auth/user-update', data);
+};
+
+
 // 更新用户接口 (/api/auth/user-update)
 export const updateUserAPI = async (
     data: {
