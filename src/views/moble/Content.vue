@@ -33,7 +33,6 @@
 
     <!-- 底部导航 -->
     <div class="footer" v-if="check">
-      <el-button type="info" @click="goBack">返回</el-button>
       <el-button type="danger" plain @click="deletePost" v-if="isDeletePage">删除</el-button>
       <el-button type="danger" plain @click="approvePost(2)" v-if="ischeck">不批准</el-button>
       <el-button type="success" @click="approvePost(1)" v-if="ischeck">批准</el-button>
@@ -213,7 +212,6 @@
   display: flex; /* 使用 Flexbox */
   justify-content: center; /* 水平居中内容 */
   align-items: center; /* 垂直居中内容 */
-  border-top: 1px solid #ddd;
   padding-top: 10px;
 }
 @media (min-width: 641px) {
