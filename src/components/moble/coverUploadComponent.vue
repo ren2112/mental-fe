@@ -10,7 +10,10 @@
       
       <!-- 未选择状态 -->
       <div v-if="!previewUrl" class="upload-placeholder">
-        <span class="upload-text">上传封面</span>
+        <span class="upload-text">
+          <el-icon><PictureFilled /></el-icon>
+          上传封面
+        </span>
       </div>
   
       <!-- 已选择状态 -->
@@ -99,6 +102,10 @@ export default defineComponent({
     color: #666;
     font-size: 1.2rem;
     user-select: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
   }
   
   /* 图片预览样式 */

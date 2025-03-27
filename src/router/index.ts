@@ -129,12 +129,12 @@ const router = createRouter({
         {
           path:'videoPost',
           component:()=>import('../views/moble/videoPostPage.vue'),
-          meta:{requiresAuth:false, title:'视频贴子发布'}
+          meta:{requiresAuth:true, title:'视频贴子发布'}
         },
         {
           path:'txtimgPost',
           component:()=>import('../views/moble/txtimgPostPage.vue'),
-          meta:{requiresAuth:false, title:'图文贴子发布'}
+          meta:{requiresAuth:true, title:'图文贴子发布'}
         },
         {
           path:'index',
@@ -144,7 +144,7 @@ const router = createRouter({
         {
           path:'my-home-page',
           component:()=> import('../views/moble/myHomePage.vue'),
-          meta:{requiresAuth:false, title:'个人主页'}
+          meta:{requiresAuth:true, title:'个人主页'}
         },
         {
           path:'edit',
@@ -165,10 +165,16 @@ const router = createRouter({
 router.beforeEach(async(to, from, next) => {
   const {useAuthStore} = await import('@/stores/auth');
   const authstore = useAuthStore();
+
+  // 判断当前是否移动端路由
+  const isMobileRoute = to.path.startsWith('/mob');
+  // 获取正确的登录页路径
+  const loginPath = isMobileRoute ? '/mob/login' : '/login';
+
   // 判断是否需要登录
   if (to.meta.requiresAuth && !authstore.token) {
     // 未登录，跳转到登录页
-    next({ name: 'login'});
+    next({ path: loginPath});
   } else {
     // 已登录或不需要登录
     next();

@@ -46,7 +46,6 @@ export const uploadFileAPI = async (formData: FormData) => {
     return await service.post('/api/auth/upload-file', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MiwiZXhwIjoxNzM0MDgyMzkwLCJyb2xlIjowfQ.nXwRFPuIyJqKvnbmo6TU8HEdWAiIVpu133u4YW4rYig',
         },
     });
 };
@@ -84,7 +83,7 @@ export const approvePostAPI = async (data: {
 };
 
 export const deletePostAPI = async (postID: number) => {
-    return service.delete('/api/auth/admin/delete-post', {
+    return service.delete('/api/auth/delete-post', {
         data: { postID: postID }, // 将 postID 作为请求体传递
     });
 };
