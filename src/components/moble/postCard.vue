@@ -4,17 +4,12 @@
       :to="{ name:'mob-content', query: { postID: post.id, check: 2, ...(curTab ? { curTab } : {}) } }"
       class="post-link"
     >
-    
-    <!-- 帖子封面 -->
-    <div class="post-media">
-      <div class="image-placeholder" v-if="post.cover">
-        <img
-          :src="post.cover"
-          alt="帖子封面"
-          class="post-image"
-        />
+      <!-- 帖子封面 -->
+      <div class="post-media">
+        <div class="image-placeholder" v-if="post.cover">
+          <img :src="post.cover" alt="帖子封面" class="post-image" />
+        </div>
       </div>
-    </div>
       <!-- 帖子内容 -->
       <div class="post-content">
         <h3 class="post-title">{{ truncatedTitle }}</h3>
@@ -63,17 +58,27 @@ const truncatedContent = computed(() => {
 </script>
 
 <style scoped>
+/* 保持原样，控制帖子外观 */
 .post-link {
   text-decoration: none;
   display: flex;
   flex-direction: row-reverse; /* 让图片在右边 */
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  border-bottom: 2px solid #eee;
+  transition: all 0.3s ease; /* 增加平滑过渡效果 */
+  margin-bottom: 5px;
 }
 
+/* 鼠标悬停时的效果 */
+.post-link:hover {
+  background-color: #f7f7f7; /* 背景色稍微变浅 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 增加阴影 */
+  transform: scale(1.02); /* 略微放大 */
+}
 
+/* 内容区域样式 */
 .post-content {
   flex: 1;
   margin-right: 10px;
@@ -92,6 +97,7 @@ const truncatedContent = computed(() => {
   color: #666;
 }
 
+/* 封面图样式 */
 .post-media {
   flex-shrink: 0;
 }
