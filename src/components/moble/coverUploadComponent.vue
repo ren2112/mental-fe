@@ -74,6 +74,7 @@ export default defineComponent({
     width: 100%;
     max-width: 104px;
     max-height: 78px;
+    margin-top: 10px;
     background: #f5f5f5;
     border: 2px dashed #999;
     border-radius: 12px;

@@ -207,7 +207,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-width: 330px;
+        min-width: 400px;
         height: 100vh;
         background: white;
     }
@@ -276,6 +276,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
     }
     .uploadimgbox{
         width: 40%;
+        max-width: 210px;
         display: flex;
         align-items: center;
     }
@@ -340,7 +341,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         width: 90%;
         margin: 0 5%;
         border-bottom: 2px solid rgba(0, 130, 65, 1);
-        height: 100px;
+        height: 110px;
         display: flex;
     }
     #title_input{

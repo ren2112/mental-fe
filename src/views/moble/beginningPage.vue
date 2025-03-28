@@ -27,7 +27,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: 20px; */
 }
 
 .button-group {
@@ -35,8 +34,8 @@
   flex-direction: column;
   gap: 15px;
   width: 100%;
-  max-width: 300px;
-  min-width: 250px;
+  max-width: 500px;
+  min-width: 370px;
   padding: 0 20px; /* 两侧留白 */
 }
 

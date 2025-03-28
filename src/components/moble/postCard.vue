@@ -1,7 +1,7 @@
 <template>
   <div class="post-item">
     <RouterLink
-      :to="{ name: 'content', query: { postID: post.id, check: 2, ...(curTab ? { curTab } : {}) } }"
+      :to="{ name:'mob-content', query: { postID: post.id, check: 2, ...(curTab ? { curTab } : {}) } }"
       class="post-link"
     >
     
