@@ -177,7 +177,7 @@ const showPlaceholder = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 330px;
+    min-width: 400px;
     height: 100vh;
     background: white;
 }
@@ -247,6 +247,7 @@ const showPlaceholder = () => {
 }
 .the_file_choose{
     width: 40%;
+    max-width: 210px;
     height: 100%;
     display: flex;
     align-items: center;

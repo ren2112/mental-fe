@@ -57,6 +57,11 @@ const router = useRouter();
 const userId = route.query.id;
 const posts = ref([]);
 const activeTab = ref("published");
+const pageNum = ref(1);
+const pageSize = ref(4);
+const isAudit = ref(1);
+const totalPosts = ref(0);
+let curTab = 0 // 1代表回收站
 const userInfo = ref({
   username: "加载中...",
   email: "",
@@ -98,32 +103,49 @@ const fetchUserInfo = async () => {
 // 获取帖子数据
 const fetchPosts = async () => {
   try {
+    let res;
     const params = {
+      pageNum: pageNum.value,
+      pageSize: pageSize.value,
       userID: userId,
-      pageNum: 1,
-      pageSize: 4,
       token: authStore.token,
     };
 
-    if (activeTab.value === "published") {
-      params.isAudit = 1; // 已发布
-    } else if (activeTab.value === "underReview") {
-      params.isAudit = 0; // 审核中
-    } else if (activeTab.value === "notPassed") {
-      params.isAudit = 2; // 未通过
-    } else if (activeTab.value === "delete") {
-      params.isAudit = 3; // 已删除
+    if (curTab === 0) { // 正常帖子
+      params.isAudit = isAudit.value;
+      res = await getSelfPostsAPI(params);
+    } else if (curTab === 1) { // 已删除帖子
+      params.SearchQuery = "";
+      res = await getdelPostsAPI(params);
     }
 
-    const res = await getSelfPostsAPI(params);
     posts.value = res.data.posts;
+    totalPosts.value = res.data.total;
   } catch (error) {
+    console.log(error);
+    
     ElMessage.error("获取帖子失败");
   }
 };
 
+
 // Tab 切换时获取数据
-const changeFetchPosts = async () => {
+const changeFetchPosts = async (tabName) => {
+  pageNum.value = 1;
+  
+  if (tabName === "delete") {
+    curTab = 1; // 回收站
+  } else {
+    curTab = 0; // 正常帖子
+    if (tabName === "published") {
+      isAudit.value = 1;
+    } else if (tabName === "underReview") {
+      isAudit.value = 0;
+    } else if (tabName === "notPassed") {
+      isAudit.value = 2;
+    }
+  }
+  
   await fetchPosts();
 };
 
@@ -152,6 +174,7 @@ onMounted(async () => {
 
 <style scoped>
 .container {
+  min-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;

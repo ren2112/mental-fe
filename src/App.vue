@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
+import { useRoute } from 'vue-router'
+ 
+const route = useRoute()
+const routerKey = computed(() => {
+  return route.path + Math.random()
+})
 </script>
 
 <template>
-  <RouterView></RouterView>
+  <RouterView :key="routerKey"></RouterView>
 </template>
 
 <style >

@@ -153,6 +153,7 @@ const router = createRouter({
         },
         {
           path: 'content',
+          name:'mob-content',
           component: () => import('../views/moble/Content.vue'),
           meta:{requiresAuth:false, title:'帖子详情'}
         },

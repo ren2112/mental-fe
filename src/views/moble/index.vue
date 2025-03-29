@@ -6,7 +6,7 @@
       <input type="text" placeholder="在当前分区搜索" v-model="searchQuery" />
       <button @click="handleSearch">搜索</button>
     </div>
-
+    <!-- 单列瀑布流布局 -->
     <div class="post-list" ref="postContainer">
       <PostItem v-for="post in posts" :key="post.id" :post="post" />
     </div>
@@ -20,6 +20,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import PostItem from "@/components/moble/postCard.vue";
 import FooterNav from "@/views/moble/footer.vue";
 import { getPostsByPartAPI } from "@/api/post";
+import { throttle } from "lodash";  // 导入 lodash 的 throttle 方法
 
 const searchQuery = ref("");
 const posts = ref([]);
@@ -27,19 +28,16 @@ const currentPart = ref(0);
 const currentPage = ref(1);
 const isLoading = ref(false);
 
-
+// 获取帖子数据
 const fetchPosts = async () => {
   if (isLoading.value) return;
   isLoading.value = true;
+
   try {
     const response = await getPostsByPartAPI(currentPart.value, currentPage.value, 5, searchQuery.value);
     if (response.code === 0) {
-      if (currentPage.value === 1) {
-        posts.value = response.data.posts; // **如果是第一页，直接替换**
-      } else {
-        posts.value = [...posts.value, ...response.data.posts]; // **否则追加**
-      }
-      currentPage.value++; // **请求成功后，增加 pagenum**
+      posts.value = currentPage.value === 1 ? response.data.posts : [...posts.value, ...response.data.posts];
+      currentPage.value++;
     }
   } catch (error) {
     console.error("获取帖子数据失败:", error);
@@ -48,46 +46,51 @@ const fetchPosts = async () => {
   }
 };
 
-
+// 触发搜索
 const handleSearch = async () => {
   currentPage.value = 1;
   posts.value = [];
   await fetchPosts();
 };
 
-// 处理 FooterNav 选择分区
-const handlePartChange = (partIndex) => {
-  currentPart.value = partIndex; // 更新当前分区
-  currentPage.value = 1; // **重置分页**
-  posts.value = []; // **清空当前帖子**
-  fetchPosts(); // **重新获取帖子**
-};
-
+// 监听滚动事件（加载更多帖子）
 const handleScroll = () => {
-  const bottomOffset = 100;
+  const bottomOffset = 150; // 距离底部150px时加载更多帖子
   const container = document.documentElement;
+
   if (container.scrollHeight - (window.innerHeight + container.scrollTop) < bottomOffset) {
     fetchPosts();
   }
 };
 
+// 使用 throttle 包装 handleScroll，避免频繁触发
+const throttledScroll = throttle(handleScroll, 300); // 每300ms触发一次
+
+const handlePartChange = (partIndex) => {
+  currentPart.value = partIndex;
+  currentPage.value = 1;
+  posts.value = [];
+  fetchPosts();
+};
+
 onMounted(() => {
   fetchPosts();
-  window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", throttledScroll); // 使用节流后的滚动事件
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
+  window.removeEventListener("scroll", throttledScroll);
 });
-
 </script>
 
 <style scoped>
 .container {
+  min-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
+  min-height: 100vh; /* 确保容器至少占满整个视口的高度 */
 }
 
 .header {
@@ -100,6 +103,8 @@ onUnmounted(() => {
   font-size: 18px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  position: fixed;
+  z-index: 100;
 }
 
 .search-bar {
@@ -111,6 +116,9 @@ onUnmounted(() => {
   margin-top: -20px;
   margin-bottom: 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 80px;
+  z-index: 100;
 }
 
 .search-bar input {
@@ -130,46 +138,16 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
-.filter-box {
-  background: #fff;
-  padding: 16px;
-  border-radius: 8px;
-  width: 90%;
-  margin-bottom: 10px;
-}
-
-.filter-title {
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: rgba(0, 130, 65, 1);
-}
-
-.filter-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.filter-options button {
-  border: 1px solid rgba(0, 130, 65, 0.3);
-  padding: 6px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.active-button {
-  background-color: rgba(0, 130, 65, 1);
-  color: white;
-}
-
+/* 单列布局 */
 .post-list {
   width: 90%;
   background: white;
   border-radius: 8px;
   padding: 12px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  margin-top: 125px; /* 使帖子列表下移，避免与固定搜索框重叠 */
+  overflow-y: auto;  /* 添加滚动条 */
 }
 </style>

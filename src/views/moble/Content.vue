@@ -18,8 +18,8 @@
 
     <!-- 帖子标题 -->
     <div class="title-container">
-      <h1 class="title">{{ article.title }}</h1>
       <div class="article-created-at">创建于：{{ formattedCreateAt }}</div>
+      <h1 class="title">{{ article.title }}</h1>
     </div>
 
     <!-- 内容区（包含多媒体和文章） -->
@@ -33,7 +33,6 @@
 
     <!-- 底部导航 -->
     <div class="footer" v-if="check">
-      <el-button type="info" @click="goBack">返回</el-button>
       <el-button type="danger" plain @click="deletePost" v-if="isDeletePage">删除</el-button>
       <el-button type="danger" plain @click="approvePost(2)" v-if="ischeck">不批准</el-button>
       <el-button type="success" @click="approvePost(1)" v-if="ischeck">批准</el-button>
@@ -84,7 +83,7 @@
 }
 
 .back-icon {
-  font-size: 22px;
+  font-size: 1.8rem;
   cursor: pointer;
 }
 
@@ -108,27 +107,27 @@
 }
 
 .author-name {
-  font-size: 24px;
+  font-size: 1.9rem;
   font-weight: bold;
 }
 
 .article-created-at {
+  position: absolute; /* 绝对定位 */
+  top: 1rem; /* 距离父容器顶部 1rem（与父容器的 padding 对齐） */
+  right: 1rem; /* 距离父容器右侧 1rem */
+  font-size: 1rem;
   font-size: 12px;
   opacity: 0.8;
 }
 
 /* 帖子标题样式 */
 .title-container {
-  display: flex;
-  justify-content: space-between; /* 左右对齐 */
+  position: relative;
   align-items: center; /* 垂直居中 */
-
-
   background: white;
   margin: 1rem;
   padding: 1rem;
   border-radius: 1rem;
-  text-align: center;
   box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
@@ -137,6 +136,7 @@
   font-weight: bold;
   color: #333;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  margin-top: 1.3rem;
 }
 
 /* 文章 & 多媒体区域 */
@@ -213,7 +213,6 @@
   display: flex; /* 使用 Flexbox */
   justify-content: center; /* 水平居中内容 */
   align-items: center; /* 垂直居中内容 */
-  border-top: 1px solid #ddd;
   padding-top: 10px;
 }
 @media (min-width: 641px) {
