@@ -149,7 +149,7 @@ const router = createRouter({
         {
           path:'edit',
           component:()=> import('../views/moble/edit.vue'),
-          meta:{requiresAuth:false, title:'编辑个人信息'}
+          meta:{requiresAuth:true, title:'编辑个人信息'}
         },
         {
           path: 'content',
@@ -157,6 +157,18 @@ const router = createRouter({
           component: () => import('../views/moble/Content.vue'),
           meta:{requiresAuth:false, title:'帖子详情'}
         },
+        {
+          path:'editTxtimgPost',
+          name:'mobEditTxtimgPost',
+          component:()=>import('../views/moble/mobEditTxtimgPost.vue'),
+          meta:{requiresAuth:true,title:'修改贴子'}
+        },
+        {
+          path:'editVideoPost',
+          name:'mobEditVideoPost',
+          component:()=>import('../views/moble/mobEditVideoPostPage.vue'),
+          meta:{requiresAuth:true,title:'修改贴子'}
+        }
       ]
     }
   ]
