@@ -168,6 +168,38 @@ const router = createRouter({
           name:'mobEditVideoPost',
           component:()=>import('../views/moble/mobEditVideoPostPage.vue'),
           meta:{requiresAuth:true,title:'修改贴子'}
+        },
+        {
+          path:'manage',
+          component:()=> import('../views/moble/manage/Manage.vue'),
+          meta:{requiresAuth:true, title:'管理'},
+          children:[
+            {
+              path:'',
+              component:()=> import('../views/moble/manage/UserManage.vue'),
+              meta:{requiresAuth:true}
+            },
+            {
+              path:'user-manage',
+              component:()=> import('../views/moble/manage/UserManage.vue'),
+              meta:{requiresAuth:true, title:'用户管理'}
+            },
+            {
+              path:'post-check',
+              component:()=> import('../views/moble/manage/PostCheck.vue'),
+              meta:{requiresAuth:true, title:'帖子审核'}
+            },
+            {
+              path:'post-modify',
+              component:()=> import('../views/moble/manage/PostModify.vue'),
+              meta:{requiresAuth:true, title:'删除帖子'}
+            },
+            {
+              path:'post-del-record',
+              component:()=> import('../views/moble/manage/DelRecord.vue'),
+              meta:{requiresAuth:true, title:'删帖记录'}
+            }
+          ]
         }
       ]
     }

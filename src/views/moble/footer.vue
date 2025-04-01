@@ -55,8 +55,13 @@ const navigateTo = (path) => {
   }
 };
 
+// **修改 handlePartSelect 以触发事件**
+
+const emit = defineEmits(["part-selected"]); // 定义事件
+
 const handlePartSelect = (index) => {
   selectedPart.value = navOptions[index];
+  emit("part-selected", index); // 触发事件，将 index 传递给父组件
 };
 </script>
 

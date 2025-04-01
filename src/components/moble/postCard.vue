@@ -65,7 +65,7 @@ const truncatedContent = computed(() => {
   flex-direction: row-reverse; /* 让图片在右边 */
   align-items: center;
   justify-content: space-between;
-  padding: 15px 0;
+  padding: 20px 0;
   border-bottom: 2px solid #eee;
   transition: all 0.3s ease; /* 增加平滑过渡效果 */
   margin-bottom: 5px;
@@ -103,8 +103,8 @@ const truncatedContent = computed(() => {
 }
 
 .post-image {
-  width: 100px;
-  height: 70px;
+  width: 150px;
+  height: 100px;
   border-radius: 8px;
   object-fit: cover;
 }

@@ -77,7 +77,7 @@ import { getUserAPI } from '@/api/user';
 import { useAuthStore } from '@/stores/auth';
 import PostCard from '@/components/PostCard.vue';
 import { ElMessage } from 'element-plus';
-import { checkNode } from 'element-plus/es/components/cascader-panel/src/utils.mjs';
+
 
 const userInfo = ref({
   id: '',

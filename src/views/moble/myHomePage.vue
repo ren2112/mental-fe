@@ -4,7 +4,9 @@
     <header class="header">
       <!-- 头部用户信息展示 -->
       <div class="profile">
-        <div class="avatar" :style="{ backgroundImage: `url(${userInfo.avatar || '默认头像URL'})` }"></div>
+        <div class="avatar">
+          <img v-if="userInfo.avatar" :src="userInfo.avatar" alt="Avatar" />
+        </div>
         <div class="info">
           <p>姓名: {{ userInfo.username }}</p>
           <p>邮箱: {{ userInfo.email }}</p>
@@ -55,6 +57,11 @@ const router = useRouter();
 const userId = route.query.id;
 const posts = ref([]);
 const activeTab = ref("published");
+const pageNum = ref(1);
+const pageSize = ref(4);
+const isAudit = ref(1);
+const totalPosts = ref(0);
+let curTab = 0 // 1代表回收站
 const userInfo = ref({
   username: "加载中...",
   email: "",
@@ -96,32 +103,49 @@ const fetchUserInfo = async () => {
 // 获取帖子数据
 const fetchPosts = async () => {
   try {
+    let res;
     const params = {
+      pageNum: pageNum.value,
+      pageSize: pageSize.value,
       userID: userId,
-      pageNum: 1,
-      pageSize: 4,
       token: authStore.token,
     };
 
-    if (activeTab.value === "published") {
-      params.isAudit = 1; // 已发布
-    } else if (activeTab.value === "underReview") {
-      params.isAudit = 0; // 审核中
-    } else if (activeTab.value === "notPassed") {
-      params.isAudit = 2; // 未通过
-    } else if (activeTab.value === "delete") {
-      params.isAudit = 3; // 已删除
+    if (curTab === 0) { // 正常帖子
+      params.isAudit = isAudit.value;
+      res = await getSelfPostsAPI(params);
+    } else if (curTab === 1) { // 已删除帖子
+      params.SearchQuery = "";
+      res = await getdelPostsAPI(params);
     }
 
-    const res = await getSelfPostsAPI(params);
     posts.value = res.data.posts;
+    totalPosts.value = res.data.total;
   } catch (error) {
+    console.log(error);
+
     ElMessage.error("获取帖子失败");
   }
 };
 
+
 // Tab 切换时获取数据
-const changeFetchPosts = async () => {
+const changeFetchPosts = async (tabName) => {
+  pageNum.value = 1;
+
+  if (tabName === "delete") {
+    curTab = 1; // 回收站
+  } else {
+    curTab = 0; // 正常帖子
+    if (tabName === "published") {
+      isAudit.value = 1;
+    } else if (tabName === "underReview") {
+      isAudit.value = 0;
+    } else if (tabName === "notPassed") {
+      isAudit.value = 2;
+    }
+  }
+
   await fetchPosts();
 };
 
@@ -132,7 +156,7 @@ const goToEditProfile = () => {
 
 // **跳转到管理系统**
 const goToAdminPanel = () => {
-  router.push("/mob/");
+  router.push("/mob/manage");
 };
 
 // **退出登录**
@@ -193,8 +217,16 @@ onMounted(async () => {
   height: 60px;
   background: white;
   border-radius: 50%;
+  overflow: hidden; /* 确保图片超出部分不显示 */
   margin-right: 15px;
 }
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片填充容器并且居中 */
+}
+
 
 .info p {
   margin: 4px 0;
