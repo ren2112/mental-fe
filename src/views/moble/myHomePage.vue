@@ -123,7 +123,7 @@ const fetchPosts = async () => {
     totalPosts.value = res.data.total;
   } catch (error) {
     console.log(error);
-    
+
     ElMessage.error("获取帖子失败");
   }
 };
@@ -132,7 +132,7 @@ const fetchPosts = async () => {
 // Tab 切换时获取数据
 const changeFetchPosts = async (tabName) => {
   pageNum.value = 1;
-  
+
   if (tabName === "delete") {
     curTab = 1; // 回收站
   } else {
@@ -145,7 +145,7 @@ const changeFetchPosts = async (tabName) => {
       isAudit.value = 2;
     }
   }
-  
+
   await fetchPosts();
 };
 
@@ -156,7 +156,7 @@ const goToEditProfile = () => {
 
 // **跳转到管理系统**
 const goToAdminPanel = () => {
-  router.push("/mob/");
+  router.push("/mob/manage");
 };
 
 // **退出登录**

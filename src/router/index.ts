@@ -149,7 +149,7 @@ const router = createRouter({
         {
           path:'edit',
           component:()=> import('../views/moble/edit.vue'),
-          meta:{requiresAuth:false, title:'编辑个人信息'}
+          meta:{requiresAuth:true, title:'编辑个人信息'}
         },
         {
           path: 'content',
@@ -157,6 +157,50 @@ const router = createRouter({
           component: () => import('../views/moble/Content.vue'),
           meta:{requiresAuth:false, title:'帖子详情'}
         },
+        {
+          path:'editTxtimgPost',
+          name:'mobEditTxtimgPost',
+          component:()=>import('../views/moble/mobEditTxtimgPost.vue'),
+          meta:{requiresAuth:true,title:'修改贴子'}
+        },
+        {
+          path:'editVideoPost',
+          name:'mobEditVideoPost',
+          component:()=>import('../views/moble/mobEditVideoPostPage.vue'),
+          meta:{requiresAuth:true,title:'修改贴子'}
+        },
+        {
+          path:'manage',
+          component:()=> import('../views/moble/manage/Manage.vue'),
+          meta:{requiresAuth:true, title:'管理'},
+          children:[
+            {
+              path:'',
+              component:()=> import('../views/moble/manage/UserManage.vue'),
+              meta:{requiresAuth:true}
+            },
+            {
+              path:'user-manage',
+              component:()=> import('../views/moble/manage/UserManage.vue'),
+              meta:{requiresAuth:true, title:'用户管理'}
+            },
+            {
+              path:'post-check',
+              component:()=> import('../views/moble/manage/PostCheck.vue'),
+              meta:{requiresAuth:true, title:'帖子审核'}
+            },
+            {
+              path:'post-modify',
+              component:()=> import('../views/moble/manage/PostModify.vue'),
+              meta:{requiresAuth:true, title:'删除帖子'}
+            },
+            {
+              path:'post-del-record',
+              component:()=> import('../views/moble/manage/DelRecord.vue'),
+              meta:{requiresAuth:true, title:'删帖记录'}
+            }
+          ]
+        }
       ]
     }
   ]
