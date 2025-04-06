@@ -25,9 +25,9 @@
       <div class="tabs-container">
         <el-tabs v-model="activeTab" @tab-change="changeFetchPosts" class="custom-tabs">
           <el-tab-pane label="已发布" name="published"></el-tab-pane>
-          <el-tab-pane label="审核中" name="underReview" v-if="isCurrentUser"></el-tab-pane>
-          <el-tab-pane label="未通过" name="notPassed" v-if="isCurrentUser"></el-tab-pane>
-          <el-tab-pane label="已删除" name="delete" v-if="isCurrentUser"></el-tab-pane>
+          <el-tab-pane label="审核中" name="underReview" v-if="isCurrentUserCheck"></el-tab-pane>
+          <el-tab-pane label="未通过" name="notPassed" v-if="isCurrentUserCheck"></el-tab-pane>
+          <el-tab-pane label="已删除" name="delete" v-if="isCurrentUserCheck"></el-tab-pane>
         </el-tabs>
       </div>
 
