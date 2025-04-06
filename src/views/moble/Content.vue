@@ -349,7 +349,7 @@ const toModifyPost = () => {
 };
 const EditPost = () => {
   router.push({
-    name: article.value.video ? 'mobEditVideoPost' : 'mobEditTxtimgPost',
+    name: article.value.video ? 'edit-video-post' : 'edit-txt-img-post',
     query: {
       postID: article.value.id,
       source: 'detail'

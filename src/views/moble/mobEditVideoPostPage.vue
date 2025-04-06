@@ -120,6 +120,9 @@ const fetchPostData = async () => {
         return;
     }
     try {
+        const token=authStore.token
+        // console.log(111,authStore.token);
+        
         const response = await getPostDetailAPI({ postID, token });
         const post = response.data.post;
         

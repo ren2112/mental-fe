@@ -49,6 +49,8 @@ const isHomePage = computed(() => route.path === "/mob/index");
 // **修改 navigateTo 以传递用户 ID**
 const navigateTo = (path) => {
   if (path === "/mob/my-home-page") {
+    console.log(authStore.userInfo.id);
+    
     router.push({ path, query: { id: authStore.userInfo.id } }); // 传递用户 ID
   } else {
     router.push(path);
