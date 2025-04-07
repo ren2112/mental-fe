@@ -25,7 +25,7 @@
     <!-- 内容区（包含多媒体和文章） -->
     <div class="content-container">
       <div class="media-section">
-        <!-- <video v-if="article.video" controls :src="article.video" class="video-player"></video> -->
+<!--        <video v-if="article.video" controls :src="article.video" class="video-player"></video>-->
         <img v-if="article.type==0" :src="article.cover" alt="cover" class="cover-image" />
       </div>
       <div class="article-content" v-html="article.content"></div>
@@ -37,11 +37,14 @@
       <el-button type="danger" plain @click="approvePost(2)" v-if="ischeck">不批准</el-button>
       <el-button type="success" @click="approvePost(1)" v-if="ischeck">批准</el-button>
     </div>
-    <footer class="footer-nav">
-      <el-button class="nav-btn" @click="router.push('/mob/index')">返回首页</el-button>
-      <el-button class="nav-btn" @click="toModifyPost">发布帖子</el-button>
-      <el-button class="nav-btn" @click="navigateToProfile">个人主页</el-button>
-    </footer>
+<!--    <footer class="footer-nav">-->
+<!--      <el-button class="nav-btn" @click="router.push('/mob/index')">返回首页</el-button>-->
+<!--      <el-button class="nav-btn" @click="toModifyPost">发布帖子</el-button>-->
+<!--      <el-button class="nav-btn" @click="navigateToProfile">个人主页</el-button>-->
+<!--    </footer>-->
+    <div class="footer-nav-wrapper">
+      <FooterNav/>
+    </div>
   </div>
 </template>
 
@@ -49,8 +52,7 @@
 /* 主容器 */
 .container {
   width: 100%;
-  max-width: 640px;
-  min-width: 320px;
+  min-width: 400px;
   margin: 0 auto;
   background: #f5f5f5;
   padding-top: 6rem; /* rem 替代 px */
@@ -58,7 +60,17 @@
   box-sizing: border-box;
 }
 
+/* 为 FooterNav 添加外层容器 */
+.footer-nav-wrapper {
+  margin-top: 20px;
+}
 
+/* 调整 footer 内部间距 */
+.footer-nav-wrapper :deep(.footer) {
+  gap: 20px;
+  padding: 10px 10px;
+  justify-content: space-around;
+}
 
 /* 顶部导航栏（包含发布者信息） */
 .header {
@@ -68,8 +80,6 @@
   left: 50%;
   transform: translateX(-50%); /* 居中 */
   width: 100%;
-  max-width: 640px;
-  min-width: 320px;
   background: rgba(0, 130, 65, 1);
   color: white;
   display: flex;
@@ -151,7 +161,7 @@
 
 /* 多媒体区域 */
 .media-section {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr;
   justify-items: center;
 }
@@ -159,7 +169,6 @@
 .video-player, .cover-image {
   width: 100%;
   border-radius: 1rem;
-  max-height: 15rem;
   object-fit: cover;
 }
 
@@ -169,6 +178,9 @@
   font-size: 1rem;
   line-height: 1.6;
   margin-top: 0.67rem;
+  word-break: break-all; /* 强制所有字符换行（包括长单词/字符） */
+  overflow-wrap: break-word; /* 优先在单词内换行 */
+  white-space: pre-wrap; /* 保留空格和换行符 */
 }
 
 /* 底部导航 */
@@ -299,6 +311,7 @@ import { ArrowLeft } from '@element-plus/icons-vue';
 import {getPostDetailAPI, delSelfPostAPI, deletePostAPI, approvePostAPI} from '@/api/post';
 import { useAuthStore } from '@/stores/auth';
 import { ElMessage } from 'element-plus';
+import FooterNav from "@/views/moble/footer.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -349,7 +362,7 @@ const toModifyPost = () => {
 };
 const EditPost = () => {
   router.push({
-    name: article.value.video ? 'edit-video-post' : 'edit-txt-img-post',
+    name: article.value.video ? 'mobEditVideoPost' : 'mobEditTxtimgPost',
     query: {
       postID: article.value.id,
       source: 'detail'
