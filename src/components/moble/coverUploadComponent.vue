@@ -1,59 +1,79 @@
 <template>
-    <div class="image-uploader" :class="{ active: previewUrl }" @click="triggerUpload">
-      <input
-        ref="fileInput"
-        type="file"
-        accept="image/*"
-        hidden
-        @change="handleFileChange"
-      >
-      
-      <!-- 未选择状态 -->
-      <div v-if="!previewUrl" class="upload-placeholder">
-        <span class="upload-text">
-          <el-icon><PictureFilled /></el-icon>
-          上传封面
-        </span>
-      </div>
-  
-      <!-- 已选择状态 -->
-      <div v-else class="image-preview">
-        <img
-          :src="previewUrl"
-          class="preview-image"
-          alt="已选封面"
-        >
-        <button class="change-btn">更改</button>
-      </div>
+  <div class="image-uploader" :class="{ active: previewUrl }" @click="triggerUpload">
+    <input
+      ref="fileInput"
+      type="file"
+      accept="image/*"
+      hidden
+      @change="handleFileChange"
+    >
+    
+    <!-- 未选择状态 -->
+    <div v-if="!previewUrl" class="upload-placeholder">
+      <span class="upload-text">
+        <el-icon><PictureFilled /></el-icon>
+        上传封面
+      </span>
     </div>
+
+    <!-- 已选择状态 -->
+    <div v-else class="image-preview">
+      <img
+        :src="previewUrl"
+        class="preview-image"
+        alt="已选封面"
+      >
+      <button class="change-btn">更改</button>
+    </div>
+  </div>
 </template>
-  
+
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch, onBeforeUnmount, PropType } from 'vue'
+import { PictureFilled } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ImageUploader',
-  emits: ['update:modelValue'], // 添加事件声明
-  setup(_, { emit }) {
+  props: {
+    modelValue: {
+      type: [File, String] as PropType<File | string>,
+      default: null
+    }
+  },
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
     const fileInput = ref<HTMLInputElement | null>(null)
     const previewUrl = ref<string>('')
-    const currentFile = ref<File | null>(null)
+
+    // 初始化监听
+    watch(() => props.modelValue, (newVal) => {
+      if (typeof newVal === 'string') {
+        previewUrl.value = newVal
+      } else if (newVal instanceof File) {
+        previewUrl.value = URL.createObjectURL(newVal)
+      } else {
+        previewUrl.value = ''
+      }
+    }, { immediate: true })
+
+    // 内存管理
+    let currentBlobUrl = ref('')
+    watch(previewUrl, (newVal, oldVal) => {
+      if (oldVal.startsWith('blob:')) {
+        URL.revokeObjectURL(oldVal)
+      }
+      currentBlobUrl.value = newVal
+    })
 
     const triggerUpload = () => {
-      if (fileInput.value) {
-        fileInput.value.value = ''
-        fileInput.value.click()
-      }
+      fileInput.value?.click()
     }
 
     const handleFileChange = (e: Event) => {
-      const target = e.target as HTMLInputElement
-      const file = target.files?.[0]
-      
+      const file = (e.target as HTMLInputElement).files?.[0]
       if (file) {
         previewUrl.value = URL.createObjectURL(file)
-        currentFile.value = file
-        emit('update:modelValue', file) // 触发更新事件
+        emit('update:modelValue', file)
       }
     }
 
@@ -61,7 +81,8 @@ export default defineComponent({
       fileInput,
       previewUrl,
       triggerUpload,
-      handleFileChange
+      handleFileChange,
+      PictureFilled
     }
   }
 })

@@ -96,6 +96,7 @@ const handlePost = async () => {
     try {
         // 调用接口
         const response = await publishPostAPI(params);
+        console.log('the postapi response: ',response)
         if(response.code===0){
             ElMessage.success(response.msg);
             setTimeout(() => {

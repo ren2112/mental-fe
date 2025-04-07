@@ -50,7 +50,7 @@
 .container {
   width: 100%;
   max-width: 640px;
-  min-width: 320px;
+  min-width: 430px;
   margin: 0 auto;
   background: #f5f5f5;
   padding-top: 6rem; /* rem 替代 px */
@@ -69,7 +69,7 @@
   transform: translateX(-50%); /* 居中 */
   width: 100%;
   max-width: 640px;
-  min-width: 320px;
+  min-width: 430px;
   background: rgba(0, 130, 65, 1);
   color: white;
   display: flex;
@@ -349,7 +349,7 @@ const toModifyPost = () => {
 };
 const EditPost = () => {
   router.push({
-    name: article.value.video ? 'edit-video-post' : 'edit-txt-img-post',
+    name: article.value.video ? 'mobEditVideoPost' : 'mobEditTxtimgPost',
     query: {
       postID: article.value.id,
       source: 'detail'
@@ -417,7 +417,7 @@ async function approvePost(ifApprove) {
     const response = await approvePostAPI(data);
     console.log(response);
     if (response.code === 0) {
-      await router.push('/manage/post-check');
+      await router.push('/mob/manage/post-check');
       ElMessage({
         message: '审批成功',
         type: 'success'

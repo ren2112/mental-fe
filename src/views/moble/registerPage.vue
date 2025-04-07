@@ -55,6 +55,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { ElMessage } from 'element-plus'
+import router from '@/router';
 
 const username = ref('');
 const email = ref('');
@@ -119,6 +120,9 @@ const register = async() =>{
     );
     if(response.data.code===0){
       ElMessage.success(response.data.msg);
+      setTimeout(()=>{
+        router.push('/mob/login');
+      },500);
     }else{
       ElMessage.error(response.data.msg || "注册失败");
     }

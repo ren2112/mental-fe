@@ -239,7 +239,7 @@ async function fetchPosts() {
 
 // 跳转详情页
 async function handleRowClick(row: Post, event: Event) {
-  await router.push({ name: 'content', query: {postID: row.ID, check: 1 , source: 'check'} });
+  await router.push({ name: 'mob-content', query: {postID: row.ID, check: 1 , source: 'check'} });
 }
 
 

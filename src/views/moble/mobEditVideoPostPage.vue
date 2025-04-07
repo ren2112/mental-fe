@@ -245,6 +245,17 @@ const showPlaceholder = () => {
         gap: 20px;
         padding: 2px 5px;
     }
+    .headerbtn{
+        padding: 1px 3px;
+        background-color: white;
+        border: transparent;
+        border-radius: 5px;
+        color: rgba(0, 130, 65, 1);
+        font-size: 1rem;
+        text-decoration: none;
+        align-items: center;
+        text-align: center;
+    }
     .datainputcontainer{
         margin-top: 5px;
         background-color: white;
