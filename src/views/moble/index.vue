@@ -53,15 +53,18 @@ const handleSearch = async () => {
   await fetchPosts();
 };
 
-// 监听滚动事件（加载更多帖子）
-const handleScroll = () => {
-  const bottomOffset = 150; // 距离底部150px时加载更多帖子
-  const container = document.documentElement;
+const postContainer = ref(null); // 引用 post-list 容器
 
-  if (container.scrollHeight - (window.innerHeight + container.scrollTop) < bottomOffset) {
+const handleScroll = () => {
+  const bottomOffset = 100; // 距离底部多少时加载更多
+  const el = postContainer.value;
+
+  if (el && el.scrollHeight - el.scrollTop - el.clientHeight < bottomOffset) {
     fetchPosts();
   }
 };
+
+
 
 // 使用 throttle 包装 handleScroll，避免频繁触发
 const throttledScroll = throttle(handleScroll, 300); // 每300ms触发一次
@@ -75,35 +78,41 @@ const handlePartChange = (partIndex) => {
 
 onMounted(() => {
   fetchPosts();
-  window.addEventListener("scroll", throttledScroll); // 使用节流后的滚动事件
+  if (postContainer.value) {
+    postContainer.value.addEventListener("scroll", throttledScroll);
+  }
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", throttledScroll);
+  if (postContainer.value) {
+    postContainer.value.removeEventListener("scroll", throttledScroll);
+  }
 });
+
 </script>
 
 <style scoped>
 .container {
-  min-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
-  min-height: 100vh; /* 确保容器至少占满整个视口的高度 */
+  height: 100vh; /* 使用视口高度适配 */
+  overflow: hidden; /* 防止页面整体滚动 */
 }
 
 .header {
   width: 100%;
-  height: 80px;
+  height: 10vh; /* 10% 视口高度 */
   background: rgba(0, 130, 65, 1);
   color: white;
   text-align: center;
-  padding-top: 20px;
-  font-size: 18px;
+  padding-top: 2vh;
+  font-size: 2.2vh;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   position: fixed;
+  top: 0;
   z-index: 100;
 }
 
@@ -112,12 +121,10 @@ onUnmounted(() => {
   width: 85%;
   background: white;
   border-radius: 20px;
-  padding: 10px;
-  margin-top: -20px;
-  margin-bottom: 20px;
+  padding: 1.5vh 1vh;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
-  top: 80px;
+  top: 10vh; /* 紧贴 header 底部 */
   z-index: 100;
 }
 
@@ -125,29 +132,33 @@ onUnmounted(() => {
   flex: 1;
   border: none;
   outline: none;
-  padding: 6px;
-  font-size: 14px;
+  font-size: 1.6vh;
+  padding: 1vh;
 }
 
 .search-bar button {
   background: rgba(0, 130, 65, 1);
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 0.8vh 1.2vh;
+  border-radius: 1vh;
   cursor: pointer;
+  font-size: 1.6vh;
 }
 
-/* 单列布局 */
+/* 帖子列表 */
 .post-list {
   width: 90%;
   background: white;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 2vh;
+  padding: 1vh;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 125px; /* 使帖子列表下移，避免与固定搜索框重叠 */
-  overflow-y: auto;  /* 添加滚动条 */
+  gap: 1vh;
+  position: absolute;
+  top: calc(10vh + 8vh); /* header + search-bar */
+  bottom: 5vh; /* 留出 footer 导航区域 */
+  overflow-y: auto;
 }
+
 </style>

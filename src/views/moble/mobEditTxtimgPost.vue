@@ -30,6 +30,10 @@
             <div class="titleinputbox">
                 <input type="text" id="title_input" placeholder="请输入贴子标题（最多40字）" maxlength="40" v-model="title">
             </div>
+            <div class="videoinputbox">
+                选择贴子封面：
+                <coverUploadComponent v-model="coverFile"/>
+            </div>
             <div class="contentinputbox">
                 <div class="text_part">
                     <div 
@@ -43,10 +47,6 @@
                     ></div>
                     <div v-if="showPlaceholderText && !content" class="placeholder-text">请输入贴子内容(最多4000字)</div>
                 </div>
-            </div>
-            <div class="videoinputbox">
-                选择贴子封面：
-                <coverUploadComponent v-model="coverFile"/>
             </div>
         </div>
     </div>
@@ -270,141 +270,152 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-width: 400px;
-        height: 100vh;
+        min-width: 90vw;  /* 改为使用vw，响应式适配宽度 */
+        height: 100vh;    /* 改为vh，适配视口高度 */
         background: white;
     }
       
     .header {
         width: 100%;
-        height: 60px;
+        height: 8vh;       /* 改为vh */
         background: rgba(0, 130, 65, 1);
         color: white;
         text-align: center;
-        padding-top: 20px;
-        font-size: 18px;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
+        padding-top: 2vh;   /* 改为vh */
+        font-size: 2rem;    /* 改为rem */
+        border-bottom-left-radius: 2vh; /* 改为vh */
+        border-bottom-right-radius: 2vh; /* 改为vh */
     }
-    .header-box{
+
+    .header-box {
         height: 50%;
-        padding: 1px 5px;
-        padding-left: 8px;
+        padding: 0.2rem 1rem;  /* 改为rem */
+        padding-left: 2rem;    /* 改为rem */
         align-items: center;
         display: flex;
         justify-content: space-between;
     }
-    .btnbox{
+
+    .btnbox {
         display: flex;
-        gap: 20px;
-        padding: 2px 5px;
+        gap: 5vw;            /* 改为vw */
+        padding: 0.2rem 0.5rem; /* 改为rem */
     }
-    .headerbtn{
-        padding: 1px 3px;
+
+    .headerbtn {
+        padding: 0.3rem 1rem;    /* 改为rem */
         background-color: white;
         border: transparent;
-        border-radius: 5px;
+        border-radius: 0.5rem;    /* 改为rem */
         color: rgba(0, 130, 65, 1);
-        font-size: 1rem;
+        font-size: 1rem;          /* 改为rem */
         text-decoration: none;
         align-items: center;
         text-align: center;
     }
-    .datainputcontainer{
-        margin-top: 5px;
+
+    .datainputcontainer {
+        margin-top: 1vh;          /* 改为vh */
         background-color: white;
         width: 100%;
         height: auto;
-        gap: 5px;
+        gap: 2vh;                /* 改为vh */
     }
-    .partchoosediv{
+
+    .partchoosediv {
         width: 90%;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        height: 40px;
+        border-bottom: 0.25vh solid rgba(0, 130, 65, 1); /* 改为vh */
+        height: 5vh;            /* 改为vh */
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    .partchoosebox{
+
+    .partchoosebox {
         width: 60%;
         display: flex;
         align-items: center;
     }
-    .dropdownmenuBOX{
+
+    .dropdownmenuBOX {
         width: 50%;
         height: 100%;
         display: flex;
         align-items: center;
     }
-    .uploadimgbox{
+
+    .uploadimgbox {
         width: 40%;
-        max-width: 210px;
+        max-width: 40vw;        /* 改为vw */
         display: flex;
         align-items: center;
     }
-    .uploadimgbtn{
-        width: 90%;
+
+    .uploadimgbtn {
+        width: 100%;
         border: transparent;
         background-color: rgba(0, 130, 65, 1);
         color: white;
-        border-radius: 5px ;
-        padding: 6px 5px;
-        font-size: 0.8rem;
+        border-radius: 0.5rem;    /* 改为rem */
+        padding: 0.3rem 1rem;     /* 改为rem */
+        font-size: 1rem;          /* 改为rem */
     }
-    .titleinputbox{
+
+    .titleinputbox {
         width: 90%;
-        height: 40px;
+        height: 6vh;            /* 改为vh */
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
+        border-bottom: 0.25vh solid rgba(0, 130, 65, 1); /* 改为vh */
     }
+
     .contentinputbox{
         width: 90%;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        min-height: 400px;
-        max-height: 600px;
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+        overflow: hidden; /* 防止内容直接溢出 */
+        max-height: 55vh;
     }
     .text_part{
         width: 100%;
-        min-height: 400px;
-        max-height: 600px;
+        min-height: 40vh;
+        max-height: 70vh;
         display: flex;
         justify-content: center;
         position: relative;
     }
     .editable-content {
         width: 100%;
-        border: 1px solid #ccc;
-        min-height: 400px;
+        border: 0.1vh solid #ccc;
+        min-height: 40vh;
         overflow-y: auto;
         line-height: 1.5;
     }
     .editable-content img {
         max-width: 90%;
         height: auto;
-        margin: 10px 1px;
+        margin: 2vh 1vw;
     }
     .placeholder-text {
         position: absolute;
         color: #aaa;
-        pointer-events: none; /* 防止点击 placeholder */
+        pointer-events: none;
         right: 50%;
     }
     #content_input {
         width: 100%; 
-        height: auto; /* 设置高度 */
-        font-size: 0.8rem; /* 字体大小 */
-        border: transparent; /* 边框颜色 */
+        height: auto;
+        font-size: 0.8rem;
+        border: transparent;
         resize: none; 
-        outline: none; /* 去除默认聚焦边框 */
-        margin: 1px 0;
+        outline: none;
+        margin: 0.2vh 0;
     }
     .videoinputbox{
         width: 90%;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        height: 110px;
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+        height: 15vh;
         display: flex;
     }
     #title_input{

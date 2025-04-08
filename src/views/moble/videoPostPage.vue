@@ -178,110 +178,124 @@ const showPlaceholder = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 400px;
+    min-width: 90vw;
     height: 100vh;
     background: white;
 }
-  
+
 .header {
     width: 100%;
-    height: 60px;
+    height: 8vh;
     background: rgba(0, 130, 65, 1);
     color: white;
     text-align: center;
-    padding-top: 20px;
-    font-size: 18px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    padding-top: 2vh;
+    font-size: 1.2rem;
+    border-bottom-left-radius: 2vh;
+    border-bottom-right-radius: 2vh;
 }
-.header-box{
-    height: 50%;
-    padding: 1px 5px;
-    padding-left: 8px;
+
+.header-box {
+    height: 100%;
+    padding: 0.2rem 1rem;
+    padding-left: 1rem;
     align-items: center;
     display: flex;
     justify-content: space-between;
 }
-.btnbox{
+
+.btnbox {
     display: flex;
-    gap: 20px;
-    padding: 2px 5px;
+    gap: 2vw;
+    padding: 0.2rem 0.5rem;
 }
-.headerbtn{
-    padding: 1px 3px;
+
+.headerbtn {
+    padding: 0.2rem 0.6rem;
     background-color: white;
     border: transparent;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     color: rgba(0, 130, 65, 1);
     font-size: 1rem;
     text-decoration: none;
     align-items: center;
     text-align: center;
 }
-.datainputcontainer{
-    margin-top: 5px;
+
+.datainputcontainer {
+    margin-top: 1vh;
     background-color: white;
     width: 100%;
     height: auto;
-    gap: 5px;
+    gap: 1vh;
 }
-.partchoosediv{
+
+.partchoosediv {
     width: 90%;
     margin: 0 5%;
-    border-bottom: 2px solid rgba(0, 130, 65, 1);
-    height: 40px;
+    border-bottom: 0.25vh solid rgba(0, 130, 65, 1);
+    height: 6vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.partchoosebox{
+
+.partchoosebox {
     width: 60%;
     height: 100%;
     display: flex;
     align-items: center;
 }
-.dropdownmenuBOX{
+
+.dropdownmenuBOX {
     width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
 }
-.the_file_choose{
+
+.the_file_choose {
     width: 40%;
-    max-width: 210px;
+    max-width: 55vw;
     height: 100%;
     display: flex;
     align-items: center;
 }
+
 .file-upload {
     display: inline-block;
     background-color: rgba(0, 130, 65, 1);
-    color: white; 
+    color: white;
     border: none;
-    border-radius: 5px;
-    width: 90%;  
-    line-height: 30px; 
-    text-align: center; 
-    cursor: pointer; 
-    position: relative; 
+    border-radius: 0.5rem;
+    width: 90%;
+    line-height: 4vh;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
 }
+
 .file-upload input {
-    display: none; /* 隐藏原始文件输入 */
+    display: none;
 }
-.titleinputbox{
+
+.titleinputbox {
     width: 90%;
-    height: 40px;
+    height: 6vh;
     margin: 0 5%;
-    border-bottom: 2px solid rgba(0, 130, 65, 1);
+    border-bottom: 0.25vh solid rgba(0, 130, 65, 1);
 }
-.contentinputbox{
+
+.contentinputbox {
     width: 90%;
     margin: 0 5%;
-    border-bottom: 2px solid rgba(0, 130, 65, 1);
-    min-height: 300px;
-    max-height: 700px;
+    border-bottom: 0.25vh solid rgba(0, 130, 65, 1);
+    height: 55vh; /* 使用相对高度 */
+    overflow: hidden;
+    position: relative;
 }
-.text_part{
+
+.text_part {
     width: 100%;
     height: 100%;
     display: flex;
@@ -289,28 +303,33 @@ const showPlaceholder = () => {
     position: relative;
 }
 
-.editable-content{
+.editable-content {
     width: 100%;
-    min-height: 300px;
-    max-height: 700px;
+    height: 100%;
     overflow-y: auto;
     line-height: 1.5;
     outline: none;
+    padding: 1vh;
+    box-sizing: border-box;
 }
 
 .placeholder-text {
     position: absolute;
     color: #aaa;
-    pointer-events: none; /* 防止点击 placeholder */
+    pointer-events: none;
     right: 50%;
+    top: 1vh;
+    font-size: 1rem;
 }
-#title_input{
-  width: 100%;
-  height: 100%;
-  font-size: 1rem;
-  font-weight: 600;
-  outline: none;
-  border: transparent;
-  box-sizing: border-box;
+
+#title_input {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    outline: none;
+    border: transparent;
+    box-sizing: border-box;
 }
+
 </style>

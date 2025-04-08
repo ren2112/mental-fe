@@ -212,135 +212,166 @@ const showPlaceholder = () => {
 </script>
     
 <style scoped>
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: 400px;
-        height: 100vh;
-        background: white;
-    }
-      
-    .header {
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 40vh;
+    height: 100vh;
+    background: white;
+}
+  
+.header {
         width: 100%;
-        height: 60px;
+        height: 8vh;       /* 改为vh */
         background: rgba(0, 130, 65, 1);
         color: white;
         text-align: center;
-        padding-top: 20px;
-        font-size: 18px;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
+        padding-top: 2vh;   /* 改为vh */
+        font-size: 2rem;    /* 改为rem */
+        border-bottom-left-radius: 2vh; /* 改为vh */
+        border-bottom-right-radius: 2vh; /* 改为vh */
     }
-    .header-box{
+
+    .header-box {
         height: 50%;
-        padding: 1px 5px;
-        padding-left: 8px;
+        padding: 0.2rem 1rem;  /* 改为rem */
+        padding-left: 2rem;    /* 改为rem */
         align-items: center;
         display: flex;
         justify-content: space-between;
     }
-    .btnbox{
+
+    .btnbox {
         display: flex;
-        gap: 20px;
-        padding: 2px 5px;
+        gap: 5vw;            /* 改为vw */
+        padding: 0.2rem 0.5rem; /* 改为rem */
     }
-    .headerbtn{
-        padding: 1px 3px;
+
+    .headerbtn {
+        padding: 0.3rem 1rem;    /* 改为rem */
         background-color: white;
         border: transparent;
-        border-radius: 5px;
+        border-radius: 0.5rem;    /* 改为rem */
         color: rgba(0, 130, 65, 1);
-        font-size: 1rem;
+        font-size: 1rem;          /* 改为rem */
         text-decoration: none;
         align-items: center;
         text-align: center;
     }
-    .datainputcontainer{
-        margin-top: 5px;
-        background-color: white;
-        width: 100%;
-        height: auto;
-        gap: 5px;
-    }
-    .partchoosediv{
+
+.datainputcontainer {
+    margin-top: 0.5vh;
+    background-color: white;
+    width: 100%;
+    height: auto;
+    gap: 0.5vh;
+}
+
+.partchoosediv {
+    width: 90%;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+    height: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.partchoosebox {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.dropdownmenuBOX {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.the_file_choose {
+    width: 40%;
+    max-width: 30vh;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.file-upload {
+    display: inline-block;
+    background-color: rgba(0, 130, 65, 1);
+    color: white; 
+    border: none;
+    border-radius: 1vh;
+    width: 90%;
+    line-height: 4vh;
+    text-align: center; 
+    cursor: pointer; 
+    position: relative;
+}
+
+.file-upload input {
+    display: none;
+}
+
+.titleinputbox {
+    width: 90%;
+    height: 6vh;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+}
+
+.contentinputbox{
         width: 90%;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .partchoosebox{
-        width: 60%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .dropdownmenuBOX{
-        width: 50%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .the_file_choose{
-        width: 40%;
-        max-width: 210px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .file-upload {
-        display: inline-block;
-        background-color: rgba(0, 130, 65, 1);
-        color: white; 
-        border: none;
-        border-radius: 5px;
-        width: 90%;  
-        line-height: 30px; 
-        text-align: center; 
-        cursor: pointer; 
-        position: relative; 
-    }
-    .file-upload input {
-        display: none; /* 隐藏原始文件输入 */
-    }
-    .titleinputbox{
-        width: 90%;
-        height: 40px;
-        margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-    }
-    .contentinputbox{
-        width: 90%;
-        margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        min-height: 300px;
-        max-height: 700px;
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+        overflow: hidden; /* 防止内容直接溢出 */
+        max-height: 55vh;
     }
     .text_part{
         width: 100%;
-        height: 100%;
+        min-height: 40vh;
+        max-height: 70vh;
         display: flex;
         justify-content: center;
         position: relative;
     }
-    
-    .editable-content{
+    .editable-content {
         width: 100%;
-        min-height: 300px;
-        max-height: 700px;
+        border: 0.1vh solid #ccc;
+        min-height: 40vh;
         overflow-y: auto;
         line-height: 1.5;
-        outline: none;
     }
-    
+    .editable-content img {
+        max-width: 90%;
+        height: auto;
+        margin: 2vh 1vw;
+    }
     .placeholder-text {
         position: absolute;
         color: #aaa;
-        pointer-events: none; /* 防止点击 placeholder */
+        pointer-events: none;
         right: 50%;
+    }
+    #content_input {
+        width: 100%; 
+        height: auto;
+        font-size: 0.8rem;
+        border: transparent;
+        resize: none; 
+        outline: none;
+        margin: 0.2vh 0;
+    }
+    .videoinputbox{
+        width: 90%;
+        margin: 0 5%;
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+        height: 15vh;
+        display: flex;
     }
     #title_input{
       width: 100%;
