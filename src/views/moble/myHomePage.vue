@@ -14,9 +14,9 @@
         </div>
       </div>
       <div class="buttons">
-        <el-button type="success" class="edit" @click="goToEditProfile">编辑资料</el-button>
-        <el-button type="success" class="manage" @click="goToAdminPanel">管理系统</el-button>
-        <el-button type="danger" class="logout" @click="logout">退出登录</el-button>
+        <el-button type="success" class="edit" @click="goToEditProfile" v-if="isCurrentUserCheck">编辑资料</el-button>
+        <el-button type="success" class="manage" @click="goToAdminPanel" v-if="isAdmin">管理系统</el-button>
+        <el-button type="danger" class="logout" @click="logout" v-if="isCurrentUserCheck">退出登录</el-button>
       </div>
     </header>
 
@@ -73,6 +73,7 @@ const isCurrentUser = ref(true); // 是否是当前用户
 // 当前用户的ID
 const authStore = useAuthStore();
 const currentUser = computed(() => authStore.userInfo);
+const isAdmin = computed(() => currentUser.department == 0); // 判断是否是管理员
 
 // 判断当前用户和查询用户是否一致
 const isCurrentUserCheck = computed(() => currentUser.value.id == userId);

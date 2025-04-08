@@ -53,7 +53,7 @@ const stripHtmlAndDecode = (html) => {
 const truncatedContent = computed(() => {
   if (!props.post.content) return "";
   const plainText = stripHtmlAndDecode(props.post.content);
-  return plainText.length > 65 ? plainText.slice(0, 65) + "..." : plainText;
+  return plainText.length > 15 ? plainText.slice(0, 15) + "..." : plainText;
 });
 </script>
 
