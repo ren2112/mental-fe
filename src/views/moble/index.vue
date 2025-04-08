@@ -6,7 +6,8 @@
       <input type="text" placeholder="在当前分区搜索" v-model="searchQuery" />
       <button @click="handleSearch">搜索</button>
     </div>
-    <!-- 单列瀑布流布局 -->
+
+    <!-- 固定高度可滚动的帖子区域 -->
     <div class="post-list" ref="postContainer">
       <PostItem v-for="post in posts" :key="post.id" :post="post" />
     </div>
@@ -20,13 +21,14 @@ import { ref, onMounted, onUnmounted } from "vue";
 import PostItem from "@/components/moble/postCard.vue";
 import FooterNav from "@/views/moble/footer.vue";
 import { getPostsByPartAPI } from "@/api/post";
-import { throttle } from "lodash";  // 导入 lodash 的 throttle 方法
+import { throttle } from "lodash";
 
 const searchQuery = ref("");
 const posts = ref([]);
 const currentPart = ref(0);
 const currentPage = ref(1);
 const isLoading = ref(false);
+const postContainer = ref(null); // 引用帖子列表 DOM
 
 // 获取帖子数据
 const fetchPosts = async () => {
@@ -52,8 +54,6 @@ const handleSearch = async () => {
   posts.value = [];
   await fetchPosts();
 };
-
-const postContainer = ref(null); // 引用 post-list 容器
 
 const handleScroll = () => {
   const bottomOffset = 100; // 距离底部多少时加载更多
@@ -112,6 +112,7 @@ onUnmounted(() => {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   position: fixed;
+  top: 0;
   top: 0;
   z-index: 100;
 }
