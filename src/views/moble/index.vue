@@ -6,7 +6,8 @@
       <input type="text" placeholder="在当前分区搜索" v-model="searchQuery" />
       <button @click="handleSearch">搜索</button>
     </div>
-    <!-- 单列瀑布流布局 -->
+
+    <!-- 固定高度可滚动的帖子区域 -->
     <div class="post-list" ref="postContainer">
       <PostItem v-for="post in posts" :key="post.id" :post="post" />
     </div>
@@ -20,13 +21,14 @@ import { ref, onMounted, onUnmounted } from "vue";
 import PostItem from "@/components/moble/postCard.vue";
 import FooterNav from "@/views/moble/footer.vue";
 import { getPostsByPartAPI } from "@/api/post";
-import { throttle } from "lodash";  // 导入 lodash 的 throttle 方法
+import { throttle } from "lodash";
 
 const searchQuery = ref("");
 const posts = ref([]);
 const currentPart = ref(0);
 const currentPage = ref(1);
 const isLoading = ref(false);
+const postContainer = ref(null); // 引用帖子列表 DOM
 
 // 获取帖子数据
 const fetchPosts = async () => {
@@ -53,18 +55,17 @@ const handleSearch = async () => {
   await fetchPosts();
 };
 
-// 监听滚动事件（加载更多帖子）
+// 滚动到底部加载更多
 const handleScroll = () => {
-  const bottomOffset = 150; // 距离底部150px时加载更多帖子
-  const container = document.documentElement;
+  const container = postContainer.value;
+  const bottomOffset = 150;
 
-  if (container.scrollHeight - (window.innerHeight + container.scrollTop) < bottomOffset) {
+  if (container.scrollHeight - (container.scrollTop + container.clientHeight) < bottomOffset) {
     fetchPosts();
   }
 };
 
-// 使用 throttle 包装 handleScroll，避免频繁触发
-const throttledScroll = throttle(handleScroll, 300); // 每300ms触发一次
+const throttledScroll = throttle(handleScroll, 300);
 
 const handlePartChange = (partIndex) => {
   currentPart.value = partIndex;
@@ -75,11 +76,11 @@ const handlePartChange = (partIndex) => {
 
 onMounted(() => {
   fetchPosts();
-  window.addEventListener("scroll", throttledScroll); // 使用节流后的滚动事件
+  postContainer.value?.addEventListener("scroll", throttledScroll);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", throttledScroll);
+  postContainer.value?.removeEventListener("scroll", throttledScroll);
 });
 </script>
 
@@ -90,7 +91,8 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
-  min-height: 100vh; /* 确保容器至少占满整个视口的高度 */
+  height: 100vh;
+  overflow: hidden; /* 防止页面级滚动 */
 }
 
 .header {
@@ -104,6 +106,7 @@ onUnmounted(() => {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   position: fixed;
+  top: 0;
   z-index: 100;
 }
 
@@ -114,7 +117,6 @@ onUnmounted(() => {
   border-radius: 20px;
   padding: 10px;
   margin-top: -20px;
-  margin-bottom: 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 80px;
@@ -138,7 +140,7 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
-/* 单列布局 */
+/* 固定高度区域，始终滚动 */
 .post-list {
   width: 90%;
   background: white;
@@ -147,7 +149,9 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 125px; /* 使帖子列表下移，避免与固定搜索框重叠 */
-  overflow-y: auto;  /* 添加滚动条 */
+
+  margin-top: 140px; /* 留出 header + search-bar 空间 */
+  height: calc(100vh - 200px); /* 调整为你真实 header + search-bar + footer 的总高度 */
+  overflow-y: scroll; /* 始终显示滚动条 */
 }
 </style>

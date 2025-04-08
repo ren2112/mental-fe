@@ -43,14 +43,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getSelfPostsAPI, getdelPostsAPI } from "@/api/post";
 import { getUserAPI } from "@/api/user";
 import { useAuthStore } from "@/stores/auth";
 import PostItem from "@/components/moble/postCard.vue";
-import FooterNav from "@/views/moble/footer.vue"; // 导入底部导航组件
+import FooterNav from "@/views/moble/footer.vue";
 import { ElMessage } from "element-plus";
+import { throttle } from "lodash";
 
 const route = useRoute();
 const router = useRouter();
@@ -61,24 +62,21 @@ const pageNum = ref(1);
 const pageSize = ref(4);
 const isAudit = ref(1);
 const totalPosts = ref(0);
-let curTab = 0 // 1代表回收站
+const isLoading = ref(false); // 是否正在加载
+let curTab = 0;
+
 const userInfo = ref({
   username: "加载中...",
   email: "",
   department: "",
   avatar: "",
 });
-const isCurrentUser = ref(true); // 是否是当前用户
 
-// 当前用户的ID
 const authStore = useAuthStore();
 const currentUser = computed(() => authStore.userInfo);
-const isAdmin = computed(() => currentUser.department == 0); // 判断是否是管理员
-
-// 判断当前用户和查询用户是否一致
+const isAdmin = computed(() => currentUser.department == 0);
 const isCurrentUserCheck = computed(() => currentUser.value.id == userId);
 
-// 部门映射
 const departmentMap = {
   0: "区团委",
   1: "社区团组织",
@@ -86,12 +84,10 @@ const departmentMap = {
   3: "企业团组织",
 };
 
-// 显示用户部门名称
 const departmentName = computed(() => {
   return departmentMap[userInfo.value.department] || "未知部门";
 });
 
-// 获取用户信息
 const fetchUserInfo = async () => {
   try {
     const res = await getUserAPI(userId);
@@ -101,8 +97,10 @@ const fetchUserInfo = async () => {
   }
 };
 
-// 获取帖子数据
 const fetchPosts = async () => {
+  if (isLoading.value) return;
+  isLoading.value = true;
+
   try {
     let res;
     const params = {
@@ -112,32 +110,38 @@ const fetchPosts = async () => {
       token: authStore.token,
     };
 
-    if (curTab === 0) { // 正常帖子
+    if (curTab === 0) {
       params.isAudit = isAudit.value;
       res = await getSelfPostsAPI(params);
-    } else if (curTab === 1) { // 已删除帖子
+    } else {
       params.SearchQuery = "";
       res = await getdelPostsAPI(params);
     }
 
-    posts.value = res.data.posts;
+    const fetchedPosts = res.data.posts;
     totalPosts.value = res.data.total;
-  } catch (error) {
-    console.log(error);
 
+    if (pageNum.value === 1) {
+      posts.value = fetchedPosts;
+    } else {
+      posts.value.push(...fetchedPosts);
+    }
+
+    pageNum.value++;
+  } catch (error) {
     ElMessage.error("获取帖子失败");
+  } finally {
+    isLoading.value = false;
   }
 };
 
-
-// Tab 切换时获取数据
 const changeFetchPosts = async (tabName) => {
   pageNum.value = 1;
 
   if (tabName === "delete") {
-    curTab = 1; // 回收站
+    curTab = 1;
   } else {
-    curTab = 0; // 正常帖子
+    curTab = 0;
     if (tabName === "published") {
       isAudit.value = 1;
     } else if (tabName === "underReview") {
@@ -150,28 +154,46 @@ const changeFetchPosts = async (tabName) => {
   await fetchPosts();
 };
 
-// **跳转到编辑资料**
+const handleScroll = () => {
+  const scrollContainer = document.documentElement;
+  const bottomOffset = 150;
+
+  if (
+    scrollContainer.scrollHeight - scrollContainer.scrollTop - window.innerHeight <
+    bottomOffset
+  ) {
+    if (posts.value.length < totalPosts.value) {
+      fetchPosts();
+    }
+  }
+};
+
+const throttledScroll = throttle(handleScroll, 300);
+
 const goToEditProfile = () => {
   router.push({ path: "/mob/edit", query: { id: userId } });
 };
 
-// **跳转到管理系统**
 const goToAdminPanel = () => {
   router.push("/mob/manage");
 };
 
-// **退出登录**
 const logout = () => {
   authStore.clearToken();
   router.push("/mob/beginning");
 };
 
-// 页面初始化时获取用户信息和帖子
 onMounted(async () => {
   await fetchUserInfo();
   await fetchPosts();
+  window.addEventListener("scroll", throttledScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", throttledScroll);
 });
 </script>
+
 
 <style scoped>
 .container {
@@ -272,6 +294,8 @@ onMounted(async () => {
   border-radius: 8px;
   padding: 12px;
   box-sizing: border-box;
+  overflow-y: auto;
+  min-height: calc(100vh - 300px); /* 让列表区域撑起页面高度以便滚动 */
 }
 
 .footer {
