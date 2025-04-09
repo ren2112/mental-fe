@@ -28,9 +28,15 @@
         <div class="input-verify">
           <input type="text" v-model="verificationCode" placeholder="输入验证码" />
         </div>
-        <el-button type="primary" class="btn-send-code" @click="sendVerificationCode" :disabled="isSending">
-          {{ isSending ? "发送中..." : "获取验证码" }}
+        <el-button
+          type="primary"
+          class="btn-send-code"
+          @click="sendVerificationCode"
+          :disabled="isSending"
+        >
+          {{ isSending ? `${countdown}秒后重试` : "获取验证码" }}
         </el-button>
+
       </div>
 
       <div class="btn-container">
@@ -123,6 +129,9 @@ const saveName = async () => {
   }
 };
 
+const countdown = ref(60); // 倒计时初始值
+let timer = null;
+
 // 发送验证码
 const sendVerificationCode = async () => {
   if (!email.value) {
@@ -130,19 +139,36 @@ const sendVerificationCode = async () => {
   }
 
   isSending.value = true;
+  countdown.value = 60;
+  startCountdown();
+
   try {
     const res = await sendVerifyCodeAPI({ email: email.value });
     if (res.code === 0) {
       ElMessage.success("验证码已发送");
     } else {
       ElMessage.warning(res.msg || "验证码发送失败");
+      clearInterval(timer); // 失败时取消倒计时
+      isSending.value = false;
     }
   } catch (error) {
     ElMessage.warning("验证码发送失败，请稍后重试");
-  } finally {
+    clearInterval(timer);
     isSending.value = false;
   }
 };
+
+// 倒计时函数
+const startCountdown = () => {
+  timer = setInterval(() => {
+    countdown.value--;
+    if (countdown.value <= 0) {
+      clearInterval(timer);
+      isSending.value = false;
+    }
+  }, 1000);
+};
+
 
 // 修改密码
 const updatePassword = async () => {
@@ -186,100 +212,96 @@ onMounted(fetchUser);
   align-items: center;
   height: 100vh;
   background: #f8f8f8;
-  padding-bottom: 60px;
+  padding-bottom: 8vh;
 }
 
 .header {
   width: 100%;
-  height: 60px;
+  height: 8vh;
   background: rgba(0, 130, 65, 1);
   color: white;
   text-align: center;
-  line-height: 60px;
-  font-size: 18px;
-  border-radius: 0 0 20px 20px;
+  line-height: 8vh;
+  font-size: 2.2vh;
+  border-radius: 0 0 2.5vh 2.5vh;
 }
 
 .avatar-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 2vh;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 10vh;
+  height: 10vh;
   border-radius: 50%;
   object-fit: cover;
   background: #ddd;
-  margin-bottom: 10px;
+  margin-bottom: 1.5vh;
 }
 
-.info-section, 
+.info-section,
 .password-section {
   width: 90%;
   max-width: 350px;
   background: white;
   border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  padding: 2vh;
+  box-shadow: 0px 0.3vh 0.6vh rgba(0, 0, 0, 0.1);
+  margin-top: 3vh;
 }
 
 label {
   display: block;
-  margin: 10px 0 5px;
-  font-size: 14px;
+  margin: 1.5vh 0 1vh;
+  font-size: 1.6vh;
   text-align: left;
 }
 
 input {
   width: 100%;
   max-width: 330px;
-  padding: 8px;
+  padding: 1.2vh;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  height: 38px;
+  height: 5vh;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 1.5vh;
 }
 
 .verification-section {
   display: flex;
-  /* width: 100%;
-  margin: 0 auto; */
 }
 
 .verification-section input {
   flex: 1;
-  width: 170px;
-  height: 38px;
+  width: 20vh;
+  height: 5vh;
 }
-.btn-send-code{
-  margin-left: 10px;
-  width: 150px;
-  height: 38px;
+
+.btn-send-code {
+  margin-left: 1.5vh;
+  width: 18vh;
+  height: 5vh;
 }
 
 .btn-container {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 1.5vh;
 }
 
-.btn-save-name{
-  width: 200px;
-}
-.btn-update-password{
-  width: 200px;
+.btn-save-name,
+.btn-update-password {
+  width: 25vh;
 }
 
-button{
-  height: 38px;
+button {
+  height: 4vh;
 }
-
 
 </style>

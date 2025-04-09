@@ -9,7 +9,13 @@
 
     <!-- 固定高度可滚动的帖子区域 -->
     <div class="post-list" ref="postContainer">
-      <PostItem v-for="post in posts" :key="post.id" :post="post" />
+      <PostItem v-for="post in posts" :key="post.id" :post="post" v-if="posts.length>0"/>
+      <div class="empty-post" v-else>
+        <div class="empty-component">
+          <el-icon :size="100" color="rgba(0, 130, 100, 1)"><DocumentDelete /></el-icon> 
+          <p>这里空空如也...</p>
+        </div>
+      </div>
     </div>
 
     <FooterNav @part-selected="handlePartChange" />
@@ -160,6 +166,16 @@ onUnmounted(() => {
   top: calc(10vh + 8vh); /* header + search-bar */
   bottom: 5vh; /* 留出 footer 导航区域 */
   overflow-y: auto;
+}
+
+.empty-post {
+  text-align: center;
+}
+
+.empty-component p {
+  margin-top: 1vh;
+  font-size: 2vh;
+  color: #666;
 }
 
 </style>

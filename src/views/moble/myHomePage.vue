@@ -33,7 +33,13 @@
 
       <!-- 帖子列表 -->
       <div class="post-list">
-        <PostItem v-for="post in posts" :key="post.id" :post="post" />
+        <PostItem v-for="post in posts" :key="post.id" :post="post" v-if="posts.length>0"/>
+        <div class="empty-post" v-else>
+          <div class="empty-component">
+            <el-icon :size="100" color="rgba(0, 130, 100, 1)"><DocumentDelete /></el-icon> 
+            <p>这里空空如也...</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -300,6 +306,18 @@ onUnmounted(() => {
   min-height: calc(100vh - 300px); /* 让列表区域撑起页面高度以便滚动 */
 }
 
+
+.empty-post {
+  text-align: center;
+}
+
+.empty-component p {
+  margin-top: 1vh;
+  font-size: 2vh;
+  color: #666;
+}
+
+
 .footer {
   width: 100%;
   display: flex;
@@ -309,4 +327,5 @@ onUnmounted(() => {
   position: fixed;
   bottom: 0;
 }
+
 </style>
