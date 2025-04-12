@@ -34,7 +34,7 @@
             <div class="titleinputbox">
                 <input type="text" id="title_input" placeholder="请输入贴子标题（最多40字）" maxlength="40" v-model="title">
             </div>
-            <div class="videoinputbox">
+            <div class="coverinputbox">
                 选择贴子封面：
                 <coverUploadComponent v-model="coverFile"/>
             </div>
@@ -94,6 +94,7 @@ const uploadcover = async()=>{  // 上传封面图片（coverfile），然后返
             throw new Error('封面上传失败！');
         }
     }catch(error){
+        ElMessage.error("封面上传出错！");
         console.error('封面上传出错:', error);
         throw error;
     }
@@ -341,11 +342,12 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         outline: none;
         margin: 0.2vh 0;
     }
-    .videoinputbox{
+    .coverinputbox{
+        font-size: 1.1rem;
         width: 90%;
         margin: 0 5%;
         border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
-        height: 15vh;
+        height: 12vh;
         display: flex;
     }
     #title_input{

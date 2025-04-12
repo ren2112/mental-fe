@@ -16,113 +16,115 @@
                         <mobDropDownMenu v-model="selectedIndex" />
                     </div>
                 </div>
-                <div class="the_file_choose">
-                    <label class="file-upload">
-                        {{ fileName }}
-                        <input type="file" @change="onFileChange" accept="video/*" />
-                    </label>
-              </div>
             </div>
             <div class="titleinputbox">
                 <input type="text" id="title_input" placeholder="请输入视频标题（最多40字）" maxlength="40" v-model="title">
             </div>
+            <div class="videouploadbox">
+                选择视频文件：
+                <mobVideoUpload v-model="videofile"/>
+            </div>
             <div class="contentinputbox">
-                <div class="text_part">
-                    <div 
-                        id="content_input"
-                        contenteditable="true" 
-                        class="editable-content"
-                        maxlength="4000"
-                        @input="updateContent"
-                        @focus="hidePlaceholder"
-                        @blur="showPlaceholder"
-                    ></div>
-                    <div v-if="showPlaceholderText && !content" class="placeholder-text">
-                        请输入贴子内容(最多4000字)
-                    </div>
-                </div>
+                <textarea class="intro_textarea" placeholder="请输入视频简介（最多2000字）" maxlength="2000" v-model="content"></textarea>
             </div>
         </div>
     </div>
     <FooterNav />
 </template>
     
-<script lang="ts" setup>
+<script setup>
+import { ref , onMounted } from "vue";
 import FooterNav from "@/views/moble/footer.vue"; // 导入底部导航组件
-import mobDropDownMenu from "../../components/moble/mobDropDownMenu.vue";  //分区选择下拉菜单栏
-import { ref , onMounted } from 'vue';
-import { ElMessage } from 'element-plus';
-import {uploadFileAPI, getPostDetailAPI , updatePostAPI } from '@/api/post'
-import { useRouter , useRoute } from 'vue-router';
+import mobDropDownMenu from "../../components/moble/mobDropDownMenu.vue";
+import mobVideoUpload from "../../components/moble/videoUploadComponent.vue"
+import { ElMessage } from "element-plus";
+import { uploadFileAPI , getPostDetailAPI , updatePostAPI} from "../../api/post"
+import { useRouter } from 'vue-router';
+import { useRoute } from "vue-router";
 import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
 const route = useRoute();
+
 const authStore = useAuthStore();
+const token = authStore.token; //用户的token
 
 const postID = route.query.postID; // 获取路由参数中的postID
-const title = ref(''); // 帖子标题
-const content = ref(''); // 帖子简介
-const selectedIndex = ref(-1); // 响应式变量存储下拉菜单选中的索引值
+const title = ref('');//贴子标题
+const content = ref('');//视频贴子的简介（内容）
+const selectedIndex = ref(-1); // 响应式变量存储下拉菜单选中的索引值,即分区编号
+const videofile = ref(null); //视频文件
+const videoURL = ref(''); //视频url
 
-const videoUrl = ref('');  //将用户上传的视频发送给服务器，服务器返回该视频在服务器中的url，后续使用这个url发布视频
-
-// 完成修改逻辑
-const handlePost = async () => {
-    // 修改验证逻辑（移除了文件必传验证）
+const handlePost = async () => { //完成修改逻辑
+    // 判断上传文件和标题是否为空
+    if (!videofile.value) {
+        ElMessage.warning('请上传视频文件');
+        return;
+    }
     if (!title.value.trim()) {
         ElMessage.warning('帖子标题不能为空');
         return;
     }
-    if (!content.value.trim()) {
-        ElMessage.warning('帖子简介不能为空');
+    if(!content.value.trim()){
+        ElMessage.warning('贴子内容不能为空');
         return;
     }
     if (selectedIndex.value === -1) {
-        ElMessage.warning('请选择活动分区');
+        ElMessage.warning('请选择一个活动分区');
         return;
     }
 
-    try {
-        let response = null
-        
-        const body = {
-            postID: Number(postID),
-            title: title.value,     
-            content: content.value, 
-            part: selectedIndex.value,
-            cover:''
-        };
-        response = await updatePostAPI(body);
-        
+    try{
+        videoURL.value = await uploadVideoFile();
 
-        if (response.code === 0) {
-            ElMessage.success('修改成功');
-            // 跳转回
-            router.replace({
-                path: '/mob/my-home-page', 
-                query: { id: authStore.userInfo.id }
-            });
-        } else {
-        console.log(response);
-        ElMessage.error(response.msg || '修改失败');
+        const body = {
+            PostID: Number(postID),
+            Title: title.value,     
+            Content: content.value, 
+            Part: selectedIndex.value,
+            video:videoURL.value
+        };
+
+        const response = await updatePostAPI(body);
+        console.log("edit post response : ",response);
+        if(response.code===0){
+            ElMessage.success("修改成功！");
+            setTimeout(() => {
+                router.push('/mob/my-home-page'); 
+            }, 1000);
         }
-    } catch (error) {
-        ElMessage.error('请求失败，请检查网络');
-        console.log(error)
+    }catch(error){
+        ElMessage.error('修改出错！');
+        console.log("error : ",error);
     }
 };
+const uploadVideoFile = async ()=>{ //上传视频返回url
+    if(!videofile.value) return '';
 
-// 获取帖子详情,并将数据加载到表单上
+    const formData = new FormData();
+    formData.append('file',videofile.value);
+    try{
+        const response = await uploadFileAPI(formData);
+        if(response.code === 0){
+            return response.data.fileUrl;
+        }else{
+            ElMessage.error("封面上传出错！");
+            console.log("video File response: ",response);
+            throw new Error("封面上传失败");
+        }
+    }catch(error){
+        ElMessage.error("封面上传出错！");
+        throw error;
+    }
+}
+// 获取帖子详情
 const fetchPostData = async () => {
     if (!postID) {
         ElMessage.error('无效的帖子ID');
         return;
     }
     try {
-        const token=authStore.token
-        // console.log(111,authStore.token);
-        
         const response = await getPostDetailAPI({ postID, token });
         const post = response.data.post;
         
@@ -130,85 +132,30 @@ const fetchPostData = async () => {
         title.value = post.title;
         content.value = post.content;
         selectedIndex.value=post.part;
-        videoUrl.value = post.video
-        
-        // 直接将 content 赋值给可编辑区域，保留视频和文字的原始位置
-        document.getElementById("content_input").innerHTML = content.value;
+        videoURL.value = post.video;
 
+        // 初始化视频组件预览
+        if (post.video) {
+            try {
+                const response = await fetch(post.video);
+                const blob = await response.blob();
+                videofile.value = new File([blob], 'video.mp4', {
+                    type: blob.type || 'video/mp4'
+                });
+            } catch (error) {
+                console.error('视频加载失败:', error);
+                ElMessage.warning('视频加载失败，请重新上传');
+            }
+        }
     } catch (error) {
         ElMessage.error('获取帖子数据失败');
         console.log(error)
     }
 };
-
 // 组件挂载时获取数据
 onMounted(() => {
     fetchPostData();
 });
-
-//下面的代码主要用户插入视频到内容
-const showPlaceholderText = ref(true); // 控制是否显示 placeholder
-const fileName = ref('上传视频文件');  //用户上传的文件名称，初始时没有选择文件，所以为这个名
-const fileInput = ref(null);  //用户上传的文件
-
-const onFileChange = async (event) => {  //用户上传视频触发的函数
-    const file = event.target.files[0];
-    if (!file) return;
-
-    fileName.value = file.name; // 更新文件名
-    fileInput.value = file; // 绑定上传文件
-
-    // 创建 FormData 对象
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-        const response = await uploadFileAPI(formData);
-        if (response.code === 0 && response.data?.fileUrl) {
-            videoUrl.value = response.data.fileUrl;
-            insertVideo(videoUrl.value);
-            ElMessage.success('视频上传成功');
-        } else {
-            ElMessage.error(response.msg || '视频上传失败');
-        }
-    } catch (error) {
-        ElMessage.error('上传失败，请重试');
-        console.log(error)
-    }
-};
-
-const insertVideo = (url) => {  //向内容（content）中插入该视频
-    const editableDiv = document.getElementById("content_input");
-    const videoElement = document.createElement("video");
-    videoElement.src = url;
-    videoElement.controls = true;
-    videoElement.style.maxWidth = "90%"; 
-    videoElement.style.height = "auto";  
-    videoElement.style.margin = "10px 0"; 
-    
-    const editableParagraph = document.createElement("p");
-    editableParagraph.innerHTML = "<br>"; // 兼容不同浏览器，确保可以继续输入
-    editableDiv.appendChild(videoElement);
-    editableDiv.appendChild(editableParagraph);
-
-    updateContent();
-};
-
-const updateContent = () => {  //更新内容
-    const editableDiv = document.getElementById('content_input');
-    const rawContent = editableDiv.innerHTML.trim(); // 更新 content 为编辑框中的 HTML 内容
-    content.value = rawContent === '<br>'?'':rawContent;
-};
-
-const hidePlaceholder = () => {
-    showPlaceholderText.value = false;
-};
-
-const showPlaceholder = () => {
-    if (!content.value.trim()) {
-        showPlaceholderText.value = true;
-    }
-};
 </script>
     
 <style scoped>
@@ -292,27 +239,6 @@ const showPlaceholder = () => {
     align-items: center;
 }
 
-.the_file_choose {
-    width: 40%;
-    max-width: 30vh;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.file-upload {
-    display: inline-block;
-    background-color: rgba(0, 130, 65, 1);
-    color: white; 
-    border: none;
-    border-radius: 1vh;
-    width: 90%;
-    line-height: 4vh;
-    text-align: center; 
-    cursor: pointer; 
-    position: relative;
-}
-
 .file-upload input {
     display: none;
 }
@@ -323,63 +249,39 @@ const showPlaceholder = () => {
     margin: 0 5%;
     border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
 }
-
+.videouploadbox{
+    font-size: 1.1rem;
+    width: 90%;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+    height: 12vh;
+    display: flex;
+}
 .contentinputbox{
-        width: 90%;
-        margin: 0 5%;
-        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
-        overflow: hidden; /* 防止内容直接溢出 */
-        max-height: 55vh;
-    }
-    .text_part{
-        width: 100%;
-        min-height: 40vh;
-        max-height: 70vh;
-        display: flex;
-        justify-content: center;
-        position: relative;
-    }
-    .editable-content {
-        width: 100%;
-        border: 0.1vh solid #ccc;
-        min-height: 40vh;
-        overflow-y: auto;
-        line-height: 1.5;
-    }
-    .editable-content img {
-        max-width: 90%;
-        height: auto;
-        margin: 2vh 1vw;
-    }
-    .placeholder-text {
-        position: absolute;
-        color: #aaa;
-        pointer-events: none;
-        right: 50%;
-    }
-    #content_input {
-        width: 100%; 
-        height: auto;
-        font-size: 0.8rem;
-        border: transparent;
-        resize: none; 
-        outline: none;
-        margin: 0.2vh 0;
-    }
-    .videoinputbox{
-        width: 90%;
-        margin: 0 5%;
-        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
-        height: 15vh;
-        display: flex;
-    }
-    #title_input{
-      width: 100%;
-      height: 100%;
-      font-size: 1rem;
-      font-weight: 600;
-      outline: none;
-      border: transparent;
-      box-sizing: border-box;
-    }
+    width: 90%;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+    overflow: hidden; /* 防止内容直接溢出 */
+    height: 55vh;
+}
+.intro_textarea{
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+  resize: none;
+  outline: none;
+  border: transparent;
+  box-sizing: border-box;
+}
+
+#title_input{
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    outline: none;
+    border: transparent;
+    box-sizing: border-box;
+}
 </style>
