@@ -25,8 +25,8 @@
     <!-- 内容区（包含多媒体和文章） -->
     <div class="content-container">
       <div class="media-section">
-<!--        <video v-if="article.video" controls :src="article.video" class="video-player"></video>-->
         <img v-if="article.type==0" :src="article.cover" alt="cover" class="cover-image" />
+        <video v-else controls :src="article.video" class="video-player"></video>
       </div>
       <div class="article-content" v-html="article.content"></div>
     </div>
