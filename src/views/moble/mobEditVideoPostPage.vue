@@ -91,8 +91,11 @@ const handlePost = async () => { //完成修改逻辑
         if(response.code===0){
             ElMessage.success("修改成功！");
             setTimeout(() => {
-                router.push('/mob/my-home-page'); 
-            }, 1000);
+                router.replace({
+                    path: '/mob/my-home-page',
+                    query: { id: authStore.userInfo.id }
+                });
+            }, 500);
         }
     }catch(error){
         ElMessage.error('修改出错！');

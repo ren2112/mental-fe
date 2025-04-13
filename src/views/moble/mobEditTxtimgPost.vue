@@ -146,7 +146,7 @@ const handlePost = async () => {
             const response = await updatePostAPI(body);
             if(response.code === 0){
                 ElMessage.success('修改成功');
-                router.push({
+                router.replace({
                     path: '/mob/my-home-page',
                     query: { id: authStore.userInfo.id }
                 });
