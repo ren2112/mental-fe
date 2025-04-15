@@ -34,6 +34,10 @@
             <div class="titleinputbox">
                 <input type="text" id="title_input" placeholder="请输入贴子标题（最多40字）" maxlength="40" v-model="title">
             </div>
+            <div class="coverinputbox">
+                选择贴子封面：
+                <coverUploadComponent v-model="coverFile"/>
+            </div>
             <div class="contentinputbox">
                 <div class="text_part">
                     <div 
@@ -47,10 +51,6 @@
                     ></div>
                     <div v-if="showPlaceholderText && !content" class="placeholder-text">请输入贴子内容(最多4000字)</div>
                 </div>
-            </div>
-            <div class="videoinputbox">
-                选择贴子封面：
-                <coverUploadComponent v-model="coverFile"/>
             </div>
         </div>
     </div>
@@ -94,6 +94,7 @@ const uploadcover = async()=>{  // 上传封面图片（coverfile），然后返
             throw new Error('封面上传失败！');
         }
     }catch(error){
+        ElMessage.error("封面上传出错！");
         console.error('封面上传出错:', error);
         throw error;
     }
@@ -207,58 +208,62 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-width: 400px;
+        min-width: 40vw;
         height: 100vh;
         background: white;
     }
-      
+
     .header {
-        width: 100%;
-        height: 60px;
-        background: rgba(0, 130, 65, 1);
-        color: white;
-        text-align: center;
-        padding-top: 20px;
-        font-size: 18px;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
-    }
-    .header-box{
-        height: 50%;
-        padding: 1px 5px;
-        padding-left: 8px;
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-    }
-    .btnbox{
-        display: flex;
-        gap: 20px;
-        padding: 2px 5px;
-    }
-    .headerbtn{
-        padding: 1px 3px;
-        background-color: white;
-        border: transparent;
-        border-radius: 5px;
-        color: rgba(0, 130, 65, 1);
-        font-size: 1rem;
-        text-decoration: none;
-        align-items: center;
-        text-align: center;
-    }
+    width: 100%;
+    height: 8vh;
+    background: rgba(0, 130, 65, 1);
+    color: white;
+    text-align: center;
+    padding-top: 2vh;
+    font-size: 1.2rem;
+    border-bottom-left-radius: 2vh;
+    border-bottom-right-radius: 2vh;
+}
+
+.header-box {
+    height: 100%;
+    padding: 0.2rem 1rem;
+    padding-left: 1rem;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btnbox {
+    display: flex;
+    gap: 2vw;
+    padding: 0.2rem 0.5rem;
+}
+
+.headerbtn {
+    padding: 0.2rem 0.6rem;
+    background-color: white;
+    border: transparent;
+    border-radius: 0.5rem;
+    color: rgba(0, 130, 65, 1);
+    font-size: 1rem;
+    text-decoration: none;
+    align-items: center;
+    text-align: center;
+}
+
     .datainputcontainer{
-        margin-top: 5px;
+        margin-top: 1vh;
         background-color: white;
         width: 100%;
         height: auto;
-        gap: 5px;
+        gap: 1vh;
     }
     .partchoosediv{
         width: 90%;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        height: 40px;
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+        height: 6vh;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -276,7 +281,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
     }
     .uploadimgbox{
         width: 40%;
-        max-width: 210px;
+        max-width: 30vw;
         display: flex;
         align-items: center;
     }
@@ -285,63 +290,64 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         border: transparent;
         background-color: rgba(0, 130, 65, 1);
         color: white;
-        border-radius: 5px ;
-        padding: 6px 5px;
-        font-size: 0.8rem;
+        border-radius: 0.5vw ;
+        padding: 0.6vh 1vw;
+        font-size: 0.rem;
     }
     .titleinputbox{
         width: 90%;
-        height: 40px;
+        height: 6vh;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
     }
     .contentinputbox{
         width: 90%;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        min-height: 400px;
-        max-height: 600px;
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+        overflow: hidden; /* 防止内容直接溢出 */
+        max-height: 55vh;
     }
     .text_part{
         width: 100%;
-        min-height: 400px;
-        max-height: 600px;
+        min-height: 40vh;
+        max-height: 70vh;
         display: flex;
         justify-content: center;
         position: relative;
     }
     .editable-content {
         width: 100%;
-        border: 1px solid #ccc;
-        min-height: 400px;
+        border: 0.1vh solid #ccc;
+        min-height: 40vh;
         overflow-y: auto;
         line-height: 1.5;
     }
     .editable-content img {
         max-width: 90%;
         height: auto;
-        margin: 10px 1px;
+        margin: 2vh 1vw;
     }
     .placeholder-text {
         position: absolute;
         color: #aaa;
-        pointer-events: none; /* 防止点击 placeholder */
+        pointer-events: none;
         right: 50%;
     }
     #content_input {
         width: 100%; 
-        height: auto; /* 设置高度 */
-        font-size: 0.8rem; /* 字体大小 */
-        border: transparent; /* 边框颜色 */
+        height: auto;
+        font-size: 0.8rem;
+        border: transparent;
         resize: none; 
-        outline: none; /* 去除默认聚焦边框 */
-        margin: 1px 0;
+        outline: none;
+        margin: 0.2vh 0;
     }
-    .videoinputbox{
+    .coverinputbox{
+        font-size: 1.1rem;
         width: 90%;
         margin: 0 5%;
-        border-bottom: 2px solid rgba(0, 130, 65, 1);
-        height: 110px;
+        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+        height: 12vh;
         display: flex;
     }
     #title_input{

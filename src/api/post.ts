@@ -95,6 +95,7 @@ export const updatePostAPI = async (params: {
     content: string;
     part: number;
     cover: string;
+    video?:string;
 }) => {
     const response = await service.put('/api/auth/update-post', params);
     return response; 

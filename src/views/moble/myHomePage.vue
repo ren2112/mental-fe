@@ -33,7 +33,13 @@
 
       <!-- 帖子列表 -->
       <div class="post-list">
-        <PostItem v-for="post in posts" :key="post.id" :post="post" />
+        <PostItem v-for="post in posts" :key="post.id" :post="post" v-if="posts.length>0"/>
+        <div class="empty-post" v-else>
+          <div class="empty-component">
+            <el-icon :size="100" color="rgba(0, 130, 100, 1)"><DocumentDelete /></el-icon> 
+            <p>这里空空如也...</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -74,7 +80,7 @@ const userInfo = ref({
 
 const authStore = useAuthStore();
 const currentUser = computed(() => authStore.userInfo);
-const isAdmin = computed(() => currentUser.department == 0);
+const isAdmin = computed(() => currentUser.value.department == 0);
 const isCurrentUserCheck = computed(() => currentUser.value.id == userId);
 
 const departmentMap = {
@@ -187,6 +193,8 @@ onMounted(async () => {
   await fetchUserInfo();
   await fetchPosts();
   window.addEventListener("scroll", throttledScroll);
+  console.log(currentUser.department);
+  
 });
 
 onUnmounted(() => {
@@ -197,7 +205,7 @@ onUnmounted(() => {
 
 <style scoped>
 .container {
-  min-width: 400px;
+  /* min-width: 400px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -268,7 +276,7 @@ onUnmounted(() => {
 
 .custom-tabs {
   width: 100%;
-  min-width: 300px;
+  /* min-width: 300px; */
 }
 
 :deep(.el-tabs__header) {
@@ -298,6 +306,18 @@ onUnmounted(() => {
   min-height: calc(100vh - 300px); /* 让列表区域撑起页面高度以便滚动 */
 }
 
+
+.empty-post {
+  text-align: center;
+}
+
+.empty-component p {
+  margin-top: 1vh;
+  font-size: 2vh;
+  color: #666;
+}
+
+
 .footer {
   width: 100%;
   display: flex;
@@ -307,4 +327,5 @@ onUnmounted(() => {
   position: fixed;
   bottom: 0;
 }
+
 </style>

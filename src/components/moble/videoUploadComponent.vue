@@ -27,14 +27,14 @@
 </template>
   
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch ,PropType , onBeforeUnmount } from 'vue'
 
 export default defineComponent({
   name: 'VideoUploader',
   emits: ['update:modelValue'],  // 添加事件声明
   props: {
-    modelValue: {  // 新增prop用于v-model
-      type: File as () => File | null,
+    modelValue: {
+      type: [File, String] as PropType<File | string>, // 同时支持File和URL
       default: null
     }
   },
@@ -43,11 +43,17 @@ export default defineComponent({
     const previewUrl = ref<string>('')
 
     // 监听prop变化
-    watch(() => props.modelValue, (newFile) => {
-      if (!newFile) {
-        previewUrl.value = ''
+    watch(() => props.modelValue, (newVal) => {
+      if (typeof newVal === 'string') {
+        // 处理URL类型
+        previewUrl.value = newVal;
+      } else if (newVal instanceof File) {
+        // 处理File类型
+        previewUrl.value = URL.createObjectURL(newVal);
+      } else {
+        previewUrl.value = '';
       }
-    })
+    }, { immediate: true });
 
     const triggerUpload = () => {
       if (fileInput.value) {
@@ -68,6 +74,12 @@ export default defineComponent({
       }
     }
 
+    onBeforeUnmount(() => {
+      if (previewUrl.value.startsWith('blob:')) {
+        URL.revokeObjectURL(previewUrl.value);
+      }
+    });
+
     return {
       fileInput,
       previewUrl,
@@ -84,7 +96,8 @@ export default defineComponent({
     position: relative;
     width: 100%;
     max-width: 104px;
-    max-height: 78px;
+    max-height: 71%;
+    margin: 2% 0;
     background: #f5f5f5;
     border: 2px dashed #999;
     border-radius: 12px;

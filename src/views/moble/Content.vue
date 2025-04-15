@@ -25,8 +25,8 @@
     <!-- 内容区（包含多媒体和文章） -->
     <div class="content-container">
       <div class="media-section">
-<!--        <video v-if="article.video" controls :src="article.video" class="video-player"></video>-->
         <img v-if="article.type==0" :src="article.cover" alt="cover" class="cover-image" />
+        <video v-else controls :src="article.video" class="video-player"></video>
       </div>
       <div class="article-content" v-html="article.content"></div>
     </div>
@@ -52,24 +52,23 @@
 /* 主容器 */
 .container {
   width: 100%;
-  max-width: 640px;
-  min-width: 430px;
+  min-width: 90vw;
   margin: 0 auto;
   background: #f5f5f5;
-  padding-top: 6rem; /* rem 替代 px */
-  padding-bottom: 6rem; /* 预留底部导航空间 */
+  padding-top: 10vh;
+  padding-bottom: 10vh;
   box-sizing: border-box;
 }
 
 /* 为 FooterNav 添加外层容器 */
 .footer-nav-wrapper {
-  margin-top: 20px;
+  margin-top: 2vh;
 }
 
 /* 调整 footer 内部间距 */
 .footer-nav-wrapper :deep(.footer) {
-  gap: 20px;
-  padding: 10px 10px;
+  gap: 2vh; /* 20px -> 2vh */
+  padding: 1vh 1vw; /* 10px -> 1vh/vw */
   justify-content: space-around;
 }
 
@@ -81,13 +80,11 @@
   left: 50%;
   transform: translateX(-50%); /* 居中 */
   width: 100%;
-  max-width: 640px;
-  min-width: 430px;
   background: rgba(0, 130, 65, 1);
   color: white;
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 1.5vh 1.5vw; /* 1rem -> 1.5vh/vw */
   justify-content: space-between;
   border-bottom-left-radius: 2rem;
   border-bottom-right-radius: 2rem;
@@ -96,9 +93,10 @@
 }
 
 .back-icon {
-  font-size: 1.8rem;
+  font-size: 2.5vh; /* 1.8rem -> 2.5vh */
   cursor: pointer;
 }
+
 
 .author-info {
   display: flex;
@@ -107,10 +105,10 @@
 }
 
 .author-avatar {
-  width: 50px;
-  height: 50px;
+  width: 5vh;
+  height: 5vh;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 2vh;
   background: white;
 }
 
@@ -120,43 +118,42 @@
 }
 
 .author-name {
-  font-size: 1.9rem;
+  font-size: 2.5vh; /* 1.9rem -> 2.5vh */
   font-weight: bold;
 }
 
 .article-created-at {
-  position: absolute; /* 绝对定位 */
-  top: 1rem; /* 距离父容器顶部 1rem（与父容器的 padding 对齐） */
-  right: 1rem; /* 距离父容器右侧 1rem */
-  font-size: 1rem;
-  font-size: 12px;
+  position: absolute;
+  top: 1.5vh; /* 1rem -> 1.5vh */
+  right: 1.5vw; /* 1rem -> 1.5vw */
+  font-size: 1.5vh; /* 12px -> 1.5vh */
   opacity: 0.8;
 }
+
 
 /* 帖子标题样式 */
 .title-container {
   position: relative;
-  align-items: center; /* 垂直居中 */
+  align-items: center;
   background: white;
-  margin: 1rem;
-  padding: 1rem;
-  border-radius: 1rem;
+  margin: 1.5vh 1.5vw; /* 1rem -> 1.5vh/vw */
+  padding: 1.5vh 6vw; /* 1rem -> 1.5vh/vw */
+  border-radius: 2vw;
   box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 4vh; /* 1.5rem -> 2vh */
   font-weight: bold;
   color: #333;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  margin-top: 1.3rem;
+  margin-top: 1.8vh; /* 1.3rem -> 1.8vh */
 }
-
 /* 文章 & 多媒体区域 */
 .content-container {
   background: white;
-  margin: 1rem;
-  padding: 1rem;
+  margin: 1.5vh 1.5vw; /* 1rem -> 1.5vh/vw */
+  padding: 6vh 6vw; /* 1rem -> 1.5vh/vw */
   border-radius: 1rem;
   box-shadow: 0 0.1875rem 0.625rem rgba(0, 0, 0, 0.15);
 }
@@ -178,12 +175,12 @@
 
 /* 文章内容 */
 .article-content {
-  font-size: 1rem;
+  font-size: 1.5vh; /* 1rem -> 1.5vh */
   line-height: 1.6;
-  margin-top: 0.67rem;
-  word-break: break-all; /* 强制所有字符换行（包括长单词/字符） */
-  overflow-wrap: break-word; /* 优先在单词内换行 */
-  white-space: pre-wrap; /* 保留空格和换行符 */
+  margin-top: 1vh; /* 0.67rem -> 1vh */
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 /* 底部导航 */
@@ -191,14 +188,14 @@
   position: fixed;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%); /* 居中 */
+  transform: translateX(-50%);
   width: 100%;
   max-width: 640px;
-  min-width:320px;
+  min-width: 320px;
   background: rgba(0, 130, 65, 1);
   display: flex;
   justify-content: space-around;
-  padding: 1rem;
+  padding: 1.5vh 1.5vw; /* 1rem -> 1.5vh/vw */
   box-sizing: border-box;
 }
 
@@ -223,86 +220,85 @@
   cursor: pointer;  /* 悬停时显示手指光标 */
   transform: scale(1.2);  /* 按钮悬停时轻微放大 */
 }
-/*check 按钮*/
+/* check 按钮 */
 .footer {
-  display: flex; /* 使用 Flexbox */
-  justify-content: center; /* 水平居中内容 */
-  align-items: center; /* 垂直居中内容 */
-  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1vh; /* 10px -> 1vh */
 }
+
 @media (min-width: 641px) {
   .container {
-    padding-top: 5rem; /* 增加顶部空间 */
-    padding-bottom: 7rem; /* 增加底部空间 */
+    padding-top: 8vh; /* 5rem -> 8vh */
+    padding-bottom: 12vh; /* 7rem -> 12vh */
   }
 
   .header {
-    padding: 1.5rem; /* 更大的内边距 */
+    padding: 2vh 2vw; /* 1.5rem -> 2vh/vw */
   }
 
   .title {
-    font-size: 2rem; /* 增加标题字体 */
+    font-size: 5.6vh; /* 2rem -> 2.8vh */
   }
 
   .article-content {
-    font-size: 1.2rem; /* 增加文章内容字体 */
+    font-size: 1.8vh; /* 1.2rem -> 1.8vh */
   }
 
   .footer-nav {
-    padding: 1.5rem; /* 增加底部导航内边距 */
+    padding: 2vh 2vw; /* 1.5rem -> 2vh/vw */
   }
 }
 
-/* 针对屏幕宽度小于 640px 时 */
 @media (max-width: 640px) {
   .container {
-    padding-top: 3rem; /* 减小顶部空间 */
-    padding-bottom: 5rem; /* 减小底部空间 */
+    padding-top: 5vh; /* 3rem -> 5vh */
+    padding-bottom: 8vh; /* 5rem -> 8vh */
   }
 
   .header {
-    padding: 0.8rem; /* 减小内边距 */
+    padding: 1.2vh 1.2vw; /* 0.8rem -> 1.2vh/vw */
   }
 
   .title {
-    font-size: 1.3rem; /* 调整标题字体 */
+    font-size: 3.6vh; /* 1.3rem -> 1.8vh */
   }
 
   .article-content {
-    font-size: 0.9rem; /* 调整文章内容字体 */
+    font-size: 1.3vh; /* 0.9rem -> 1.3vh */
   }
 
   .footer-nav {
-    padding: 0.8rem; /* 减小底部导航内边距 */
+    padding: 1.2vh 1.2vw; /* 0.8rem -> 1.2vh/vw */
   }
 
   .nav-btn {
-    font-size: 0.9rem; /* 减小按钮字体 */
-    padding: 0.6rem; /* 减小按钮内边距 */
+    font-size: 1.3vh; /* 0.9rem -> 1.3vh */
+    padding: 0.8vh; /* 0.6rem -> 0.8vh */
   }
 }
 
-/* 针对屏幕宽度小于 480px 时 */
 @media (max-width: 480px) {
   .header {
-    padding: 0.6rem; /* 更小的内边距 */
+    padding: 1vh 1vw; /* 0.6rem -> 1vh/vw */
   }
 
   .title {
-    font-size: 1.1rem; /* 更小的标题字体 */
+    font-size: 3vh; /* 1.1rem -> 1.5vh */
   }
 
   .article-content {
-    font-size: 0.85rem; /* 更小的文章内容字体 */
+    font-size: 1.2vh; /* 0.85rem -> 1.2vh */
   }
 
   .footer-nav {
-    padding: 0.6rem; /* 更小的底部导航内边距 */
+    padding: 1vh 1vw; /* 0.6rem -> 1vh/vw */
   }
 
   .nav-btn {
-    font-size: 0.8rem; /* 更小的按钮字体 */
-    padding: 0.5rem; /* 更小的按钮内边距 */
+    font-size: 1.1vh; /* 0.8rem -> 1.1vh */
+    padding: 0.7vh; /* 0.5rem -> 0.7vh */
   }
 }
 </style>
@@ -433,7 +429,7 @@ async function approvePost(ifApprove) {
     const response = await approvePostAPI(data);
     console.log(response);
     if (response.code === 0) {
-      await router.push('/mob/manage/post-check');
+      await router.push('/manage/post-check');
       ElMessage({
         message: '审批成功',
         type: 'success'

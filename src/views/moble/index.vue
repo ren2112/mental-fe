@@ -9,7 +9,13 @@
 
     <!-- 固定高度可滚动的帖子区域 -->
     <div class="post-list" ref="postContainer">
-      <PostItem v-for="post in posts" :key="post.id" :post="post" />
+      <PostItem v-for="post in posts" :key="post.id" :post="post" v-if="posts.length>0"/>
+      <div class="empty-post" v-else>
+        <div class="empty-component">
+          <el-icon :size="100" color="rgba(0, 130, 100, 1)"><DocumentDelete /></el-icon> 
+          <p>这里空空如也...</p>
+        </div>
+      </div>
     </div>
 
     <FooterNav @part-selected="handlePartChange" />
@@ -55,17 +61,19 @@ const handleSearch = async () => {
   await fetchPosts();
 };
 
-// 滚动到底部加载更多
 const handleScroll = () => {
-  const container = postContainer.value;
-  const bottomOffset = 150;
+  const bottomOffset = 100; // 距离底部多少时加载更多
+  const el = postContainer.value;
 
-  if (container.scrollHeight - (container.scrollTop + container.clientHeight) < bottomOffset) {
+  if (el && el.scrollHeight - el.scrollTop - el.clientHeight < bottomOffset) {
     fetchPosts();
   }
 };
 
-const throttledScroll = throttle(handleScroll, 300);
+
+
+// 使用 throttle 包装 handleScroll，避免频繁触发
+const throttledScroll = throttle(handleScroll, 300); // 每300ms触发一次
 
 const handlePartChange = (partIndex) => {
   currentPart.value = partIndex;
@@ -76,36 +84,41 @@ const handlePartChange = (partIndex) => {
 
 onMounted(() => {
   fetchPosts();
-  postContainer.value?.addEventListener("scroll", throttledScroll);
+  if (postContainer.value) {
+    postContainer.value.addEventListener("scroll", throttledScroll);
+  }
 });
 
 onUnmounted(() => {
-  postContainer.value?.removeEventListener("scroll", throttledScroll);
+  if (postContainer.value) {
+    postContainer.value.removeEventListener("scroll", throttledScroll);
+  }
 });
+
 </script>
 
 <style scoped>
 .container {
-  min-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
-  height: 100vh;
-  overflow: hidden; /* 防止页面级滚动 */
+  height: 100vh; /* 使用视口高度适配 */
+  overflow: hidden; /* 防止页面整体滚动 */
 }
 
 .header {
   width: 100%;
-  height: 80px;
+  height: 10vh; /* 10% 视口高度 */
   background: rgba(0, 130, 65, 1);
   color: white;
   text-align: center;
-  padding-top: 20px;
-  font-size: 18px;
+  padding-top: 2vh;
+  font-size: 2.2vh;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   position: fixed;
+  top: 0;
   top: 0;
   z-index: 100;
 }
@@ -115,11 +128,10 @@ onUnmounted(() => {
   width: 85%;
   background: white;
   border-radius: 20px;
-  padding: 10px;
-  margin-top: -20px;
+  padding: 1.5vh 1vh;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
-  top: 80px;
+  top: 10vh; /* 紧贴 header 底部 */
   z-index: 100;
 }
 
@@ -127,31 +139,43 @@ onUnmounted(() => {
   flex: 1;
   border: none;
   outline: none;
-  padding: 6px;
-  font-size: 14px;
+  font-size: 1.6vh;
+  padding: 1vh;
 }
 
 .search-bar button {
   background: rgba(0, 130, 65, 1);
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 0.8vh 1.2vh;
+  border-radius: 1vh;
   cursor: pointer;
+  font-size: 1.6vh;
 }
 
-/* 固定高度区域，始终滚动 */
+/* 帖子列表 */
 .post-list {
   width: 90%;
   background: white;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 2vh;
+  padding: 1vh;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-
-  margin-top: 140px; /* 留出 header + search-bar 空间 */
-  height: calc(100vh - 200px); /* 调整为你真实 header + search-bar + footer 的总高度 */
-  overflow-y: scroll; /* 始终显示滚动条 */
+  gap: 1vh;
+  position: absolute;
+  top: calc(10vh + 8vh); /* header + search-bar */
+  bottom: 5vh; /* 留出 footer 导航区域 */
+  overflow-y: auto;
 }
+
+.empty-post {
+  text-align: center;
+}
+
+.empty-component p {
+  margin-top: 1vh;
+  font-size: 2vh;
+  color: #666;
+}
+
 </style>
