@@ -39,7 +39,7 @@
 <!--          </div>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column prop="ID" label="帐号" width="60"/>
+      <el-table-column prop="ID" label="帐号" show-overflow-tooltip width="60"/>
       <el-table-column prop="Username" label="姓名" show-overflow-tooltip width="60"/>
       <el-table-column prop="Email" label="邮箱" show-overflow-tooltip width="100"/>
       <el-table-column prop="Phone" label="电话" show-overflow-tooltip width="100"/>
@@ -49,11 +49,12 @@
           :formatter="formatDepartment"
           sortable
           width="100"
+          show-overflow-tooltip 
       />
       <el-table-column fixed="right" width="100" label="操作">
         <template #header>
           <el-button type="primary" @click="handleUpload" size="small">
-            添加用户<el-icon class="el-icon--right"><Upload/></el-icon>
+            添加<el-icon class="el-icon--right"><Upload/></el-icon>
           </el-button>
         </template>
         <template #default="scope">
@@ -70,7 +71,14 @@
 
 
     <!--编辑对话框-->
-    <el-dialog v-model="editDialogVisible" title="编辑用户信息" align-center draggable>
+    <el-dialog 
+      v-model="editDialogVisible" 
+      title="编辑用户信息" 
+      align-center 
+      draggable
+      :width="dialogWidth"
+      class="user-dialog"
+    >
       <el-form :model="selectedUser"
                label-width="auto"
                :rules="rules"
@@ -145,7 +153,14 @@
 
 
     <!--添加对话框-->
-    <el-dialog v-model="addDialogVisible" title="添加用户信息" align-center draggable>
+    <el-dialog 
+      v-model="addDialogVisible" 
+      title="添加用户信息" 
+      align-center 
+      draggable
+      :width="dialogWidth"
+      class="user-dialog"
+    >
       <el-form :model="selectedUser"
                label-width="auto"
                :rules="rules"
@@ -195,7 +210,7 @@
         :total="itemTotal"
         size="small"
         background
-        layout="prev, pager, next, jumper"
+        layout="prev, pager, next"
         @current-change="handlePageChange"
     />
   </div>
@@ -247,6 +262,9 @@ interface User {
   Phone?: string;
   Avatar?: string;
 }
+
+// 对话框宽度设置
+const dialogWidth = ref('90%')
 
 // 外部导入
 tableData.value = []
@@ -651,17 +669,17 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
 
 <style scoped lang="scss">
 .manage-content {
-  min-width: 400px;
+  min-width: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
 
   justify-content: space-between;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
   width: 100%;
-  row-gap: 20px;
+  row-gap: 2.5vh;
 
 
   /* 输入框容器 */
@@ -671,19 +689,19 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
 
     /* 修改搜索框样式 */
     .el-input {
-      width: 400px;
+      width: 50vh;
 
       --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
-      border-radius: 30px; /* 圆角 */
+      border-radius: 3.5vh; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       transition: border-color 0.3s, background-color 0.3s;
     }
     ::v-deep .el-input__wrapper {
-      border-radius: 30px; /* 圆角 */
+      border-radius: 3.5vh; /* 圆角 */
       box-shadow: none;
     }
     ::v-deep .el-input-group__append {
-      border-radius: 30px; /* 圆角 */
+      border-radius: 3.5vh; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       transition: border-color 0.3s, background-color 0.3s;
     }
@@ -692,21 +710,21 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     /* 修改按钮的样式 */
     .el-button {
       right: 0;
-      border-radius: 30px;
+      border-radius: 3.5vh;
       background-color: rgba(0, 130, 65, 1); /* 默认按钮背景色 */
       color: white;
       border: none;
       transition: background-color 0.3s, box-shadow 0.3s;
       &:hover {
         background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
+        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
       }
       &:focus {
         background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
+        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
       }
       .el-icon {
-        font-size: 20px;
+        font-size: 2.5vh;
         color: white;
       }
     }
@@ -719,27 +737,27 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
 
     /* 修改选择器的样式 */
     ::v-deep .el-select {
-      width: 80px;
+      width: 10vh;
 
       left: 0;
-      border-radius: 30px;
+      border-radius: 3.5vh;
       background-color: rgba(0, 130, 65, 1); /* 默认按钮背景色 */
       border: none;
       transition: background-color 0.3s, box-shadow 0.3s;
       &:hover {
         background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
+        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
       }
       &:focus {
         background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
+        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
       }
     }
     ::v-deep .el-select__placeholder {
       color: white;
     }
     ::v-deep .el-select__wrapper {
-      border-radius: 30px;
+      border-radius: 3.5vh;
       border: none;
       box-shadow: none;
       &:hover {
@@ -752,7 +770,7 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
       }
     }
     ::v-deep .el-input-group__prepend {
-      border-radius: 30px; /* 圆角 */
+      border-radius: 3.5vh; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       transition: border-color 0.3s, background-color 0.3s;
     }
@@ -761,7 +779,7 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
 
   /* 表格 */
   .el-table {
-    border-radius: 10px; /* 设置元素的圆角为 10 像素 */
+    border-radius: 1.2vh; /* 设置元素的圆角为 10 像素 */
     display: flex;
     flex-direction: column;
     //flex-grow: 1;
@@ -777,11 +795,58 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     height: 100%;            /* 让容器高度填满单元格 */
 
     .image {
-      width: 25px;  /* 设置图片的宽度 */
-      height: 25px; /* 设置图片的高度 */
+      width: 3vh;  /* 设置图片的宽度 */
+      height: 3vh; /* 设置图片的高度 */
       object-fit: cover; /* 保持图片比例并裁剪以适应尺寸 */
       border-radius: 50%;        /* 使图片成为圆形 */
       border: 1px solid rgba(0,130,65,0.3); /* 添加圆形边框 */
+    }
+  }
+}
+
+/* 对话框样式 */
+:deep(.user-dialog) {
+  .el-dialog__body {
+    padding: 2vh;
+  }
+  
+  .el-dialog__header {
+    padding: 2vh;
+    margin-right: 0;
+    
+    .el-dialog__title {
+      font-size: 2.2vh;
+      font-weight: bold;
+    }
+  }
+  
+  /* 提高表单元素的大小，提升移动端可用性 */
+  .el-form-item {
+    margin-bottom: 2vh;
+    
+    .el-form-item__label {
+      font-size: 2vh;
+      padding-bottom: 0.8vh;
+    }
+    
+    .el-input__wrapper, .el-select {
+      height: 5vh;
+      font-size: 1.8vh;
+    }
+    
+    .el-select {
+      width: 100%;
+    }
+  }
+  
+  /* 对话框底部按钮样式 */
+  .dialog-footer {
+    padding-top: 1vh;
+    
+    .el-button {
+      height: 4.5vh;
+      font-size: 1.8vh;
+      padding: 0 2vh;
     }
   }
 }

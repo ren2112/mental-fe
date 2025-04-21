@@ -318,7 +318,7 @@ onUnmounted(() => {
 }
 
 
-.footer {
+/* .footer {
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -326,6 +326,6 @@ onUnmounted(() => {
   padding: 10px 0;
   position: fixed;
   bottom: 0;
-}
+} */
 
 </style>

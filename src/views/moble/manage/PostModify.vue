@@ -42,7 +42,7 @@
     <el-table :data="tableData"
               :table-layout="tableLayout"
               :default-sort="{ prop: 'ID', order: 'ascending' }"
-              height="580"
+              height="545"
               @row-click="handleRowClick"
     >
       <!--      <el-table-column prop="Cover" label="封面" width="100">-->
@@ -54,12 +54,12 @@
       <!--      </el-table-column>-->
       <el-table-column prop="Title" label="标题" sortable width="100">
         <template #default="scope">
-          <span class="title">{{ scope.row.Title }}</span>
+          <span class="title">{{ formatContent(scope.row.Title, 15) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="Content" label="简介" width="200">
         <template #default="scope">
-          <span class="content">{{ formatContent(scope.row.Content) }}</span>
+          <span class="content">{{ formatContent(scope.row.Content, 20) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="UserId" label="作者"  show-overflow-tooltip width="60"/>
@@ -78,7 +78,7 @@
         :total="itemTotal"
         size="small"
         background
-        layout="prev, pager, next, jumper"
+        layout="prev, pager, next"
         @current-change="handlePageChange"
     />
   </div>
@@ -119,7 +119,7 @@ inputSearch.value = ''
 //   { id: 'Title', label: '标题'},
 //   { id: 'UserId', label: '作者'},
 // ]
-pageSize.value = 6;
+pageSize.value = 8;
 pageNum.value = 1;
 itemTotal.value = 0;
 partNum.value = '';
@@ -183,10 +183,9 @@ function sanitizeContent(content: string): string {
   return doc.body.textContent || '';
 }
 
-function formatContent(content: string): string {
+function formatContent(content: string, maxLength: number): string {
   if (!content) return '';
   const sanitizedContent = sanitizeContent(content); // 去除 HTML 标签和转义字符
-  const maxLength = 80; // 最大显示长度
   return sanitizedContent.length > maxLength ? sanitizedContent.slice(0, maxLength) + '...' : sanitizedContent;
 }
 
@@ -297,16 +296,16 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
         width: 200px;
 
         --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
-        border-radius: 30px; /* 圆角 */
+        border-radius: 3.5vh; /* 圆角 */
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         transition: border-color 0.3s, background-color 0.3s;
       }
       ::v-deep .el-input__wrapper {
-        border-radius: 30px; /* 圆角 */
+        border-radius: 3.5vh; /* 圆角 */
         box-shadow: none;
       }
       ::v-deep .el-input-group__append {
-        border-radius: 30px; /* 圆角 */
+        border-radius: 3.5vh; /* 圆角 */
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         transition: border-color 0.3s, background-color 0.3s;
       }
@@ -315,21 +314,21 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
       /* 修改按钮的样式 */
       .el-button {
         right: 0;
-        border-radius: 30px;
+        border-radius: 3.5vh;
         background-color: rgba(0, 130, 65, 1); /* 默认按钮背景色 */
         color: white;
         border: none;
         transition: background-color 0.3s, box-shadow 0.3s;
         &:hover {
           background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
+          box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
         }
         &:focus {
           background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
+          box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
         }
         .el-icon {
-          font-size: 20px;
+          font-size: 2.5vh;
           color: white;
         }
       }
@@ -344,14 +343,14 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
     /* 修改选择器的样式 */
     .el-select {
       font-weight: normal;
-      width: 100px;
-      border-radius: 30px; /* 圆角 */
+      width: 12vh;
+      border-radius: 3.5vh; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       transition: border-color 0.3s, background-color 0.3s;
       background-color: white;
     }
     ::v-deep .el-select__wrapper {
-      border-radius: 30px;
+      border-radius: 3.5vh;
       border: none;
       box-shadow: none;
       &:hover {
@@ -368,7 +367,7 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
 
   /* 表格 */
   .el-table {
-    border-radius: 10px; /* 设置元素的圆角为 10 像素 */
+    border-radius: 1.2vh; /* 设置元素的圆角 */
 
     flex-grow: 1;
     display: flex;
@@ -392,10 +391,10 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
     height: 100%;            /* 让容器高度填满单元格 */
 
     .image {
-      width: 75px;  /* 设置图片的宽度 */
-      height: 75px; /* 设置图片的高度 */
+      width: 9vh;  /* 设置图片的宽度 */
+      height: 9vh; /* 设置图片的高度 */
       object-fit: cover; /* 保持图片比例并裁剪以适应尺寸 */
-      border-radius: 8px;
+      border-radius: 1vh;
       border: 1px solid rgba(0,130,65,0.3); /* 添加圆形边框 */
     }
   }

@@ -253,14 +253,14 @@
           transition: background-color 0.3s, box-shadow 0.3s;
           &:hover {
             background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
+            box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
           }
           &:focus {
             background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
+            box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
           }
           .el-icon {
-            font-size: 20px;
+            font-size: 2.5vh;
             color: white;
           }
         }
@@ -275,14 +275,14 @@
       /* 修改选择器的样式 */
       .el-select {
         font-weight: normal;
-        width: 100px;
-        border-radius: 30px; /* 圆角 */
+        width: 12vh;
+        border-radius: 3.5vh; /* 圆角 */
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         transition: border-color 0.3s, background-color 0.3s;
         background-color: white;
       }
       ::v-deep .el-select__wrapper {
-        border-radius: 30px;
+        border-radius: 3.5vh;
         border: none;
         box-shadow: none;
         &:hover {
@@ -299,7 +299,7 @@
   
     /* 表格 */
     .el-table {
-      border-radius: 10px; /* 设置元素的圆角为 10 像素 */
+      border-radius: 1.2vh; /* 设置元素的圆角 */
   
       flex-grow: 1;
       display: flex;
@@ -323,10 +323,10 @@
       height: 100%;            /* 让容器高度填满单元格 */
   
       .image {
-        width: 75px;  /* 设置图片的宽度 */
-        height: 75px; /* 设置图片的高度 */
+        width: 9vh;  /* 设置图片的宽度 */
+        height: 9vh; /* 设置图片的高度 */
         object-fit: cover; /* 保持图片比例并裁剪以适应尺寸 */
-        border-radius: 8px;
+        border-radius: 1vh;
         border: 1px solid rgba(0,130,65,0.3); /* 添加圆形边框 */
       }
     }
