@@ -2,8 +2,8 @@
   <div class="post-check">
     <el-form :inline="true" label-position="left" class="form">
       <!-- 选择器容器 -->
-      <el-form-item label="类型" class="label-text">
-        <el-select v-model="partNum" placeholder="所有">
+      <el-form-item class="label-text">
+        <el-select v-model="partNum" placeholder="所有类型">
           <el-option v-for="item in partAll" :value="item.id" :key="item.id" :label="item.label" class="option">
           </el-option>
         </el-select>
@@ -36,7 +36,7 @@
     <el-table :data="tableData"
               :table-layout="tableLayout"
               :default-sort="{ prop: 'ID', order: 'ascending' }"
-              height="545"
+              height="68vh"
               @row-click="handleRowClick"
     >
 <!--      <el-table-column prop="Cover" label="封面" width="100">-->
@@ -46,23 +46,23 @@
 <!--          </div>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column prop="Title" label="标题" sortable width="100">
+      <el-table-column prop="Title" label="标题" sortable width="90">
         <template #default="scope">
           <span class="title">{{ formatContent(scope.row.Title, 15) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="Content" label="简介" width="200">
+      <el-table-column prop="Content" label="简介" width="170">
         <template #default="scope">
           <span class="content">{{ formatContent(scope.row.Content, 20) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="UserId" label="作者" show-overflow-tooltip width="60"/>
       <el-table-column prop="Part" label="分类" :formatter="formatPart" width="60"/>
-      <el-table-column label="审核状态" width="80">
+      <!-- <el-table-column label="审核状态" width="80">
         <template #default="scope">
           <el-tag :type="formatIsAudit(scope.row)">{{ formatIsApproved(scope.row) }}</el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
 
@@ -117,7 +117,7 @@ inputSearch.value = ''
 //   { id: 'Title', label: '标题'},
 //   { id: 'UserId', label: '作者'},
 // ]
-pageSize.value = 8;
+pageSize.value = 10;
 pageNum.value = 1;
 itemTotal.value = 0;
 partNum.value = '';
@@ -260,41 +260,25 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
 
 <style scoped>
 .post-check {
-  min-width: 400px;
+  max-width: 90vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
 
-  justify-content: space-between;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-  row-gap: 20px;
-
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
+  row-gap: 2.5vh;
 
   .el-form {
-    gap: 10px;
-    row-gap: 20px;
-
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between; /* 水平居中内容 */
-
-    .label-text {
-      text-align: left;
-      font-weight: bold;
-      margin-bottom: 0px;
-    }
 
     .search-box {
-      position: relative;
-
       /* 修改搜索框样式 */
       .el-input {
-        width: 250px;
-
+        width: 40vw;
         --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         border-radius: 3.5vh; /* 圆角 */
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
@@ -309,8 +293,6 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         transition: border-color 0.3s, background-color 0.3s;
       }
-
-
       /* 修改按钮的样式 */
       .el-button {
         right: 0;
@@ -319,18 +301,6 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
         color: white;
         border: none;
         transition: background-color 0.3s, box-shadow 0.3s;
-        &:hover {
-          background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-          box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
-        }
-        &:focus {
-          background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-          box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
-        }
-        .el-icon {
-          font-size: 2.5vh;
-          color: white;
-        }
       }
       /* 按钮的点击样式 */
       .search-buttom:active {
@@ -339,11 +309,16 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
       }
     }
 
+    .label-text {
+      text-align: left;
+      font-weight: bold;
+      margin-bottom: 0px;
+    }
 
     /* 修改选择器的样式 */
     .el-select {
       font-weight: normal;
-      width: 12vh;
+      width: 15vh;
       border-radius: 3.5vh; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       transition: border-color 0.3s, background-color 0.3s;
@@ -364,21 +339,13 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
     }
   }
 
-
   /* 表格 */
   .el-table {
     border-radius: 1.2vh; /* 设置元素的圆角 */
-
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
   }
   .el-table__body {
     align-items: flex-start; /* 确保行顶部对齐 */
-    flex-grow: 1;
-    width: 100%;
   }
-
 
   .title {
     font-weight: bold; /* 使标题字体加粗 */

@@ -28,7 +28,7 @@
       <el-table :data="tableData"
                 :table-layout="tableLayout"
                 :default-sort="{ prop: 'ID', order: 'ascending' }"
-                height="604"
+                height="68vh"
                 @row-click="handleRowClick"
       >
         <el-table-column prop="Cover" label="封面" width="100">

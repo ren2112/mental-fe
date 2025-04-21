@@ -61,7 +61,6 @@ const goToDelRecord = () => {
 <style scoped lang="scss">
 /* 页面主体容器样式 */
 .manage-page {
-  min-width: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,12 +69,11 @@ const goToDelRecord = () => {
 
 .header {
   width: 100%;
-  height: 7vh;
+  height: 8vh;
   background: rgba(0, 130, 65, 1);
   color: white;
   text-align: center;
   padding-top: 2.5vh;
-  font-size: 2.2vh;
   border-bottom-left-radius: 2.5vh;
   border-bottom-right-radius: 2.5vh;
   
@@ -90,45 +88,4 @@ const goToDelRecord = () => {
     } 
   }
 }
-
-/* 全局样式，处理所有 dropdown 按钮的边框问题 */
-:deep(.el-dropdown) {
-  .el-dropdown-selfdefine {
-    &:focus:not(.focusing), &:hover, &:active {
-      border-color: transparent !important;
-      box-shadow: none !important;
-    }
-  }
-  
-  .el-button.is-plain {
-    &:hover, &:focus, &:active {
-      background: rgba(0, 130, 65, 0.8);
-      border-color: transparent !important;
-    }
-  }
-}
-
-// .footer-nav {
-//   min-width: 50vh;
-//   width: 100%;
-//   display: flex;
-//   justify-content: space-around;
-//   background: rgba(0, 130, 65, 1);
-//   padding: 1.2vh 0;
-//   position: fixed;
-//   bottom: 0;
-
-//   .el-button {
-//     flex: 1;  /* 使按钮占据可用空间 */
-//     margin: 0 0.5rem;  /* 左右间距 */
-//     background: transparent;
-//     color: white;
-//     border: 0.0625rem solid rgba(0, 130, 65, 1);
-//     border-radius: 0.5rem;
-//     padding: 0.75rem;
-//     transition: background-color 0.3s, color 0.3s; /* 平滑过渡 */
-//     width: 100%;
-//     text-align: center;  /* 使文字居中 */
-//   }
-// }
 </style>

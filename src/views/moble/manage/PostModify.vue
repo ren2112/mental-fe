@@ -1,40 +1,42 @@
 <template>
   <div class="post-page">
     <el-form :inline="true" label-position="top" class="demo-form-inline">
-      <!-- 选择器容器 -->
-      <el-form-item label="类型" class="label-text">
-        <el-select v-model="partNum" placeholder="所有" style="width: 100px">
-          <el-option v-for="item in partAll" :value="item.id" :key="item.id" :label="item.label" class="option">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="审核状态" class="label-text">
-        <el-select v-model="isApproved" placeholder="所有" style="width: 100px">
-          <el-option v-for="item in isApprovedAll" :value="item.id" :key="item.id" :label="item.label" class="option">
-          </el-option>
-        </el-select>
-      </el-form-item>
-
-      <!-- 输入框容器 -->
-      <el-form-item label="搜索"  class="label-text">
-        <div class="search-box">
-          <el-input
-              v-model="inputSearch"
-              placeholder="按标题和简介搜索"
-              clearable
-              autofocus
-              @keyup.enter="onSearchPost(inputSearch, isApproved)"
-          >
-            <template #append>
-              <el-button
-                  :icon="Search"
-                  @click="onSearchPost(inputSearch, isApproved)"
-                  class="search-buttom"
-              />
-            </template>
-          </el-input>
-        </div>
-      </el-form-item>
+      <!-- 输入框容器在第一行 -->
+      <div class="search-box">
+        <el-form-item>
+            <el-input
+                v-model="inputSearch"
+                placeholder="按标题和简介搜索"
+                clearable
+                autofocus
+                @keyup.enter="onSearchPost(inputSearch, isApproved)"
+            >
+              <template #append>
+                <el-button
+                    :icon="Search"
+                    @click="onSearchPost(inputSearch, isApproved)"
+                    class="search-buttom"
+                />
+              </template>
+            </el-input>
+        </el-form-item>
+      </div>
+      
+      <!-- 选择器容器放在第二行 -->
+      <div class="select">
+        <el-form-item class="label-text">
+          <el-select v-model="partNum" placeholder="所有类型">
+            <el-option v-for="item in partAll" :value="item.id" :key="item.id" :label="item.label" class="option">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="label-text">
+          <el-select v-model="isApproved" placeholder="所有审核状态">
+            <el-option v-for="item in isApprovedAll" :value="item.id" :key="item.id" :label="item.label" class="option">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </div>
     </el-form>
 
 
@@ -42,7 +44,7 @@
     <el-table :data="tableData"
               :table-layout="tableLayout"
               :default-sort="{ prop: 'ID', order: 'ascending' }"
-              height="545"
+              height="60vh"
               @row-click="handleRowClick"
     >
       <!--      <el-table-column prop="Cover" label="封面" width="100">-->
@@ -52,12 +54,12 @@
       <!--          </div>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column prop="Title" label="标题" sortable width="100">
+      <el-table-column prop="Title" label="标题" sortable width="90">
         <template #default="scope">
           <span class="title">{{ formatContent(scope.row.Title, 15) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="Content" label="简介" width="200">
+      <el-table-column prop="Content" label="简介" width="170">
         <template #default="scope">
           <span class="content">{{ formatContent(scope.row.Content, 20) }}</span>
         </template>
@@ -119,7 +121,7 @@ inputSearch.value = ''
 //   { id: 'Title', label: '标题'},
 //   { id: 'UserId', label: '作者'},
 // ]
-pageSize.value = 8;
+pageSize.value = 10;
 pageNum.value = 1;
 itemTotal.value = 0;
 partNum.value = '';
@@ -264,37 +266,29 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
 
 <style scoped>
 .post-page {
-  min-width: 400px;
+  max-width: 90vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
 
-  justify-content: space-between;
-  margin-top: 20px;
-  width: 100%;
-  row-gap: 20px;
-
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
+  row-gap: 2.5vh;
 
   .el-form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* 水平居中内容 */
 
-    .label-text {
-      font-weight: bold;
-      margin-bottom: 0px;
-    }
-
-
-    .search-box {
-      position: relative;
-
+    .search-box{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      
       /* 修改搜索框样式 */
       .el-input {
-        width: 200px;
-
+        width: 70vw;
         --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         border-radius: 3.5vh; /* 圆角 */
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
@@ -309,8 +303,6 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         transition: border-color 0.3s, background-color 0.3s;
       }
-
-
       /* 修改按钮的样式 */
       .el-button {
         right: 0;
@@ -319,18 +311,6 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
         color: white;
         border: none;
         transition: background-color 0.3s, box-shadow 0.3s;
-        &:hover {
-          background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-          box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
-        }
-        &:focus {
-          background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-          box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
-        }
-        .el-icon {
-          font-size: 2.5vh;
-          color: white;
-        }
       }
       /* 按钮的点击样式 */
       .search-buttom:active {
@@ -338,28 +318,39 @@ watch([pageSize, pageNum, partNum, isApproved], fetchPosts, { immediate: true })
         box-shadow: none;
       }
     }
+    
 
+    .label-text {
+      text-align: left;
+      font-weight: bold;
+      margin-bottom: 0px;
+    }
 
     /* 修改选择器的样式 */
-    .el-select {
-      font-weight: normal;
-      width: 12vh;
-      border-radius: 3.5vh; /* 圆角 */
-      border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
-      transition: border-color 0.3s, background-color 0.3s;
-      background-color: white;
-    }
-    ::v-deep .el-select__wrapper {
-      border-radius: 3.5vh;
-      border: none;
-      box-shadow: none;
-      &:hover {
-        border: none;
-        box-shadow: none;
+    .select {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .el-select {
+        width: 30vw;
+        font-weight: normal;
+        border-radius: 3.5vh; /* 圆角 */
+        border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
+        transition: border-color 0.3s, background-color 0.3s;
+        background-color: white;
       }
-      &:focus {
+      ::v-deep .el-select__wrapper {
+        border-radius: 3.5vh;
         border: none;
         box-shadow: none;
+        &:hover {
+          border: none;
+          box-shadow: none;
+        }
+        &:focus {
+          border: none;
+          box-shadow: none;
+        }
       }
     }
   }

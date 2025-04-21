@@ -30,7 +30,7 @@
     <el-table :data="tableData"
               :table-layout="tableLayout"
               :default-sort="{ prop: 'ID', order: 'ascending' }"
-              height="580"
+              height="68vh"
     >
 <!--      <el-table-column prop="Avatar" label="头像" width="50">-->
 <!--        <template #default="scope">-->
@@ -669,28 +669,23 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
 
 <style scoped lang="scss">
 .manage-content {
-  min-width: 50vh;
+  max-width: 90vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #f8f8f8;
 
-  justify-content: space-between;
+  // justify-content: space-between;
   margin-top: 2.5vh;
   margin-bottom: 2.5vh;
-  width: 100%;
+  // width: 100%;
   row-gap: 2.5vh;
-
 
   /* 输入框容器 */
   .search-box {
-    position: relative;
-    //width: 800px;
-
     /* 修改搜索框样式 */
     .el-input {
-      width: 50vh;
-
+      max-width: 100vw;
       --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       border-radius: 3.5vh; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
@@ -706,7 +701,6 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
       transition: border-color 0.3s, background-color 0.3s;
     }
 
-
     /* 修改按钮的样式 */
     .el-button {
       right: 0;
@@ -715,59 +709,20 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
       color: white;
       border: none;
       transition: background-color 0.3s, box-shadow 0.3s;
-      &:hover {
-        background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
-      }
-      &:focus {
-        background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
-      }
-      .el-icon {
-        font-size: 2.5vh;
-        color: white;
-      }
-    }
-    /* 按钮的点击样式 */
-    .search-buttom:active {
-      background-color: rgba(0, 130, 65, 1); /* 点击时按钮背景色 */
-      box-shadow: none;
     }
 
 
     /* 修改选择器的样式 */
     ::v-deep .el-select {
-      width: 10vh;
-
+      width: 20vw;
       left: 0;
       border-radius: 3.5vh;
       background-color: rgba(0, 130, 65, 1); /* 默认按钮背景色 */
       border: none;
       transition: background-color 0.3s, box-shadow 0.3s;
-      &:hover {
-        background-color: rgba(0, 130, 65, 0.8); /* 悬停时按钮背景色 */
-        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 悬停时的阴影效果 */
-      }
-      &:focus {
-        background-color: rgba(0, 130, 65, 1); /* 按钮聚焦时的背景色 */
-        box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2); /* 聚焦时的阴影 */
-      }
     }
     ::v-deep .el-select__placeholder {
       color: white;
-    }
-    ::v-deep .el-select__wrapper {
-      border-radius: 3.5vh;
-      border: none;
-      box-shadow: none;
-      &:hover {
-        border: none;
-        box-shadow: none;
-      }
-      &:focus {
-        border: none;
-        box-shadow: none;
-      }
     }
     ::v-deep .el-input-group__prepend {
       border-radius: 3.5vh; /* 圆角 */
@@ -780,9 +735,6 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
   /* 表格 */
   .el-table {
     border-radius: 1.2vh; /* 设置元素的圆角为 10 像素 */
-    display: flex;
-    flex-direction: column;
-    //flex-grow: 1;
   }
   .el-table__body {
     align-items: flex-start; /* 确保行顶部对齐 */
@@ -815,38 +767,8 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     margin-right: 0;
     
     .el-dialog__title {
-      font-size: 2.2vh;
+      // font-size: 2.2vh;
       font-weight: bold;
-    }
-  }
-  
-  /* 提高表单元素的大小，提升移动端可用性 */
-  .el-form-item {
-    margin-bottom: 2vh;
-    
-    .el-form-item__label {
-      font-size: 2vh;
-      padding-bottom: 0.8vh;
-    }
-    
-    .el-input__wrapper, .el-select {
-      height: 5vh;
-      font-size: 1.8vh;
-    }
-    
-    .el-select {
-      width: 100%;
-    }
-  }
-  
-  /* 对话框底部按钮样式 */
-  .dialog-footer {
-    padding-top: 1vh;
-    
-    .el-button {
-      height: 4.5vh;
-      font-size: 1.8vh;
-      padding: 0 2vh;
     }
   }
 }
