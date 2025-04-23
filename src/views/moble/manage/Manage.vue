@@ -2,17 +2,15 @@
   <div class="manage-page">
     <!--  head  -->
     <el-header class="header">
-      <el-dropdown split-button type="primary" @click.stop="goToUserManage(-1)">
-        用户管理
-<!--        <el-button type="primary"  @click.stop="goToUserManage(-1)">-->
-<!--          用户管理 <el-icon class="el-icon&#45;&#45;right"><arrow-down/></el-icon>-->
-<!--        </el-button>-->
+      <el-dropdown split-button type="primary" @click="backToUserManage(department)">
+        {{ selectedDepartmentName }}
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="goToUserManage(0)">区团工委</el-dropdown-item>
-            <el-dropdown-item @click="goToUserManage(1)">社区团组织</el-dropdown-item>
-            <el-dropdown-item @click="goToUserManage(2)">高校团组织</el-dropdown-item>
-            <el-dropdown-item @click="goToUserManage(3)">企业团组织</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(0)">全部用户</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(1)">区团工委</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(2)">社区团组织</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(3)">高校团组织</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(4)">企业团组织</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -34,28 +32,50 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import router from "@/router";
 import {department} from "@/api/user";
 import FooterNav from "@/views/moble/footer.vue";
 
+// 部门名称映射
+const departmentMap: Record<number, string> = {
+  [0]: '所有用户',
+  [1]: '区团工委',
+  [2]: '社区团组织',
+  [3]: '高校团组织',
+  [4]: '企业团组织',
+};
+
+// 计算属性，获取当前选择的部门名称
+const selectedDepartmentName = computed(() => {
+  return departmentMap[department.value] || '用户管理';
+});
 
 // 侧边栏函数
-const goToUserManage = (Department: number) => {
+const goToUserManage = (depId: number) => {
   router.push('/mob/manage/user-manage')
   // 根据部门选择
-  department.value = Department;
+  department.value = depId;
+}
+const backToUserManage = (depId: number) => {
+  if (depId == -1) {
+    router.push('/mob/manage/user-manage')
+    department.value = 0;
+  }
 }
 
 const goToPostCheck = () => {
   router.push('/mob/manage/post-check')
+  department.value = -1
 }
 
 const goToPostModify = () => {
   router.push('/mob/manage/post-modify')
+  department.value = -1
 }
-const goToDelRecord = () => {
-  router.push('/mob/manage/post-del-record')
-}
+// const goToDelRecord = () => {
+//   router.push('/mob/manage/post-del-record')
+// }
 </script>
 
 <style scoped lang="scss">

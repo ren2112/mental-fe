@@ -39,19 +39,19 @@
 <!--          </div>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column prop="ID" label="帐号" show-overflow-tooltip width="60"/>
-      <el-table-column prop="Username" label="姓名" show-overflow-tooltip width="60"/>
-      <el-table-column prop="Email" label="邮箱" show-overflow-tooltip width="100"/>
-      <el-table-column prop="Phone" label="电话" show-overflow-tooltip width="100"/>
+      <el-table-column prop="ID" label="帐号" show-overflow-tooltip width="60vw"/>
+      <el-table-column prop="Username" label="姓名" show-overflow-tooltip width="60vw"/>
+      <el-table-column prop="Email" label="邮箱" show-overflow-tooltip width="100vw"/>
+      <el-table-column prop="Phone" label="电话" show-overflow-tooltip width="100vw"/>
       <el-table-column
           prop="Department"
           label="部门"
           :formatter="formatDepartment"
           sortable
-          width="100"
+          width="100vw"
           show-overflow-tooltip 
       />
-      <el-table-column fixed="right" width="100" label="操作">
+      <el-table-column fixed="right" width="100vw" label="操作">
         <template #header>
           <el-button type="primary" @click="handleUpload" size="small">
             添加<el-icon class="el-icon--right"><Upload/></el-icon>
@@ -208,7 +208,6 @@
         :current-page="pageNum"
         :page-size="pageSize"
         :total="itemTotal"
-        size="small"
         background
         layout="prev, pager, next"
         @current-change="handlePageChange"
@@ -281,10 +280,10 @@ itemTotal.value = 0;
 
 
 const departmentAll = ref([
-  { id: 0, label: '区团工委' },
-  { id: 1, label: '社区团组织' },
-  { id: 2, label: '高校团组织' },
-  { id: 3, label: '企业团组织' },
+  { id: 1, label: '区团工委' },
+  { id: 2, label: '社区团组织' },
+  { id: 3, label: '高校团组织' },
+  { id: 4, label: '企业团组织' },
 ]);
 const tableLayout = ref<TableInstance['tableLayout']>('fixed')
 const editDialogVisible = ref(false)
@@ -390,7 +389,7 @@ async function fetchUsers() {
     Department?: number; // 部门（可选）
   }
 
-  if (department.value != -1) {
+  if (department.value != 0) {
     data = {
       pageSize: pageSize.value,
       pageNum: pageNum.value,

@@ -54,19 +54,19 @@
       <!--          </div>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column prop="Title" label="标题" sortable width="90">
+      <el-table-column prop="Title" label="标题" sortable width="90vw">
         <template #default="scope">
           <span class="title">{{ formatContent(scope.row.Title, 15) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="Content" label="简介" width="170">
+      <el-table-column prop="Content" label="简介" width="170vw">
         <template #default="scope">
           <span class="content">{{ formatContent(scope.row.Content, 20) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="UserId" label="作者"  show-overflow-tooltip width="60"/>
-      <el-table-column prop="Part" label="分类" :formatter="formatPart"  width="60"/>
-      <el-table-column label="审核状态" width="80">
+      <el-table-column prop="UserId" label="作者"  show-overflow-tooltip width="60vw"/>
+      <el-table-column prop="Part" label="分类" :formatter="formatPart"  width="60vw"/>
+      <el-table-column label="审核状态" width="80vw">
         <template #default="scope">
           <el-tag :type="formatIsAudit(scope.row)">{{ formatIsApproved(scope.row) }}</el-tag>
         </template>
@@ -78,7 +78,6 @@
         :current-page="pageNum"
         :page-size="pageSize"
         :total="itemTotal"
-        size="small"
         background
         layout="prev, pager, next"
         @current-change="handlePageChange"
