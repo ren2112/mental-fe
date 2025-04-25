@@ -280,10 +280,10 @@ itemTotal.value = 0;
 
 
 const departmentAll = ref([
-  { id: 1, label: '区团工委' },
-  { id: 2, label: '社区团组织' },
-  { id: 3, label: '高校团组织' },
-  { id: 4, label: '企业团组织' },
+  { id: 0, label: '区团工委' },
+  { id: 1, label: '社区团组织' },
+  { id: 2, label: '高校团组织' },
+  { id: 3, label: '企业团组织' },
 ]);
 const tableLayout = ref<TableInstance['tableLayout']>('fixed')
 const editDialogVisible = ref(false)

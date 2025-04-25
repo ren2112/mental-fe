@@ -250,7 +250,7 @@ async function handlePageChange(newPage : number) {
 // 跳转详情页并传递参数
 const handleRowClick = async(row: Post, event: Event) =>{
   // 这里传递了 postID 和 check 参数，以及新增的 source 参数
-  await router.push({ name: 'content', query: { postID: row.ID, check: 1, source: 'delete' } });
+  await router.push({ name: 'mob-content', query: { postID: row.ID, check: 1, source: 'delete' } });
 }
 
 
