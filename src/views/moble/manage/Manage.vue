@@ -6,16 +6,16 @@
         {{ selectedDepartmentName }}
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="goToUserManage(0)">全部用户</el-dropdown-item>
-            <el-dropdown-item @click="goToUserManage(1)">区团工委</el-dropdown-item>
-            <el-dropdown-item @click="goToUserManage(2)">社区团组织</el-dropdown-item>
-            <el-dropdown-item @click="goToUserManage(3)">高校团组织</el-dropdown-item>
-            <el-dropdown-item @click="goToUserManage(4)">企业团组织</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(-1)">全部用户</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(0)">区团工委</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(1)">社区团组织</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(2)">高校团组织</el-dropdown-item>
+            <el-dropdown-item @click="goToUserManage(3)">企业团组织</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
       <el-button type="primary" @click="goToPostCheck">帖子审核</el-button>
-      <el-button type="primary" @click="goToPostModify">增删帖子</el-button>
+      <el-button type="primary" @click="goToPostModify">删除帖子</el-button>
     </el-header>
 
     <div class="user-manage">
@@ -32,23 +32,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import router from "@/router";
-import {department} from "@/api/user";
+import { department } from "@/api/user";
 import FooterNav from "@/views/moble/footer.vue";
 
 // 部门名称映射
-const departmentMap: Record<number, string> = {
-  [0]: '所有用户',
-  [1]: '区团工委',
-  [2]: '社区团组织',
-  [3]: '高校团组织',
-  [4]: '企业团组织',
-};
+const departmentAll = ref([
+  { id: -1, label: '所有用户' },
+  { id: 0, label: '区团工委' },
+  { id: 1, label: '社区团组织' },
+  { id: 2, label: '高校团组织' },
+  { id: 3, label: '企业团组织' },
+]);
 
 // 计算属性，获取当前选择的部门名称
 const selectedDepartmentName = computed(() => {
-  return departmentMap[department.value] || '用户管理';
+  const dept = departmentAll.value.find(item => item.id === department.value);
+  return dept ? dept.label : '用户管理';
 });
 
 // 侧边栏函数
@@ -58,21 +59,22 @@ const goToUserManage = (depId: number) => {
   department.value = depId;
 }
 const backToUserManage = (depId: number) => {
-  if (depId == -1) {
+  if (depId == -2) {
     router.push('/mob/manage/user-manage')
-    department.value = 0;
+    department.value = -1;
   }
 }
 
 const goToPostCheck = () => {
   router.push('/mob/manage/post-check')
-  department.value = -1
+  department.value = -2
 }
 
 const goToPostModify = () => {
   router.push('/mob/manage/post-modify')
-  department.value = -1
+  department.value = -2
 }
+
 // const goToDelRecord = () => {
 //   router.push('/mob/manage/post-del-record')
 // }

@@ -402,7 +402,7 @@ async function deletePost() {   //删除贴子
         type: 'success',
       });
       // 删除成功后跳转到删除帖子页面
-      router.push('/manage/post-modify');
+      router.push('/mob/manage/post-modify');
     } else {
       // 删除失败时显示错误信息
       ElMessage({
@@ -429,7 +429,7 @@ async function approvePost(ifApprove) {
     const response = await approvePostAPI(data);
     console.log(response);
     if (response.code === 0) {
-      await router.push('/manage/post-check');
+      await router.push('/mob/manage/post-check');
       ElMessage({
         message: '审批成功',
         type: 'success'

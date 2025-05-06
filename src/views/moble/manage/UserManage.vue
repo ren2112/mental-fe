@@ -280,6 +280,7 @@ itemTotal.value = 0;
 
 
 const departmentAll = ref([
+  { id: -1, label: '所有用户' },
   { id: 0, label: '区团工委' },
   { id: 1, label: '社区团组织' },
   { id: 2, label: '高校团组织' },
@@ -389,7 +390,7 @@ async function fetchUsers() {
     Department?: number; // 部门（可选）
   }
 
-  if (department.value != 0) {
+  if (department.value != -1) {
     data = {
       pageSize: pageSize.value,
       pageNum: pageNum.value,
