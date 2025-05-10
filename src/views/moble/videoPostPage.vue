@@ -216,7 +216,7 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
 .contentinputbox {
     width: 90%;
     margin: 0 5%;
-    border-bottom: 0.25vh solid rgba(0, 130, 65, 1);
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
     height: 55vh; /* 使用相对高度 */
     overflow: hidden;
     position: relative;
@@ -226,6 +226,7 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
   height: 100%;
   font-size: 1rem;
   font-weight: 500;
+  font-family: "Helvetica Neue", Arial, sans-serif; 
   resize: none;
   outline: none;
   border: transparent;

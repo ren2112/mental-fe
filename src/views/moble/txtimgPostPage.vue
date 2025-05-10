@@ -305,7 +305,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         margin: 0 5%;
         border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
         overflow: hidden; /* 防止内容直接溢出 */
-        max-height: 55vh;
+        height: 55vh;
     }
     .text_part{
         width: 100%;
@@ -317,10 +317,12 @@ const showPlaceholder = () => {  //显示内容中的提示文字
     }
     .editable-content {
         width: 100%;
-        border: 0.1vh solid #ccc;
         min-height: 40vh;
         overflow-y: auto;
         line-height: 1.5;
+        font-size: 1rem;
+        font-weight: 500;
+        font-family: "Helvetica Neue", Arial, sans-serif;
     }
     .editable-content img {
         max-width: 90%;
@@ -334,9 +336,7 @@ const showPlaceholder = () => {  //显示内容中的提示文字
         right: 50%;
     }
     #content_input {
-        width: 100%; 
         height: auto;
-        font-size: 0.8rem;
         border: transparent;
         resize: none; 
         outline: none;
