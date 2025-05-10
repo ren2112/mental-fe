@@ -175,12 +175,15 @@
 
 /* 文章内容 */
 .article-content {
-  font-size: 1.5vh; /* 1rem -> 1.5vh */
-  line-height: 1.6;
+  font-size: 14px !important;
+  line-height: 1.6em;
   margin-top: 1vh; /* 0.67rem -> 1vh */
   word-break: break-all;
   overflow-wrap: break-word;
   white-space: pre-wrap;
+}
+.article-content * {
+  font-size: 14px !important;
 }
 
 /* 底部导航 */
@@ -242,9 +245,6 @@
     font-size: 5.6vh; /* 2rem -> 2.8vh */
   }
 
-  .article-content {
-    font-size: 1.8vh; /* 1.2rem -> 1.8vh */
-  }
 
   .footer-nav {
     padding: 2vh 2vw; /* 1.5rem -> 2vh/vw */
@@ -265,9 +265,6 @@
     font-size: 3.6vh; /* 1.3rem -> 1.8vh */
   }
 
-  .article-content {
-    font-size: 1.3vh; /* 0.9rem -> 1.3vh */
-  }
 
   .footer-nav {
     padding: 1.2vh 1.2vw; /* 0.8rem -> 1.2vh/vw */
@@ -288,9 +285,6 @@
     font-size: 3vh; /* 1.1rem -> 1.5vh */
   }
 
-  .article-content {
-    font-size: 1.2vh; /* 0.85rem -> 1.2vh */
-  }
 
   .footer-nav {
     padding: 1vh 1vw; /* 0.6rem -> 1vh/vw */
