@@ -90,5 +90,8 @@ const handlePartSelect = (index) => {
   color: white;
   font-size: 14px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 </style>
