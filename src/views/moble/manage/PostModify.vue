@@ -59,7 +59,7 @@
           <span class="title">{{ formatContent(scope.row.Title, 15) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="Content" label="简介" width="170vw">
+      <el-table-column prop="Content" label="简介" width="100vw">
         <template #default="scope">
           <span class="content">{{ formatContent(scope.row.Content, 20) }}</span>
         </template>
