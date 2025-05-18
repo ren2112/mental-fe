@@ -11,7 +11,7 @@
         <div v-if="article.createAt" class="article-created-at">
           <!-- 只有是作者本人查看时才显示修改贴子的按钮 -->
           <button v-if="isCurrentUser" class="modify-post-btn" @click="toModifyPost">修改贴子</button>
-          <el-popconfirm v-if="isCurrentUser" @confirm="delPost" title="请确认是否要删除帖子?">
+          <el-popconfirm v-if="isCurrentUser&&curTab!=='1'" @confirm="delPost" title="请确认是否要删除帖子?">
             <template #reference>
               <button class="modify-del-btn">删除贴子</button>
             </template>
@@ -23,8 +23,8 @@
       <div class="article-section">
         <h1 class="article-title">{{ article.title }}</h1>
 
-        <!-- 如果没有视频，则显示封面图片 -->
-        <div v-if="!article.video && article.cover" class="article-cover">
+        <!-- 显示封面图片 -->
+        <div v-if="article.cover&&!article.video" class="article-cover">
           <img :src="article.cover" alt="cover" class="cover-image" />
         </div>
 
@@ -85,6 +85,9 @@ const curTab = route.query.curTab || 0
 const currentUser = authStore.userInfo; // 假设当前用户信息存储在 authStore 中
 
 const isCurrentUser = computed(() =>{ 
+  if(currentUser==null){
+    return false
+  }
   return currentUser.id == author.value.id;
 }); // 判断是否是作者本人
 
@@ -140,7 +143,7 @@ async function approvePost(ifApprove: number) {
   };
   try {
     console.log(data);
-    const response = await approvePostAPI(data);
+    const response = await approvePostAPI(data) as any;
     console.log(response);
     if (response.code === 0) {
       await router.push('/manage/post-check');
@@ -188,7 +191,7 @@ async function deletePost() {   //删除贴子
 
   try {
     // 调用删除帖子接口
-    const response = await deletePostAPI(postID);
+    const response = await deletePostAPI(postID) as any;
 
     if (response.code === 0) {
       // 删除成功后显示成功信息
@@ -228,7 +231,7 @@ async function delPost(){
   if(!postID){
     ElMessage.error('帖子ID不存在')
   }
-  const res = await delSelfPostAPI(postID as any)
+  const res = await delSelfPostAPI(postID as any) as any
   if(res.code === 0){
     ElMessage.success(res.msg)
     router.push('/index')
@@ -333,7 +336,11 @@ onMounted(async () => {
 
 .article-content {
   margin-bottom: 20px;
-  text-align: center; /* 确保所有在内容区域的图片居中 */
+  word-break: break-all; /* 强制所有字符换行（包括长单词/字符） */
+  overflow-wrap: break-word; /* 优先在单词内换行 */
+  white-space: pre-wrap; /* 保留空格和换行符 */
+  /* text-align: center;  */
+  /* 确保所有在内容区域的图片居中 */
 }
 
 .article-cover {

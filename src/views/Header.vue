@@ -18,10 +18,15 @@
             <el-icon><Message /></el-icon>
             消息
           </router-link> -->
-          <router-link :to="{ path: '/my-home-page', query: { id: authStore.userInfo.id } }" class="nav-item user" v-if="authStore.token != ''">
+          <router-link
+            :to="{ path: '/my-home-page', query: { id: authStore.userInfo?.id?.toString() || '' } }"
+            class="nav-item user"
+            v-if="authStore.token !== '' && authStore.userInfo"
+          >
             <el-icon><User /></el-icon>
-            <span class="username">{{ authStore.userInfo.username }}</span>
+            <span class="username">{{ authStore.userInfo?.username || '用户' }}</span>
           </router-link>
+
           <router-link to="/login" class="nav-item" v-else>
             <el-icon><User /></el-icon>
             登录
@@ -36,27 +41,24 @@
 </template>
 
 <script setup lang="ts">
-import { House, Edit, Message, User } from '@element-plus/icons-vue'
+import { House, Edit, Message} from '@element-plus/icons-vue'
 import {ref,onMounted} from 'vue';
+import type {User} from '@/type/user'
 import { useAuthStore } from '@/stores/auth';
-import {getUserByTokenAPI} from '@/api/user';
 const authStore = useAuthStore();
 
-const userInfo = ref({
-    id:'',
-    username: '',
-    avatar: '', // 可以用于存储用户头像的 URL
-    email: '',
-    phone:'',
-    department: '',
-  });
+const userInfo = ref<User | null>(null);
 
 // 异步函数获取用户数据
 const fetchUserInfo = async () => {
   if (authStore.token != '') {
     try {
-      const res = await getUserByTokenAPI();
-      userInfo.value = res.data.user; // 更新响应式数据
+      authStore.refreshUserInfo()
+      if(authStore.userInfo){
+        userInfo.value = authStore.userInfo
+      }
+      console.log(userInfo.value);
+      
     } catch (error) {
     }
   }

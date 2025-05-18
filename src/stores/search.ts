@@ -28,7 +28,7 @@ export async function onSearchUser(inputSearch: string) {
     //     await fetchUsers();
     // }
     // else {
-    const searchField = typeSearch.value; // 获取当前搜索类型
+    const searchField = typeSearch.value as string; // 获取当前搜索类型
     let data: {
         pageSize: number;    // 每页记录数（必需）
         pageNum: number;     // 页码（必需）
@@ -56,7 +56,7 @@ export async function onSearchUser(inputSearch: string) {
 
     try {
         console.log(data);
-        const response = await getUserListAPI(data);
+        const response = await getUserListAPI(data) as any;
         console.log(response);
 
         if (response.code === 0) {
@@ -112,7 +112,7 @@ export async function onSearchPost(inputSearch: string, isApproved: number) {
 
     try {
         console.log(data);
-        const response = await getUnapprovedPostsAPI(data);
+        const response = await getUnapprovedPostsAPI(data) as any;
         console.log(response);
 
         if (response.code === 0) {

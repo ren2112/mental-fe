@@ -9,11 +9,7 @@
         <div class="post-media">
           <div class="image-placeholder" v-if="post.cover">
             <img 
-              v-if="post.cover" 
-              :src="post.cover.startsWith('http://localhost:8082/public/') 
-                ? post.cover 
-                : `http://localhost:8082/public/${post.cover}`" 
-              alt="Post Image" 
+              :src="post.cover"
             />
           </div>
         </div>

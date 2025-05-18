@@ -32,11 +32,11 @@
               增删帖子
             </template>
           </el-menu-item>
-          <el-menu-item index="4" @click="goToDelRecord">
+          <!-- <el-menu-item index="4" @click="goToDelRecord">
             <template #title>
               删帖记录
             </template>
-          </el-menu-item>
+          </el-menu-item> -->
         </el-menu>
       </div>
     </div>

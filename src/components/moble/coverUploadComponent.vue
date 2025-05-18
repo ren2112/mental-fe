@@ -29,14 +29,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onBeforeUnmount, PropType } from 'vue'
+import { defineComponent, ref, watch, onBeforeUnmount } from 'vue'
+import type { PropType } from 'vue'
 import { PictureFilled } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ImageUploader',
   props: {
     modelValue: {
-      type: [File, String] as PropType<File | string>,
+      type: [Object, String] as PropType<File | string | null>,
       default: null
     }
   },

@@ -240,7 +240,6 @@ import {
   pageNum,
   itemTotal,
   tableData,
-  typeAll,
   typeSearch,
   inputSearch,
   onSearchUser
@@ -269,11 +268,17 @@ const dialogWidth = ref('90%')
 tableData.value = []
 inputSearch.value = ''
 typeSearch.value = 'ID'
-typeAll.value = [
-  { id: 'ID', label: '帐号'},
-  { id: 'Username', label: '姓名'},
-  { id: 'Email', label: '邮箱'},
-  { id: 'Phone', label: '电话'}]
+type OptionItem = {
+  id: string;
+  label: string;
+};
+
+const typeAll = ref<OptionItem[]>([
+  { id: 'ID', label: '帐号' },
+  { id: 'Username', label: '姓名' },
+  { id: 'Email', label: '邮箱' },
+  { id: 'Phone', label: '电话' }
+]);
 pageSize.value = 12;
 pageNum.value = 1;
 itemTotal.value = 0;
@@ -405,7 +410,7 @@ async function fetchUsers() {
 
   try {
     console.log(data);
-    const response = await getUserListAPI(data);
+    const response = await getUserListAPI(data) as any;
     console.log(response);
 
     if (response.code === 0) {
@@ -464,7 +469,7 @@ async function updateUser (user: User) {
         phone: user.Phone,
         department: user.Department
       }
-      const response = await updateUserAPI(data);
+      const response = await updateUserAPI(data) as any;
 
       if (response.code === 0) {
         await fetchUsers();
@@ -536,7 +541,7 @@ async function resetPassword (user: User) {
       id: user.ID,
       // newPassword: "0000",
     }
-    const response = await resetPasswordAPI(data);
+    const response = await resetPasswordAPI(data) as any;
 
     if (response.code === 0) {
       ElMessage({
@@ -577,7 +582,7 @@ async function deleteUser (user: User) {
     const data = {
       id: user.ID,
     }
-    const response = await deleteUserAPI(data)
+    const response = await deleteUserAPI(data) as any
     console.log(response);
 
     if (response.code === 0) {
@@ -622,7 +627,7 @@ async function addUser (user: User) {
         department: user.Department
       }
       console.log(data)
-      const response = await addUserAPI(data);
+      const response = await addUserAPI(data) as any;
       console.log(response)
 
       if (response.code === 0) {

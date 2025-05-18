@@ -141,7 +141,7 @@
       searchQuery: searchQuery.value,
     }
     try {
-      const response = await getdelPostsAPI(params);
+      const response = await getdelPostsAPI(params) as any;
       if (response.code === 0) {
         if(response.data.posts === null) {
           tableData.value = [];

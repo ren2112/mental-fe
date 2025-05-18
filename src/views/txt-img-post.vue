@@ -83,6 +83,7 @@ import { ref } from 'vue';
 import Dropdown from '../components/dropdownmenu.vue';
 import { uploadFileAPI,publishPostAPI } from '../api/post.ts'; 
 import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'App',
@@ -95,6 +96,7 @@ export default {
     const showChangeText = ref(false);
     const fileInput = ref(null);
     const imageInput = ref(null);
+    const router = useRouter();
 
     const title = ref(''); // 帖子标题
     const content = ref(''); // 用于管理 textarea 的内容
@@ -137,8 +139,8 @@ export default {
         try {
           const response = await uploadFileAPI(formData);
           if (response.code === 0) {
-            const picUrl = response.data.picUrl;
-            insertImage(picUrl);
+            const fileUrl = response.data.fileUrl;
+            insertImage(fileUrl);
           } else {
             ElMessage.error("图片上传失败");
             console.error('上传失败:', response.msg);
@@ -169,7 +171,6 @@ export default {
       const editableDiv = document.getElementById('content_input');
       const rawContent = editableDiv.innerHTML.trim(); // 更新 content 为编辑框中的 HTML 内容
       content.value = rawContent === '<br>'?'':rawContent;
-      console.log(content.value);
     };
 
     const hidePlaceholder = () => {
@@ -195,7 +196,7 @@ export default {
       try{
         const response = await uploadFileAPI(formData);
         if(response.code===0){
-          cover.value = response.data.picUrl;
+          cover.value = response.data.fileUrl;
           return cover.value;
         }else{
           ElMessage.error(response.msg);
@@ -233,23 +234,22 @@ export default {
           title:title.value,
           content:content.value,
           part:selectedIndex.value,
-          cover:cover.value
+          cover:cover.value,
+          type: 0,
         };
 
         const response = await publishPostAPI(body);
         if(response.code === 0){
           ElMessage(response.msg);
-          setTimeout(()=>{
-            window.location.reload();
-          },1000);
-          
+          setTimeout(() => {
+            router.push('/index'); 
+          }, 1000);
         }else{
           ElMessage(response.msg);
         }
 
       }catch(error){
         ElMessage.error('发布出错，请稍后重试');
-        console.error('发布出错:', error);
       }
 
     }

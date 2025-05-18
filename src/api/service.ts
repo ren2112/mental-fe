@@ -4,11 +4,11 @@ import { ElLoading, ElMessage } from "element-plus";
 // 创建axios实例 进行基本参数配置
 const service = axios.create({
     // 默认请求地址，根据环境的不同可在.env 文件中进行修改
-    baseURL: 'http://localhost:8082',
+    baseURL: '',
     // 设置接口访问超时时间
-    // timeout: 3000, // request timeout，
+    timeout: 3000, // request timeout，
     // 跨域时候允许携带凭证
-    // withCredentials: true,
+    withCredentials: true,
 })
 
 let loadingInstance: any = null // 用于存储loading实例
@@ -47,7 +47,7 @@ service.interceptors.request.use(
 )
 
 service.interceptors.response.use(
-    (response: AxiosResponse) => {
+    (response) => {
         pendingRequests-- // 请求完成，计数减 1
         
         if (pendingRequests === 0 && loadingInstance) { // 只有最后一个请求返回时才关闭 loading
@@ -59,7 +59,6 @@ service.interceptors.response.use(
     },
     (error: AxiosError) => {
         pendingRequests-- // 请求失败，计数减 1
-        
         if (pendingRequests === 0 && loadingInstance) {
             loadingInstance.close()
             loadingInstance = null

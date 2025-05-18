@@ -228,37 +228,34 @@ import {
   pageNum,
   itemTotal,
   tableData,
-  typeAll,
   typeSearch,
   inputSearch,
   onSearchUser
 } from "@/stores/search"
 import type { FormInstance, FormRules } from 'element-plus'
+import type { User } from '@/type/user';
 
 
 /**
  * 常/变量（const/let）的定义
  */
 // 类型定义
-interface User {
-  ID?: number | undefined;
-  Username?: string;
-  Password?: string;
-  Email?: string;
-  Department?: number | undefined;
-  Phone?: string;
-  Avatar?: string;
-}
 
 // 外部导入
 tableData.value = []
 inputSearch.value = ''
 typeSearch.value = 'ID'
-typeAll.value = [
-  { id: 'ID', label: '帐号'},
-  { id: 'Username', label: '姓名'},
-  { id: 'Email', label: '邮箱'},
-  { id: 'Phone', label: '电话'}]
+type OptionItem = {
+  id: string;
+  label: string;
+};
+
+const typeAll = ref<OptionItem[]>([
+  { id: 'ID', label: '帐号' },
+  { id: 'Username', label: '姓名' },
+  { id: 'Email', label: '邮箱' },
+  { id: 'Phone', label: '电话' }
+]);
 pageSize.value = 12;
 pageNum.value = 1;
 itemTotal.value = 0;
@@ -358,7 +355,7 @@ function validatePass2(rule: any, value: any, callback: any) {
 // 定义 formatter 函数
 function formatDepartment (row: User) {
   // 在 departmentAll.value 数组中查找 id 等于 cell 的部门对象
-  const dept = departmentAll.value.find(d => d.id === row.Department);
+  const dept = departmentAll.value.find(d => d.id === row.department);
   return dept ? dept.label : '未知部门';
 }
 
@@ -389,7 +386,7 @@ async function fetchUsers() {
 
   try {
     console.log(data);
-    const response = await getUserListAPI(data);
+    const response = await getUserListAPI(data) as any;
     console.log(response);
 
     if (response.code === 0) {
@@ -426,11 +423,11 @@ async function fetchUsers() {
 // 编辑
 function handleEdit (user: User) {
   resetSelectedUser();
-  selectedUser.value.ID = user.ID;
-  selectedUser.value.Username = user.Username;
-  selectedUser.value.Email = user.Email;
-  selectedUser.value.Phone = user.Phone;
-  selectedUser.value.Department = user.Department;
+  selectedUser.value.ID = user.id;
+  selectedUser.value.Username = user.username;
+  selectedUser.value.Email = user.email;
+  selectedUser.value.Phone = user.phone;
+  selectedUser.value.Department = user.department;
   editDialogVisible.value = true;
 }
 
@@ -442,13 +439,13 @@ async function updateUser (user: User) {
     // 如果验证通过，执行提交逻辑
     try {
       const data = {
-        id: user.ID,
-        username: user.Username,
-        email: user.Email,
-        phone: user.Phone,
-        department: user.Department
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        department: user.department
       }
-      const response = await updateUserAPI(data);
+      const response = await updateUserAPI(data) as any;
 
       if (response.code === 0) {
         await fetchUsers();
@@ -517,10 +514,10 @@ async function updateUser (user: User) {
 async function resetPassword (user: User) {
   try {
     const data = {
-      id: user.ID,
+      id: user.id,
       // newPassword: "0000",
     }
-    const response = await resetPasswordAPI(data);
+    const response = await resetPasswordAPI(data) as any;
 
     if (response.code === 0) {
       ElMessage({
@@ -559,9 +556,9 @@ const handleDelete = (row: User) => {
 async function deleteUser (user: User) {
   try {
     const data = {
-      id: user.ID,
+      id: user.id,
     }
-    const response = await deleteUserAPI(data)
+    const response = await deleteUserAPI(data) as any
     console.log(response);
 
     if (response.code === 0) {
@@ -599,14 +596,14 @@ async function addUser (user: User) {
     // 如果验证通过，执行提交逻辑
     try {
       const data = {
-        username: user.Username,
-        password: user.Password || '123',
-        email: user.Email,
-        phone: user.Phone,
-        department: user.Department
+        username: user.username,
+        password: user.password || '123',
+        email: user.email,
+        phone: user.phone,
+        department: user.department
       }
       console.log(data)
-      const response = await addUserAPI(data);
+      const response = await addUserAPI(data) as any;
       console.log(response)
 
       if (response.code === 0) {

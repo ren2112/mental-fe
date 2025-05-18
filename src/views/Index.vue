@@ -59,9 +59,10 @@ import { ref, onMounted } from 'vue';
 import { Search } from '@element-plus/icons-vue';
 import PostCard from '@/components/PostCard.vue';
 import { getPostsByPartAPI } from '@/api/post';
+import type { Post } from '@/type/post';
 
 const searchQuery = ref('');
-const posts = ref([]);
+const posts = ref<Post[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(4);
 const totalPosts = ref(0);
@@ -79,7 +80,7 @@ const filterOptions = [
 // 获取帖子数据的函数
 const fetchPosts = async () => {
   try {
-    const response = await getPostsByPartAPI(currentPart.value, currentPage.value, pageSize.value, searchQuery.value);
+    const response = await getPostsByPartAPI(currentPart.value, currentPage.value, pageSize.value, searchQuery.value) as any;
     if (response.code === 0) {
       posts.value = response.data.posts;
       totalPosts.value = response.data.total;

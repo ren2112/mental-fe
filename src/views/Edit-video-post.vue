@@ -18,8 +18,25 @@
         <div class="title_container">
           <input type="text" id="title_input" placeholder="请输入视频标题（最多40字）" maxlength="40" v-model="title">
         </div>
-        <div class="intro_container">
+        <!-- <div class="intro_container">
           <textarea id="intro_textarea" placeholder="请输入视频简介（最多2000字）" maxlength="2000" v-model="content"></textarea>
+        </div> -->
+          <div class="text_part">
+            <div 
+              id="content_input"
+              contenteditable="true" 
+              class="editable-content"
+              maxlength="4000"
+              @input="updateContent"
+              @focus="hidePlaceholder"
+              @blur="showPlaceholder"
+            ></div>
+            <div 
+              v-if="showPlaceholderText && !content" 
+              class="placeholder-text"
+            >
+              请输入贴子内容(最多4000字)
+            </div>
         </div>
       </div>
     </div>
@@ -29,11 +46,10 @@
   import { ref } from 'vue';
   import Dropdown from '../components/dropdownmenu.vue';
   import { ElMessage } from 'element-plus';
-  import { useRoute } from 'vue-router';
-  import { updatePostAPI,getPostDetailAPI,uploadFileAPI } from '@/api/post';
+  import { useRouter,useRoute } from 'vue-router';
+  import { updatePostAPI,getPostDetailAPI,uploadFileAPI,publishPostAPI } from '@/api/post';
   import { useAuthStore } from '@/stores/auth';
   import { onMounted } from 'vue';
-  import router from '@/router'; // 添加路由导入
   
   export default{
     name: 'edit-post',
@@ -41,6 +57,7 @@
       Dropdown,
     },
     setup(){
+      const router = useRouter();
       const route = useRoute();
       const authStore = useAuthStore();
       const token = authStore.token;
@@ -48,32 +65,34 @@
       const curTab = route.query.curTab || 0
       const video = ref('')
 
-      // const fileName = ref('未选择文件');
       const image = ref(null);
       const showChangeText = ref(false);
-      // const fileInput = ref(null);
       const title = ref(''); // 帖子标题
       const content = ref(''); // 帖子简介
       const selectedIndex = ref(-1); // 响应式变量存储下拉菜单选中的索引值
+      const showPlaceholderText = ref(true);
   
       const updateSelectedIndex = (index) => {
         selectedIndex.value = index;
       };
-  
-      /*const onFileChange = (event) => {
-        const file = event.target.files[0];
-        fileName.value = file ? file.name : '未选择文件'; // 更新文件名
-        fileInput.value = file ? file : null; //绑定上传文件
-      };*/
-  
-      const onImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          image.value = URL.createObjectURL(file);
+
+      const updateContent = () => {
+        const editableDiv = document.getElementById('content_input');
+        const rawContent = editableDiv.innerHTML.trim();
+        content.value = rawContent === '<br>' ? '' : rawContent;
+      };
+
+      const hidePlaceholder = () => {
+        showPlaceholderText.value = false;
+      };
+
+      const showPlaceholder = () => {
+        if (!content.value.trim()) {
+          showPlaceholderText.value = true;
         }
       };
-  
-      // 完成修改逻辑
+
+        // 完成修改逻辑
       const handlePost = async () => {
         // 修改验证逻辑（移除了文件必传验证）
         if (!title.value.trim()) {
@@ -88,30 +107,25 @@
           ElMessage.warning('请选择活动分区');
           return;
         }
-      
-        
-        // 如果有新文件则添加
-        // if (fileInput.value) {
-        //   formData.append('file', fileInput.value);
-        // }
 
         try {
           let response = null
           if(curTab === '1'){
-            const formData = new FormData()
-            formData.append('type',0);
-            formData.append('part',selectedIndex.value);
-            formData.append('title',title.value);
-            formData.append('content',content.value);
-            formData.append('file','');
-            response = await uploadFileAPI(formData)
+            const params = {
+              type: 1,
+              part: selectedIndex.value,
+              title: title.value,
+              content: content.value,
+              video: video.value
+            }
+            response = await publishPostAPI(params);            
           }else{
             const body = {
-            PostID: Number(postID),
-            Title: title.value,     
-            Content: content.value, 
-            Part: selectedIndex.value
-          };
+              PostID: Number(postID),
+              Title: title.value,     
+              Content: content.value, 
+              Part: selectedIndex.value
+            };
             response = await updatePostAPI(body);
           }
 
@@ -128,6 +142,7 @@
           }
         } catch (error) {
           ElMessage.error('请求失败，请检查网络');
+          console.log(error)
         }
       };
   
@@ -146,14 +161,14 @@
           content.value = post.content;
           selectedIndex.value=post.part;
           video.value = post.video
-          debugger
-          console.log(video.value)
-          // 显示原始视频信息（假设post.video是视频URL）
-          // if (post.video) {
-          //   fileName.value = post.video.split('/').pop() || '已上传视频';
-          // }
+          
+          
+          // 直接将 content 赋值给可编辑区域，保留视频和文字的原始位置
+          document.getElementById("content_input").innerHTML = content.value;
+
         } catch (error) {
           ElMessage.error('获取帖子数据失败');
+          console.log(error)
         }
       };
 
@@ -163,34 +178,23 @@
       });
 
       return{
-        // fileName,
-        // fileInput,
-        // onFileChange,
         image,
         showChangeText,
         title,
         content,
-        onImageChange,
         handlePost,
         selectedIndex,
-        updateSelectedIndex
+        updateSelectedIndex,
+        updateContent,
+        hidePlaceholder,
+        showPlaceholder,
+        showPlaceholderText,
       };
     }
   }
 </script>
 
-<!-- <div class="video_box">
-  <div class="the_file_choose">
-    <label>选择视频文件：</label>
-    <label class="file-upload">
-      选择文件
-      <input type="file" @change="onFileChange" accept="video/*" />
-    </label>
-    <div class="file-name-container">
-      {{ fileName }}
-    </div>
-  </div>
-</div> -->
+
   
 <style scoped>
   .background_container{
@@ -364,6 +368,32 @@
   
   h1{
     color: rgba(0,130,65,1);
+  }
+
+  .text_part{
+    width: 100%;
+    height: 520px;
+    border-bottom: 1px solid rgba(0, 130, 65, 1);
+    margin: 5px 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .editable-content{
+    width: 100%;
+    border: 1px solid #ccc;
+    min-height: 200px;
+    overflow-y: auto;
+    line-height: 1.5;
+  }
+
+  .placeholder-text {
+    position: absolute;
+    color: #aaa;
+    pointer-events: none; /* 防止点击 placeholder */
+    top: 10px;
+    left: 15px;
   }
   
   @media (max-width: 600px) {

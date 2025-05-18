@@ -147,10 +147,10 @@ export default defineComponent({
             formData.append('content', content.value); // 当前内容（可为空）
             formData.append('part', '1')
             try {
-                const response = await uploadFileAPI(formData);
+                const response = await uploadFileAPI(formData) as any;
                 if (response.code === 0) {
-                    const picUrl = response.data.picUrl;
-                    insertImage(picUrl);
+                    const fileUrl = response.data.fileUrl;
+                    insertImage(fileUrl);
                 } else {
                     ElMessage.error("图片上传失败");
                     console.error('上传失败:', response.msg);
@@ -189,14 +189,14 @@ export default defineComponent({
         if (!coverFile.value) return ''
         const formData = new FormData();
         formData.append('file',coverFile.value);
-        formData.append('type',0);
-        formData.append('part',selectedIndex.value);
-        formData.append('coverFlag',1);
+        formData.append('type','0');
+        formData.append('part',selectedIndex.value.toString());
+        formData.append('coverFlag','1');
     
         try{
-            const response = await uploadFileAPI(formData);
+            const response = await uploadFileAPI(formData) as any;
             if(response.code===0){
-                cover.value = response.data.picUrl;
+                cover.value = response.data.fileUrl;
                 return cover.value;
             }else{
                 ElMessage.error(response.msg);
@@ -242,18 +242,22 @@ export default defineComponent({
                 part:selectedIndex.value,
                 cover:cover.value || image.value
             };
-            let response = {}
+            let response :any
             if(curTab === '1'){
-              response = await publishPostAPI(body)
+              response = await publishPostAPI(body) as any
             }else{
-              response = await updatePostAPI(body);
+              response = await updatePostAPI(body) as any;
             }
             if(response.code === 0){
                 ElMessage.success('修改成功');
-                router.push({
-                  name: 'my-home-page',
-                  query: { id: authStore.userInfo.id }
-                });
+                if (authStore.userInfo) {
+                  router.push({
+                    name: 'my-home-page',
+                    query: { id: authStore.userInfo.id }
+                  });
+                }else{
+                  ElMessage.error('获取信息异常');
+                }
         
             }else{
                 ElMessage(response.msg || "未知错误");

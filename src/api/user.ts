@@ -29,7 +29,7 @@ export const getUserByTokenAPI = async () => {
 };
 
 // 只从id获取用户接口 (/api/auth/admin/user-get)
-export const getUserAPI = async ( id: string ) => {
+export const getUserAPI = async ( id :any) => {
     return await service.get('/api/noauth/user-get', {
         params: { id },
     });
@@ -54,15 +54,7 @@ export const getUserListAPI = async (
 
 // 更新自己用户接口 (/api/auth/user-update)
 export const updateSelfUserAPI = async (
-    data: {
-        id: number | undefined;
-        username?: string;
-        password?: string;
-        email?: string;
-        phone?: string;
-        department?: number | undefined;
-        avatar?:string
-    }) => {
+    data: any) => {
     return await service.put('/api/auth/user-update', data);
 };
 

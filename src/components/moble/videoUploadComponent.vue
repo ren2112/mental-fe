@@ -27,7 +27,8 @@
 </template>
   
 <script lang="ts">
-import { defineComponent, ref, watch ,PropType , onBeforeUnmount } from 'vue'
+import { defineComponent, ref, watch  , onBeforeUnmount } from 'vue'
+import type { PropType } from 'vue'
 
 export default defineComponent({
   name: 'VideoUploader',

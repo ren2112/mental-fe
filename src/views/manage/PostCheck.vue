@@ -62,7 +62,7 @@
       </el-table-column>
       <el-table-column prop="Title" label="标题" sortable width="220">
         <template #default="scope">
-          <span class="title">{{ scope.row.Title }}</span>
+          <span class="title">{{ formatContent(scope.row.Title) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="Content" label="简介" width="320">
@@ -213,7 +213,7 @@ async function fetchPosts() {
   }
   try {
     console.log(data);
-    const response = await getUnapprovedPostsAPI(data);
+    const response = await getUnapprovedPostsAPI(data) as any;
     console.log(response);
 
     if (response.code === 0) {

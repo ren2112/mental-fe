@@ -206,7 +206,7 @@ async function fetchPosts() {
   }
   try {
     console.log(data);
-    const response = await getUnapprovedPostsAPI(data);
+    const response = await getUnapprovedPostsAPI(data) as any;
     console.log(response);
 
     if (response.code === 0) {

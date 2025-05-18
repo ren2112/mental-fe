@@ -89,14 +89,7 @@ export const deletePostAPI = async (postID: number) => {
 };
 
 //修改贴子
-export const updatePostAPI = async (params: {
-    postID: number;
-    title: string;
-    content: string;
-    part: number;
-    cover: string;
-    video?:string;
-}) => {
+export const updatePostAPI = async (params: any) => {
     const response = await service.put('/api/auth/update-post', params);
     return response; 
 };

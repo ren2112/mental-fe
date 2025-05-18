@@ -77,7 +77,8 @@ import { getUserAPI } from '@/api/user';
 import { useAuthStore } from '@/stores/auth';
 import PostCard from '@/components/PostCard.vue';
 import { ElMessage } from 'element-plus';
-
+import type { Post } from '@/type/post'; // 假如你放在 types.ts 里
+import { checkNode } from 'element-plus/es/components/cascader-panel/src/utils.mjs';
 
 const userInfo = ref({
   id: '',
@@ -90,8 +91,8 @@ const userInfo = ref({
 
 const route = useRoute();
 const router = useRouter();
-const userId = route.query.id;
-const posts = ref([]);
+const userId = computed(() => Number(route.query.id)); 
+const posts = ref<Post[]>([]);
 const activeButton = ref('published');
 const pageNum = ref(1);
 const pageSize = ref(4);
@@ -104,21 +105,30 @@ let curTab = 0 // 1代表回收站
 const currentUser = authStore.userInfo; // 假设当前用户信息存储在 authStore 中
 
 const isCurrentUser = computed(() =>{ 
-  return currentUser.id == userId
+  if(currentUser){
+    return currentUser.id == userId.value
+  }
+  return false
 }); // 判断是否是本人
 
-const isAdmin = computed(() => currentUser.department == 0); // 判断是否是管理员
+const isAdmin = computed(() => {
+  if(currentUser){
+    return currentUser.department == 0
+  }
+  return false
+}); // 判断是否是管理员
 
 // 部门映射
-const departmentMap = {
+const departmentMap: Record<number, string> = {
   0: '区团委',
   1: '社区团组织',
   2: '高校团组织',
   3: '企业团组织',
+
 };
 
 const departmentName = computed(() => {
-  return departmentMap[userInfo.value.department] || '未知部门'; // 如果没有对应部门，则返回 '未知部门'
+  return departmentMap[Number(userInfo.value.department)] || '未知部门';
 });
 
 const editProfile = () => router.push('/edit');
@@ -181,7 +191,8 @@ const fetchPosts = async () => {
 
 // 获取用户信息
 const getUserInfo = async () => {
-  const res = await getUserAPI(userId);
+  const userId = route.query.id as string;
+  const res = await getUserAPI(userId); // 这里就安全了
   userInfo.value = res.data.user;
 };
 

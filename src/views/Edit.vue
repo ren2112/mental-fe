@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth';
-import {uploadAvatarAPI, getUserAPI, updateUserAPI, updatePasswordAPI, sendVerifyCodeAPI} from '@/api/user';
+import {uploadAvatarAPI, getUserAPI, updateSelfUserAPI, updatePasswordAPI, sendVerifyCodeAPI} from '@/api/user';
 import { ElMessage } from 'element-plus';
 import { ref, onMounted } from 'vue';
 
@@ -82,7 +82,7 @@ const sendVerificationCode = async () => {
   }
   isSending.value = true;
   try {
-    const res =await sendVerifyCodeAPI({ email: email.value });
+    const res =await sendVerifyCodeAPI({ email: email.value }) as any;
     if(res.code === 0){
       ElMessage.success(res.msg);
     }else{
@@ -97,9 +97,6 @@ const sendVerificationCode = async () => {
 
 // 更新密码
 const updatePassword = async () => {
-  console.log('password:', password.value);
-  console.log('confirmPassword:', confirmPassword.value);
-  console.log('Verification Code:', verificationCode.value);
   if (!password.value || !confirmPassword.value) {
     ElMessage.error('密码不能为空');
     return;
@@ -117,15 +114,19 @@ const updatePassword = async () => {
       password: password.value,
       email: email.value,
       verifyCode: verificationCode.value,
-    });
+    }) as any;
     if(res.code === 0){
       ElMessage.success(res.msg);
+    }else{
+      ElMessage.error(res.msg);
     }
     // 可根据需求清空输入框或跳转页面
     password.value = '';
     confirmPassword.value = '';
     verificationCode.value = '';
   } catch (error) {
+    // console.log(1234);
+    
     ElMessage.error('密码修改失败，请稍后重试');
   }
 };
@@ -142,11 +143,12 @@ const onFileSelected = async (event: any) => {
     try {
       const response = await uploadAvatarAPI(file);
       ElMessage((response as any).msg);
-      body.avatar = response.data.picUrl;
-      body.id = authStore.userInfo.id || '';
-      const res = await updateUserAPI(body);
-      ElMessage((res as any).msg);
+      // body.avatar = response.data.fileUrl;
+      // body.id = authStore.userInfo.id || '';
+      // const res = await updateUserAPI(body);
+      // ElMessage((res as any).msg);
       ElMessage.success('头像修改成功！');
+      await fetchUser();
     } catch (error) {
       console.error(error);
     }
@@ -178,15 +180,17 @@ const saveName = async () => {
     ElMessage.error("请输入正确的邮箱");
     return;
   }
-
-  const body = {
-    id: authStore.userInfo.id || '',
-    username: username.value,
-    email: email.value,
-  };
-
   try {
-    const res = await updateUserAPI(body);
+    if(authStore.userInfo){
+      const body = {
+        id: authStore.userInfo.id || '',
+        username: username.value,
+        email: email.value,
+      };
+    }else{
+      throw new Error("本地用户信息为空")
+    }
+    const res = await updateSelfUserAPI(body) as any;
     if (res.code === 0) {
       ElMessage({
         message: res.msg,
@@ -210,12 +214,16 @@ const saveName = async () => {
 // 获取用户信息
 const fetchUser = async () => {
   try {
-    const res1 = await getUserAPI(authStore.userInfo.id);
-    picSrc.value = res1.data.user.avatar;
-    username.value = res1.data.user.username; // 设置用户名
-    email.value = res1.data.user.email; // 设置邮箱
+    if(authStore.userInfo){
+      const res1 = await getUserAPI(authStore.userInfo.id) as any;
+      picSrc.value = res1.data.user.avatar;
+      username.value = res1.data.user.username; // 设置用户名
+      email.value = res1.data.user.email; // 设置邮箱
+    }else{
+      throw new Error('本地存储的用户信息为空');
+    }
   } catch (error) {
-    ElMessage.error("获取用户信息失败",error);
+    ElMessage.error(`获取用户信息失败: ${error}`);
   }
 };
 
