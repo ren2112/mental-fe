@@ -75,7 +75,7 @@ const goToDelRecord = () => {
 /* 页面主体容器样式 */
 .manage-page {
   display: flex; /* 使用 Flex 布局，子元素水平排列 */
-  gap: 40px; /* 子元素之间的间距 */
+  gap: 20px; /* 固定间距，不使用视口单位 */
   width: 100%;
   height: 100%;
 }
@@ -83,30 +83,28 @@ const goToDelRecord = () => {
 /* 侧边栏样式 */
 .sidebar {
   width: 268px; /* 固定宽度 */
-  height: 760px;
+  height: auto;
   flex-shrink: 0; /* 防止在 Flex 布局中被压缩 */
-  position: sticky; /* 滚动时固定位置 */
   display: flex;
   flex-direction: column; /* 子元素垂直排列 */
   margin-top: 10px;
 
-
   .filter-box {
     background: #fff; /* 背景颜色为白色 */
-    padding: 16px; /* 内边距 */
-    border-radius: 8px; /* 圆角边框 */
-    flex:1; /* 占据剩余空间 */
+    padding: 16px; /* 固定内边距 */
+    border-radius: 8px; /* 固定圆角 */
+    flex: 1; /* 占据剩余空间 */
     margin-top: 10px;
 
     .filter-title {
       font-weight: bold;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       margin-left: 10px;
       color: rgba(0,130,65,1);
     }
 
     .filter-options {
-      gap: 10px; /* 按钮间距 */
+      gap: 10px; /* 固定按钮间距 */
     }
   }
 
@@ -115,14 +113,14 @@ const goToDelRecord = () => {
     border: 1px solid rgba(0,130,65,0.3);
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-    border-radius: 8px; /* 圆角 */
+    border-radius: 8px; /* 固定圆角 */
 
     .el-menu-item {
       font-weight: bold;
       transition: all 0.3s ease;
       &:hover {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 鼠标悬停阴影加深 */
-        border-radius: 8px; /* 圆角 */
+        border-radius: 8px; /* 固定圆角 */
       }
     }
   }
@@ -130,5 +128,18 @@ const goToDelRecord = () => {
 
 .user-manage{
   flex: 1;
+  min-width: 0; /* 关键：允许内容区域缩小到最小 */
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 768px) {
+  .manage-page {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
 }
 </style>

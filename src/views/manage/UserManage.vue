@@ -657,19 +657,22 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
   margin-top: 20px;
   margin-bottom: 20px;
   width: 100%;
-  row-gap: 40px;
+  row-gap: 20px;
 
 
   /* 输入框容器 */
   .search-box {
     position: relative;
-    //width: 800px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 
     /* 修改搜索框样式 */
     .el-input {
-      width: 600px;
+      width: 100%;
+      max-width: 600px;
 
-      --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
+      // --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       border-radius: 30px; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       transition: border-color 0.3s, background-color 0.3s;
@@ -680,8 +683,8 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     }
     ::v-deep .el-input-group__append {
       border-radius: 30px; /* 圆角 */
-      border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
-      transition: border-color 0.3s, background-color 0.3s;
+      border: none;
+      // transition: border-color 0.3s, background-color 0.3s;
     }
 
 
@@ -716,6 +719,7 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     /* 修改选择器的样式 */
     ::v-deep .el-select {
       width: 80px;
+      min-width: 60px;
 
       left: 0;
       border-radius: 30px;
@@ -736,7 +740,7 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     }
     ::v-deep .el-select__wrapper {
       border-radius: 30px;
-      border: none;
+      border: 1px solid rgba(0, 130, 65, 1);
       box-shadow: none;
       &:hover {
         border: none;
@@ -749,17 +753,18 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     }
     ::v-deep .el-input-group__prepend {
       border-radius: 30px; /* 圆角 */
-      border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
-      transition: border-color 0.3s, background-color 0.3s;
+      border: none; /* 边框颜色 */
+      // transition: border-color 0.3s, background-color 0.3s;
     }
   }
 
 
   /* 表格 */
   .el-table {
-    border-radius: 10px; /* 设置元素的圆角为 10 像素 */
+    border-radius: 10px; /* 设置元素的圆角 */
     display: flex;
     flex-direction: column;
+    width: 100%;
     //flex-grow: 1;
   }
   .el-table__body {
@@ -781,4 +786,6 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
     }
   }
 }
+
+/* 移除不必要的媒体查询，因为现在使用了自适应布局 */
 </style>
