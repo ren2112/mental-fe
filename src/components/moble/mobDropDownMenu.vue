@@ -88,11 +88,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  font-size: 0.8rem;
-  padding: 5px 0;
-  border: 1px solid rgba(0,130,65,1);
-  border-radius: 5px;
+  width: 15vh;
+  height: 3.8vh;
+  max-height: 100%;
+  font-size: 1.5vh;
+  border: 0.1vh solid rgba(0,130,65,1);
+  border-radius: 0.5vh;
   background-color: rgba(0,130,65,1);
   color: white;
   cursor: pointer;
@@ -118,7 +119,7 @@
   padding: 2px 0;
   text-align: center;
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 1.3vh;
   color: rgba(0,130,65,0.9);
   background-color: white;
   border-bottom: 1px solid #f0f0f0;

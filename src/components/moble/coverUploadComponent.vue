@@ -93,10 +93,9 @@ export default defineComponent({
   /* 基础容器样式 */
   .image-uploader {
     position: relative;
-    width: 100%;
-    max-width: 104px;
-    max-height: 71%;
-    margin: 2% 0;
+    width: 12vh;
+    max-height: 9vh;
+    margin: 2vh 0;
     background: #f5f5f5;
     border: 2px dashed #999;
     border-radius: 12px;
@@ -123,7 +122,7 @@ export default defineComponent({
   
   .upload-text {
     color: #666;
-    font-size: 1.2rem;
+    font-size: 1.2vh;
     user-select: none;
     display: inline-flex;
     align-items: center;
@@ -154,7 +153,7 @@ export default defineComponent({
     color: #333;
     border: 1px solid #ddd;
     border-radius: 15px;
-    font-size: 0.9rem;
+    font-size: 0.8vh;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
@@ -173,12 +172,12 @@ export default defineComponent({
     }
     
     .upload-text {
-      font-size: 1rem;
+      font-size: 1.5vh;
     }
     
     .change-btn {
       padding: 5px 10px;
-      font-size: 0.85rem;
+      font-size: 0.8vh;
     }
   }
 </style>

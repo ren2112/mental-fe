@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import FirstPage from '@/views/FirstPage.vue'
 import Header from '@/views/Header.vue'
-//import { title } from 'process';
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -208,7 +208,6 @@ const router = createRouter({
 
 // 全局前置守卫
 router.beforeEach(async(to, from, next) => {
-  const {useAuthStore} = await import('@/stores/auth');
   const authstore = useAuthStore();
 
   // 判断当前是否移动端路由
@@ -216,8 +215,10 @@ router.beforeEach(async(to, from, next) => {
   // 获取正确的登录页路径
   const loginPath = isMobileRoute ? '/mob/login' : '/login';
 
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
   // 判断是否需要登录
-  if (to.meta.requiresAuth && !authstore.token) {
+  if (requiresAuth && !authstore.token) {
     // 未登录，跳转到登录页
     next({ path: loginPath});
   } else {

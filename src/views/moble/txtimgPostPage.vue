@@ -2,7 +2,7 @@
     <div class="container">
         <div class="header">
             <div class="header-box">
-                <h3>图文贴子发布</h3>
+                <p>图文贴子发布</p>
                 <div class="btnbox">
                     <RouterLink to="/mob/videoPost" class="headerbtn">
                         发布视频
@@ -15,7 +15,7 @@
         <div class="datainputcontainer">
             <div class="partchoosediv">
                 <div class="partchoosebox">
-                    <h4>活动分区：</h4>
+                    <p>活动分区：</p>
                     <div class="dropdownmenuBOX">
                         <mobDropDownMenu v-model="selectedIndex"/>
                     </div>
@@ -35,7 +35,7 @@
                 <input type="text" id="title_input" placeholder="请输入贴子标题（最多40字）" maxlength="40" v-model="title">
             </div>
             <div class="coverinputbox">
-                选择贴子封面：
+                <p>选择贴子封面：</p>
                 <coverUploadComponent v-model="coverFile"/>
             </div>
             <div class="contentinputbox">
@@ -209,31 +209,30 @@ const showPlaceholder = () => {  //显示内容中的提示文字
 </script>
     
 <style scoped>
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: 40vw;
-        height: 100vh;
-        background: white;
-    }
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 40vw;
+    height: 100vh;
+    background: white;
+}
 
-    .header {
+.header {
     width: 100%;
     height: 8vh;
     background: rgba(0, 130, 65, 1);
     color: white;
     text-align: center;
-    padding-top: 2vh;
-    font-size: 1.2rem;
+    padding-top: 1vh;
+    font-size: 3vh;
     border-bottom-left-radius: 2vh;
     border-bottom-right-radius: 2vh;
 }
 
 .header-box {
     height: 100%;
-    padding: 0.2rem 1rem;
-    padding-left: 1rem;
+    padding: 0.1vh 5vw;
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -242,126 +241,127 @@ const showPlaceholder = () => {  //显示内容中的提示文字
 .btnbox {
     display: flex;
     gap: 2vw;
-    padding: 0.2rem 0.5rem;
+    padding: 0.5vw 0.5vh;
 }
 
 .headerbtn {
-    padding: 0.2rem 0.6rem;
+    padding: 0.5vw 0.5vh;
     background-color: white;
     border: transparent;
-    border-radius: 0.5rem;
+    border-radius: 0.5vh;
     color: rgba(0, 130, 65, 1);
-    font-size: 1rem;
+    font-size: 1.7vh;
     text-decoration: none;
     align-items: center;
     text-align: center;
 }
 
-    .datainputcontainer{
-        margin-top: 1vh;
-        background-color: white;
-        width: 100%;
-        height: auto;
-        gap: 1vh;
-    }
-    .partchoosediv{
-        width: 90%;
-        margin: 0 5%;
-        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
-        height: 6vh;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .partchoosebox{
-        width: 60%;
-        display: flex;
-        align-items: center;
-    }
-    .dropdownmenuBOX{
-        width: 50%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .uploadimgbox{
-        width: 40%;
-        max-width: 30vw;
-        display: flex;
-        align-items: center;
-    }
-    .uploadimgbtn{
-        width: 90%;
-        border: transparent;
-        background-color: rgba(0, 130, 65, 1);
-        color: white;
-        border-radius: 0.5vw ;
-        padding: 0.6vh 1vw;
-        font-size: 0.rem;
-    }
-    .titleinputbox{
-        width: 90%;
-        height: 6vh;
-        margin: 0 5%;
-        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
-    }
-    .contentinputbox{
-        width: 90%;
-        margin: 0 5%;
-        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
-        overflow: hidden; /* 防止内容直接溢出 */
-        height: 55vh;
-    }
-    .text_part{
-        width: 100%;
-        min-height: 40vh;
-        max-height: 70vh;
-        display: flex;
-        justify-content: center;
-        position: relative;
-    }
-    .editable-content {
-        width: 100%;
-        min-height: 40vh;
-        overflow-y: auto;
-        line-height: 1.5;
-        font-size: 1rem;
-        font-weight: 500;
-        font-family: "Helvetica Neue", Arial, sans-serif;
-    }
-    .editable-content img {
-        max-width: 90%;
-        height: auto;
-        margin: 2vh 1vw;
-    }
-    .placeholder-text {
-        position: absolute;
-        color: #aaa;
-        pointer-events: none;
-        right: 50%;
-    }
-    #content_input {
-        height: auto;
-        border: transparent;
-        resize: none; 
-        outline: none;
-        margin: 0.2vh 0;
-    }
-    .coverinputbox{
-        font-size: 1.1rem;
-        width: 90%;
-        margin: 0 5%;
-        border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
-        height: 12vh;
-        display: flex;
-    }
-    #title_input{
-      width: 100%;
-      height: 100%;
-      font-size: 1rem;
-      font-weight: 600;
-      outline: none;
-      border: transparent;
-      box-sizing: border-box;
-    }
+.datainputcontainer{
+    margin-top: 1vh;
+    background-color: white;
+    width: 100%;
+    height: auto;
+    gap: 1vh;
+}
+.partchoosediv{
+    width: 90%;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+    height: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.partchoosebox{
+    font-size: 2vh;
+    width: 60%;
+    display: flex;
+    align-items: center;
+}
+.dropdownmenuBOX{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.uploadimgbox{
+    width: 40%;
+    max-width: 30vw;
+    display: flex;
+    align-items: center;
+}
+.uploadimgbtn{
+    width: 90%;
+    border: transparent;
+    background-color: rgba(0, 130, 65, 1);
+    color: white;
+    border-radius: 1vw ;
+    padding: 0.8vh 1vw;
+    font-size: 1.5vh;
+}
+.titleinputbox{
+    width: 90%;
+    height: 6vh;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+}
+.contentinputbox{
+    width: 90%;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+    overflow: hidden; /* 防止内容直接溢出 */
+    height: 55vh;
+}
+.text_part{
+    width: 100%;
+    min-height: 40vh;
+    max-height: 70vh;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.editable-content {
+    width: 100%;
+    min-height: 40vh;
+    overflow-y: auto;
+    line-height: 1.5;
+    font-size: 1.5vh;
+    font-weight: 500;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+.editable-content img {
+    max-width: 90%;
+    height: auto;
+    margin: 2vh 1vw;
+}
+.placeholder-text {
+    position: absolute;
+    color: #aaa;
+    pointer-events: none;
+    right: 50%;
+}
+#content_input {
+    height: auto;
+    border: transparent;
+    resize: none; 
+    outline: none;
+    margin: 0.2vh 0;
+}
+.coverinputbox{
+    font-size: 2vh;
+    width: 90%;
+    margin: 0 5%;
+    border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
+    height: 12vh;
+    display: flex;
+}
+#title_input{
+    width: 100%;
+    height: 100%;
+    font-size: 2.5vh;
+    font-weight: 600;
+    outline: none;
+    border: transparent;
+    box-sizing: border-box;
+}
 </style>

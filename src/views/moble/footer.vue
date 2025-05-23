@@ -38,6 +38,11 @@ const baseNavItems = [
 const navOptions = ["理论学习", "走进高新", "青年活动", "青年夜校", "志愿服务", "社会实践"];
 const selectedPart = ref("分区选择");
 
+// 新增登录状态判断
+const shouldShowAuthItems = computed(() => {
+  return authStore.token // 仅登录用户显示需要认证的项
+})
+
 const dynamicNavItems = computed(() => {
   const isHomePage = route.path === "/mob/index";
   const firstItem = { name: "返回首页", path: "/mob/index" };
@@ -48,10 +53,18 @@ const isHomePage = computed(() => route.path === "/mob/index");
 
 // **修改 navigateTo 以传递用户 ID**
 const navigateTo = (path) => {
-  if (path === "/mob/my-home-page") {
+  if (path === "/mob/my-home-page" && shouldShowAuthItems.value) {
     console.log(authStore.userInfo.id);
-    
-    router.push({ path, query: { id: authStore.userInfo.id } }); // 传递用户 ID
+    if (!authStore.token) {
+      router.push('/mob/login')
+      return
+    }
+    // 安全访问用户信息
+    const userId = authStore.userInfo?.id ?? ''
+    router.push({ 
+      path, 
+      query: { id: userId }
+    })  //传递用户id
   } else {
     router.push(path);
   }

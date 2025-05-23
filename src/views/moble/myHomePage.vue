@@ -15,7 +15,7 @@
       </div>
       <div class="buttons">
         <el-button type="success" class="edit" @click="goToEditProfile" v-if="isCurrentUserCheck">编辑资料</el-button>
-        <el-button type="success" class="manage" @click="goToAdminPanel" v-if="isAdmin">管理系统</el-button>
+        <el-button type="success" class="manage" @click="goToAdminPanel" v-if="isAdmin&&isCurrentUserCheck">管理系统</el-button>
         <el-button type="danger" class="logout" @click="logout" v-if="isCurrentUserCheck">退出登录</el-button>
       </div>
     </header>
