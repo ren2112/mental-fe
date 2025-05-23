@@ -12,7 +12,7 @@
       <!-- 创建时间放置在按钮上方 -->
       <div class="post-actions">
         <el-button v-if="isCurrentUser"  type="success" @click="EditPost">修改帖子</el-button>
-        <el-button v-if="isCurrentUser"  type="danger" @click="DelPost">删除帖子</el-button>
+        <el-button v-if="isCurrentUser && !isDeleted" type="danger" @click="DelPost">删除帖子</el-button>
       </div>
     </header>
 
@@ -310,7 +310,7 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const token = authStore.token;
-const article = ref({ id: '', title: '', content: '', video: '', cover: '', createAt: '' });
+const article = ref({ id: '', title: '', content: '', video: '', cover: '', createAt: '' , deleted_at: null });
 const author = ref({ avatar: '', username: '', id: 0 });
 const currentUser = computed(() => authStore.userInfo);
 const isCurrentUser = computed(() => currentUser.value?.id === author.value.id);
@@ -331,7 +331,8 @@ const fetchPostData = async () => {
     if (response.data?.post) {
       article.value = {
         ...response.data.post,
-        createAt: response.data.post.created_at // 修正字段
+        createAt: response.data.post.created_at, // 修正字段
+        deleted_at: response.data.post.deleted_at, // 加这一行
       };
       author.value = { ...response.data.post.user };
       console.log('fetchPostData->author:', author.value);
@@ -444,6 +445,6 @@ async function approvePost(ifApprove) {
 }
 const goBack = () => router.back();
 const formattedCreateAt = computed(() => article.value.createAt ? new Date(article.value.createAt).toLocaleDateString() : '');
-
+const isDeleted = computed(() => !!article.value.deleted_at);
 onMounted(fetchPostData);
 </script>
