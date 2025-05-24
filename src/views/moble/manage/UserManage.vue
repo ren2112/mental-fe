@@ -39,7 +39,6 @@
 <!--          </div>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
-      <el-table-column prop="ID" label="帐号" show-overflow-tooltip width="60vw"/>
       <el-table-column prop="Username" label="姓名" show-overflow-tooltip width="60vw"/>
       <el-table-column prop="Email" label="邮箱" show-overflow-tooltip width="100vw"/>
       <el-table-column prop="Phone" label="电话" show-overflow-tooltip width="100vw"/>
@@ -336,6 +335,9 @@ const rules: FormRules<any> = reactive({
   Phone: [
     { required: true, message: '请输入电话', trigger: 'blur' },
     { pattern: /^1\d{10}$/, message: '请输入有效的电话号', trigger: ['blur', 'change'] }
+  ],
+  Department: [
+    { required: true, message: '请选择部门', trigger: 'change' }
   ]
 })
 

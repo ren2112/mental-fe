@@ -15,12 +15,22 @@
             <button class="head_btn" @click="handlePost">完成修改</button>
           </div>
         </div>
+        <div class="the_file_choose">
+          <label class="file-upload">
+            上传新视频
+            <input type="file" accept="video/*" @change="onFileChange">
+          </label>
+          <div class="file-name-container">{{ fileName }}</div>
+        </div>
         <div class="title_container">
           <input type="text" id="title_input" placeholder="请输入视频标题（最多40字）" maxlength="40" v-model="title">
         </div>
         <!-- <div class="intro_container">
           <textarea id="intro_textarea" placeholder="请输入视频简介（最多2000字）" maxlength="2000" v-model="content"></textarea>
         </div> -->
+        <div v-if="video" class="video_preview_container">
+          <video :src="video" controls class="video_preview"></video>
+        </div>
           <div class="text_part">
             <div 
               id="content_input"
@@ -42,156 +52,150 @@
     </div>
 </template>
   
-<script>
-  import { ref } from 'vue';
-  import Dropdown from '../components/dropdownmenu.vue';
-  import { ElMessage } from 'element-plus';
-  import { useRouter,useRoute } from 'vue-router';
-  import { updatePostAPI,getPostDetailAPI,uploadFileAPI,publishPostAPI } from '@/api/post';
-  import { useAuthStore } from '@/stores/auth';
-  import { onMounted } from 'vue';
-  
-  export default{
-    name: 'edit-post',
-    components: {
-      Dropdown,
-    },
-    setup(){
-      const router = useRouter();
-      const route = useRoute();
-      const authStore = useAuthStore();
-      const token = authStore.token;
-      const postID = route.query.postID; // 获取路由参数中的postID
-      const curTab = route.query.curTab || 0
-      const video = ref('')
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { ElMessage } from 'element-plus';
+import Dropdown from '../components/dropdownmenu.vue';
+import { useAuthStore } from '@/stores/auth';
+import { updatePostAPI, getPostDetailAPI, uploadFileAPI, publishPostAPI } from '@/api/post';
 
-      const image = ref(null);
-      const showChangeText = ref(false);
-      const title = ref(''); // 帖子标题
-      const content = ref(''); // 帖子简介
-      const selectedIndex = ref(-1); // 响应式变量存储下拉菜单选中的索引值
-      const showPlaceholderText = ref(true);
-  
-      const updateSelectedIndex = (index) => {
-        selectedIndex.value = index;
-      };
+const router = useRouter();
+const route = useRoute();
+const authStore = useAuthStore();
+const token = authStore.token;
 
-      const updateContent = () => {
-        const editableDiv = document.getElementById('content_input');
-        const rawContent = editableDiv.innerHTML.trim();
-        content.value = rawContent === '<br>' ? '' : rawContent;
-      };
+const postID = route.query.postID;
+const curTab = route.query.curTab || '0';
 
-      const hidePlaceholder = () => {
-        showPlaceholderText.value = false;
-      };
+const title = ref('');
+const content = ref('');
+const selectedIndex = ref(-1);
+const showPlaceholderText = ref(true);
+const video = ref('');
+const fileName = ref('');
 
-      const showPlaceholder = () => {
-        if (!content.value.trim()) {
-          showPlaceholderText.value = true;
-        }
-      };
+const updateSelectedIndex = (index) => {
+  selectedIndex.value = index;
+};
 
-        // 完成修改逻辑
-      const handlePost = async () => {
-        // 修改验证逻辑（移除了文件必传验证）
-        if (!title.value.trim()) {
-          ElMessage.warning('帖子标题不能为空');
-          return;
-        }
-        if (!content.value.trim()) {
-          ElMessage.warning('帖子简介不能为空');
-          return;
-        }
-        if (selectedIndex.value === -1) {
-          ElMessage.warning('请选择活动分区');
-          return;
-        }
+const updateContent = () => {
+  const editableDiv = document.getElementById('content_input');
+  const rawContent = editableDiv.innerHTML.trim();
+  content.value = rawContent === '<br>' ? '' : rawContent;
+};
 
-        try {
-          let response = null
-          if(curTab === '1'){
-            const params = {
-              type: 1,
-              part: selectedIndex.value,
-              title: title.value,
-              content: content.value,
-              video: video.value
-            }
-            response = await publishPostAPI(params);            
-          }else{
-            const body = {
-              PostID: Number(postID),
-              Title: title.value,     
-              Content: content.value, 
-              Part: selectedIndex.value
-            };
-            response = await updatePostAPI(body);
-          }
+const hidePlaceholder = () => {
+  showPlaceholderText.value = false;
+};
 
-          if (response.code === 0) {
-            ElMessage.success('修改成功');
-            // 跳转回
-            router.replace({
-              name: 'my-home-page', 
-              query: { id: authStore.userInfo.id }
-            });
-          } else {
-            console.log(response);
-            ElMessage.error(response.msg || '修改失败');
-          }
-        } catch (error) {
-          ElMessage.error('请求失败，请检查网络');
-          console.log(error)
-        }
-      };
-  
-      // 获取帖子详情
-      const fetchPostData = async () => {
-        if (!postID) {
-          ElMessage.error('无效的帖子ID');
-          return;
-        }
-        try {
-          const response = await getPostDetailAPI({ postID, token });
-          const post = response.data.post;
-          
-          // 填充表单数据
-          title.value = post.title;
-          content.value = post.content;
-          selectedIndex.value=post.part;
-          video.value = post.video
-          
-          
-          // 直接将 content 赋值给可编辑区域，保留视频和文字的原始位置
-          document.getElementById("content_input").innerHTML = content.value;
-
-        } catch (error) {
-          ElMessage.error('获取帖子数据失败');
-          console.log(error)
-        }
-      };
-
-      // 组件挂载时获取数据
-      onMounted(() => {
-        fetchPostData();
-      });
-
-      return{
-        image,
-        showChangeText,
-        title,
-        content,
-        handlePost,
-        selectedIndex,
-        updateSelectedIndex,
-        updateContent,
-        hidePlaceholder,
-        showPlaceholder,
-        showPlaceholderText,
-      };
-    }
+const showPlaceholder = () => {
+  if (!content.value.trim()) {
+    showPlaceholderText.value = true;
   }
+};
+
+// 视频上传处理
+const onFileChange = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  fileName.value = file.name;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const res = await uploadFileAPI(formData);
+    if (res.code === 0) {
+      video.value = res.data.fileUrl;
+      ElMessage.success('视频上传成功');
+    } else {
+      ElMessage.error(res.msg || '视频上传失败');
+    }
+  } catch (error) {
+    ElMessage.error('视频上传请求失败');
+    console.error(error);
+  }
+};
+
+// 提交帖子（新发 or 修改）
+const handlePost = async () => {
+  if (!title.value.trim()) {
+    ElMessage.warning('帖子标题不能为空');
+    return;
+  }
+  if (!content.value.trim()) {
+    ElMessage.warning('帖子简介不能为空');
+    return;
+  }
+  if (selectedIndex.value === -1) {
+    ElMessage.warning('请选择活动分区');
+    return;
+  }
+
+  try {
+    let response = null;
+
+    if (curTab === '1') {
+      const params = {
+        type: 1,
+        part: selectedIndex.value,
+        title: title.value,
+        content: content.value,
+        video: video.value,
+      };
+      response = await publishPostAPI(params);
+    } else {
+      const body = {
+        PostID: Number(postID),
+        Title: title.value,
+        Content: content.value,
+        Part: selectedIndex.value,
+      };
+      response = await updatePostAPI(body);
+    }
+
+    if (response.code === 0) {
+      ElMessage.success('修改成功');
+      router.replace({
+        name: 'my-home-page',
+        query: { id: authStore.userInfo.id }
+      });
+    } else {
+      ElMessage.error(response.msg || '修改失败');
+    }
+  } catch (error) {
+    ElMessage.error('请求失败，请检查网络');
+    console.error(error);
+  }
+};
+
+// 获取帖子详情
+const fetchPostData = async () => {
+  if (!postID) {
+    ElMessage.error('无效的帖子ID');
+    return;
+  }
+
+  try {
+    const response = await getPostDetailAPI({ postID, token });
+    const post = response.data.post;
+
+    title.value = post.title;
+    content.value = post.content;
+    selectedIndex.value = post.part;
+    video.value = post.video;
+
+    document.getElementById("content_input").innerHTML = content.value;
+  } catch (error) {
+    ElMessage.error('获取帖子数据失败');
+    console.error(error);
+  }
+};
+
+onMounted(async () => {
+  await fetchPostData();
+});
 </script>
 
 
@@ -404,5 +408,18 @@
       flex: 100%; /* 在小屏幕上每个元素占满一行 */
     }
   }
+  .video_preview_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.video_preview {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
   
 </style>
