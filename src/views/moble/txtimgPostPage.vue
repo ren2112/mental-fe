@@ -96,7 +96,7 @@ const uploadcover = async()=>{  // 上传封面图片（coverfile），然后返
     }catch(error){
         ElMessage.error("封面上传出错！");
         console.error('封面上传出错:', error);
-        throw error;
+        return ''
     }
 }
 

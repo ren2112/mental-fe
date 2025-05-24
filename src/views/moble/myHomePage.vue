@@ -33,7 +33,7 @@
 
       <!-- 帖子列表 -->
       <div class="post-list">
-        <PostItem v-for="post in posts" :key="post.id" :post="post" v-if="posts.length>0"/>
+        <PostItem v-for="post in posts" :key="post.id" :post="post" v-if="posts.length>0" :curTab="curTab"/>
         <div class="empty-post" v-else>
           <div class="empty-component">
             <el-icon :size="100" color="rgba(0, 130, 100, 1)"><DocumentDelete /></el-icon> 

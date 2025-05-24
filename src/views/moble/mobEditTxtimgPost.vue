@@ -57,7 +57,7 @@
 import FooterNav from "@/views/moble/footer.vue"; // 导入底部导航组件
 import mobDropDownMenu from "../../components/moble/mobDropDownMenu.vue";
 import coverUploadComponent from "../../components/moble/coverUploadComponent.vue";
-import { uploadFileAPI, getPostDetailAPI , updatePostAPI } from '../../api/post'; 
+import { uploadFileAPI, getPostDetailAPI , updatePostAPI, publishPostAPI } from '../../api/post'; 
 import { ElMessage } from 'element-plus';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -75,6 +75,7 @@ const content = ref(''); // 用于管理 textarea 的内容
 const selectedIndex = ref(-1); // 响应式变量存储下拉菜单选中的索引值
 const coverFile = ref<File | null>(null);  //封面文件
 const cover = ref('');  //封面在服务器中的url
+const curTab = route.query.curTab || '0';
 
 const uploadcover = async()=>{  // 上传封面图片（coverfile），然后返回该封面在服务器内的地址url
     if(!coverFile.value){
@@ -97,7 +98,7 @@ const uploadcover = async()=>{  // 上传封面图片（coverfile），然后返
         }
     }catch(error){
         ElMessage.error("封面上传出错！");
-        throw error;
+        return ''
     }
 }
 
@@ -136,8 +137,12 @@ const handlePost = async () => {
                 part:selectedIndex.value,
                 cover:cover.value
             };
-
-            const response = await updatePostAPI(body) as any;
+            let response=null
+            if(curTab === '1'){
+                response = await publishPostAPI(body) as any
+            }else{
+                response = await updatePostAPI(body) as any;
+            }
             if(response.code === 0){
                 if(authStore.userInfo){
                     ElMessage.success('修改成功');

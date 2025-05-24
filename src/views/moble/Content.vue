@@ -110,6 +110,9 @@
   border-radius: 50%;
   margin-right: 2vh;
   background: white;
+  background-size: cover;         /* 关键：让背景图保持比例并覆盖整个容器 */
+  background-position: center;    /* 居中对齐背景图 */
+  background-repeat: no-repeat;   /* 不重复平铺 */
 }
 
 .author-details {
@@ -343,23 +346,13 @@ const fetchPostData = async () => {
 };
 
 const navigateToProfile = () => router.push({ path: '/mob/my-home-page', query: { id: author.value.id } });
-const toModifyPost = () => {
-  router.push({
-    // name: article.value.video ? 'edit-video-post' : 'edit-txt-img-post',
-    path: `/mob/${article.value.video ? 'videoPost' : 'txtimgPost'}`,
-    query: {
-      postID: article.value.id,
-      source: 'detail',
-      curTab: curTab
-    }
-  });
-};
 const EditPost = () => {
   router.push({
     name: article.value.video ? 'mobEditVideoPost' : 'mobEditTxtimgPost',
     query: {
       postID: article.value.id,
-      source: 'detail'
+      source: 'detail',
+      curTab: curTab
     }
   });
 };

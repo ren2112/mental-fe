@@ -38,7 +38,7 @@ export const getdelPostsAPI = async (params: any) => {
     return await service.post("/api/auth/get-deleted-post", params);
 };
 
-export const publishPostAPI = async (params: { title: string; content: string; part: number }) => {
+export const publishPostAPI = async (params: any) => {
     return await service.post('/api/auth/publish-post', params);
 };
 

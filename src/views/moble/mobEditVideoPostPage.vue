@@ -38,7 +38,7 @@ import FooterNav from "@/views/moble/footer.vue"; // 导入底部导航组件
 import mobDropDownMenu from "../../components/moble/mobDropDownMenu.vue";
 import mobVideoUpload from "../../components/moble/videoUploadComponent.vue"
 import { ElMessage } from "element-plus";
-import { uploadFileAPI , getPostDetailAPI , updatePostAPI} from "../../api/post"
+import { uploadFileAPI , getPostDetailAPI , updatePostAPI, publishPostAPI} from "../../api/post"
 import { useRouter } from 'vue-router';
 import { useRoute } from "vue-router";
 import { useAuthStore } from '@/stores/auth';
@@ -55,6 +55,7 @@ const content = ref('');//视频贴子的简介（内容）
 const selectedIndex = ref(-1); // 响应式变量存储下拉菜单选中的索引值,即分区编号
 const videofile = ref(null); //视频文件
 const videoURL = ref(''); //视频url
+const curTab = route.query.curTab || '0';
 
 const handlePost = async () => { //完成修改逻辑
     // 判断上传文件和标题是否为空
@@ -77,7 +78,7 @@ const handlePost = async () => { //完成修改逻辑
 
     try{
         videoURL.value = await uploadVideoFile();
-
+        let response=null
         const body = {
             PostID: Number(postID),
             Title: title.value,     
@@ -85,9 +86,12 @@ const handlePost = async () => { //完成修改逻辑
             Part: selectedIndex.value,
             video:videoURL.value
         };
+        if (curTab==='1'){
+            response = await publishPostAPI(body);
+        }else{
+            response = await updatePostAPI(body);
+        }
 
-        const response = await updatePostAPI(body);
-        console.log("edit post response : ",response);
         if(response.code===0){
             ElMessage.success("修改成功！");
             setTimeout(() => {
@@ -98,8 +102,7 @@ const handlePost = async () => { //完成修改逻辑
             }, 500);
         }
     }catch(error){
-        ElMessage.error('修改出错！');
-        console.log("error : ",error);
+        ElMessage.error('修改出错！',error.message);
     }
 };
 const uploadVideoFile = async ()=>{ //上传视频返回url
@@ -112,13 +115,10 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
         if(response.code === 0){
             return response.data.fileUrl;
         }else{
-            ElMessage.error("封面上传出错！");
-            console.log("video File response: ",response);
-            throw new Error("封面上传失败");
+            throw new Error("视频上传失败");
         }
     }catch(error){
-        ElMessage.error("封面上传出错！");
-        throw error;
+        ElMessage.error(error.message);
     }
 }
 // 获取帖子详情
