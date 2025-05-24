@@ -63,14 +63,8 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import router from '@/router';
+import type { Post } from "@/type/post";
 
-interface PostData {
-    title: string;
-    content: string;
-    cover: string;
-    part:number;
-    // 根据实际接口响应添加其他字段
-}
 
 const route = useRoute();
 const authStore = useAuthStore();
@@ -178,11 +172,13 @@ const fetchPostData = async (): Promise<void> => {  //根据postID获取贴子�
             token: authStore.token
         })
         // 填充数据到表单
-        const postData = response.data.post as PostData
+        const postData = response.data.post as Post
         title.value = postData.title
         content.value = postData.content
         selectedIndex.value = postData.part
         cover.value = postData.cover  //封面url
+        console.log(postData,1);
+        
 
         //获取贴子封面给coverfile
         const res = await fetch(postData.cover)

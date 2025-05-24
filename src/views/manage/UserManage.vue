@@ -353,9 +353,9 @@ function validatePass2(rule: any, value: any, callback: any) {
 
 // 表格函数
 // 定义 formatter 函数
-function formatDepartment (row: User) {
+function formatDepartment (row: any) {
   // 在 departmentAll.value 数组中查找 id 等于 cell 的部门对象
-  const dept = departmentAll.value.find(d => d.id === row.department);
+  const dept = departmentAll.value.find(d => d.id === row.Department);
   return dept ? dept.label : '未知部门';
 }
 
@@ -421,17 +421,17 @@ async function fetchUsers() {
 
 
 // 编辑
-function handleEdit (user: User) {
+function handleEdit (user: any) {
   resetSelectedUser();
-  selectedUser.value.ID = user.id;
-  selectedUser.value.Username = user.username;
-  selectedUser.value.Email = user.email;
-  selectedUser.value.Phone = user.phone;
-  selectedUser.value.Department = user.department;
+  selectedUser.value.ID = user.ID;
+  selectedUser.value.Username = user.Username;
+  selectedUser.value.Email = user.Email;
+  selectedUser.value.Phone = user.Phone;
+  selectedUser.value.Department = user.Department;
   editDialogVisible.value = true;
 }
 
-async function updateUser (user: User) {
+async function updateUser (user: any) {
   if (!editFormRef.value) return
   try {
     await editFormRef.value!.validate()
@@ -439,11 +439,11 @@ async function updateUser (user: User) {
     // 如果验证通过，执行提交逻辑
     try {
       const data = {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        department: user.department
+        id: user.ID,
+        username: user.Username,
+        email: user.Email,
+        phone: user.Phone,
+        department: user.Department
       }
       const response = await updateUserAPI(data) as any;
 
@@ -511,10 +511,10 @@ async function updateUser (user: User) {
 // }
 
 // 重置密码
-async function resetPassword (user: User) {
+async function resetPassword (user: any) {
   try {
     const data = {
-      id: user.id,
+      id: user.ID,
       // newPassword: "0000",
     }
     const response = await resetPasswordAPI(data) as any;
@@ -553,10 +553,10 @@ const handleDelete = (row: User) => {
   })
 }
 
-async function deleteUser (user: User) {
+async function deleteUser (user: any) {
   try {
     const data = {
-      id: user.id,
+      id: user.ID,
     }
     const response = await deleteUserAPI(data) as any
     console.log(response);
@@ -588,7 +588,7 @@ function handleUpload() {
   addDialogVisible.value = true;
 }
 
-async function addUser (user: User) {
+async function addUser (user: any) {
   if (!addFormRef.value) return
   try {
     await addFormRef.value!.validate()
@@ -596,11 +596,11 @@ async function addUser (user: User) {
     // 如果验证通过，执行提交逻辑
     try {
       const data = {
-        username: user.username,
-        password: user.password || '123',
-        email: user.email,
-        phone: user.phone,
-        department: user.department
+        username: user.Username,
+        password: user.Password || '123',
+        email: user.Email,
+        phone: user.Phone,
+        department: user.Department
       }
       console.log(data)
       const response = await addUserAPI(data) as any;

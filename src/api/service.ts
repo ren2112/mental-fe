@@ -13,13 +13,11 @@ const service = axios.create({
 
 let loadingInstance: any = null // 用于存储loading实例
 
-let pendingRequests = 0 // 记录当前正在进行的请求数
 
+// 请求拦截器
 service.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        pendingRequests++ // 请求数 +1
-        
-        if (!loadingInstance) { 
+        if (!loadingInstance) {
             loadingInstance = ElLoading.service({
                 lock: true,
                 text: '加载中...',
@@ -27,9 +25,9 @@ service.interceptors.request.use(
             })
         }
 
-        // 处理 token
+        // 添加 token
         const userStore = useAuthStore()
-        let token = userStore.token
+        const token = userStore.token
         if (token) {
             config.headers.Authorization = token
         }
@@ -37,8 +35,7 @@ service.interceptors.request.use(
         return config
     },
     (error: AxiosError) => {
-        pendingRequests-- // 请求失败也要减少计数
-        if (pendingRequests === 0 && loadingInstance) {
+        if (loadingInstance) {
             loadingInstance.close()
             loadingInstance = null
         }
@@ -46,29 +43,31 @@ service.interceptors.request.use(
     }
 )
 
+// 响应拦截器
 service.interceptors.response.use(
     (response) => {
-        pendingRequests-- // 请求完成，计数减 1
-        
-        if (pendingRequests === 0 && loadingInstance) { // 只有最后一个请求返回时才关闭 loading
+        if (loadingInstance) {
             loadingInstance.close()
             loadingInstance = null
         }
 
-        return response.data
+        const res = response.data
+        if (res.code !== 0) {
+            ElMessage.error(res.message || '请求失败')
+        }
+
+        return res
     },
     (error: AxiosError) => {
-        pendingRequests-- // 请求失败，计数减 1
-        if (pendingRequests === 0 && loadingInstance) {
+        if (loadingInstance) {
             loadingInstance.close()
             loadingInstance = null
         }
 
-        showErrMessage('请重新登录或者重试', 'error', 2000)
+        ElMessage.error('请重新登录或者重试')
         return Promise.reject(error)
     }
 )
-
 
 /**
  * @description 显示错误消息
