@@ -10,13 +10,16 @@
         <!-- 帖子创建日期 -->
         <div v-if="article.createAt" class="article-created-at">
           <!-- 只有是作者本人查看时才显示修改贴子的按钮 -->
-          <button v-if="isCurrentUser" class="modify-post-btn" @click="toModifyPost">修改贴子</button>
-          <el-popconfirm v-if="isCurrentUser&&curTab!=='1'" @confirm="delPost" title="请确认是否要删除帖子?">
-            <template #reference>
-              <button class="modify-del-btn">删除贴子</button>
-            </template>
-          </el-popconfirm>
-          <span>创建于: {{ formattedCreateAt }}</span>
+           <div class="top-buttons">
+             <button v-if="isCurrentUser" class="modify-post-btn" @click="toModifyPost">修改贴子</button>
+             <el-popconfirm v-if="isCurrentUser&&curTab!=='1'" @confirm="delPost" title="请确认是否要删除帖子?">
+               <template #reference>
+                 <button class="modify-del-btn">删除贴子</button>
+               </template>
+             </el-popconfirm>
+           </div>
+          <span>分区: {{ partMap[article.part] }}</span>
+          <span style="margin-left: 16px;">创建于: {{ formattedCreateAt }}</span>
         </div>
       </div>
 
@@ -97,8 +100,18 @@ const article = ref({
   content: '',
   video: '',
   cover: '',  // 新增封面字段
+  part: 0,
   createAt: '', // 新增创建时间字段
 });
+
+const partMap: { [key: number]: string } = {
+  0: '理论学习',
+  1: '走进高新',
+  2: '青年活动',
+  3: '青年夜校',
+  4: '志愿服务',
+  5: '社会实践',
+};
 
 // 判断当前页面是否从删除页面跳转过来
 const isDeletePage = source === 'delete';
@@ -128,6 +141,7 @@ const fetchPostData = async () => {
     video: post.video,
     cover: post.cover, // 从后台获取封面
     createAt: post.created_at, // 从后台获取创建时间
+    part: post.part
   };
 };
 
@@ -380,7 +394,7 @@ onMounted(async () => {
 }
 
 .article-created-at {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   font-size: 14px;
   color: #888;
 }
@@ -391,5 +405,8 @@ onMounted(async () => {
   align-items: center; /* 垂直居中内容 */
   border-top: 1px solid #ddd;
   padding-top: 10px;
+}
+.top-buttons{
+  margin-bottom: 5px;
 }
 </style>

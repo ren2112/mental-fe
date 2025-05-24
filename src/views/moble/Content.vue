@@ -18,6 +18,7 @@
 
     <!-- 帖子标题 -->
     <div class="title-container">
+      <span class="article-part">分区：{{ partMap[article.part] }}</span>
       <div class="article-created-at">创建于：{{ formattedCreateAt }}</div>
       <h1 class="title">{{ article.title }}</h1>
     </div>
@@ -298,6 +299,10 @@
     padding: 0.7vh; /* 0.5rem -> 0.7vh */
   }
 }
+.article-part {
+  font-size: 1.5vh;
+}
+
 </style>
 
 <script setup>
@@ -313,7 +318,7 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const token = authStore.token;
-const article = ref({ id: '', title: '', content: '', video: '', cover: '', createAt: '' , deleted_at: null });
+const article = ref({ id: '', title: '', content: '', video: '', cover: '', createAt: '' ,part:0, deleted_at: null });
 const author = ref({ avatar: '', username: '', id: 0 });
 const currentUser = computed(() => authStore.userInfo);
 const isCurrentUser = computed(() => currentUser.value?.id === author.value.id);
@@ -323,6 +328,15 @@ const check = route.query.check;
 const source = route.query.source;
 const isDeletePage = source === 'delete';
 const ischeck = source === 'check';
+
+const partMap = {
+  0: '理论学习',
+  1: '走进高新',
+  2: '青年活动',
+  3: '青年夜校',
+  4: '志愿服务',
+  5: '社会实践'
+};
 
 const fetchPostData = async () => {
   const postID = route.query.postID;
