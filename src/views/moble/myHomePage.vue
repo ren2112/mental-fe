@@ -174,7 +174,7 @@ const handleScroll = () => {
   }
 };
 
-const throttledScroll = throttle(handleScroll, 300);
+const debouncedScroll = debounce(handleScroll, 300);
 
 const goToEditProfile = () => {
   router.push({ path: "/mob/edit", query: { id: userId } });
@@ -192,13 +192,13 @@ const logout = () => {
 onMounted(async () => {
   await fetchUserInfo();
   await fetchPosts();
-  window.addEventListener("scroll", throttledScroll);
+  window.addEventListener("scroll", debouncedScroll);
   console.log(currentUser.department);
   
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", throttledScroll);
+  window.removeEventListener("scroll", debouncedScroll);
 });
 </script>
 

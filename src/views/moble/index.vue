@@ -27,7 +27,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import PostItem from "@/components/moble/postCard.vue";
 import FooterNav from "@/views/moble/footer.vue";
 import { getPostsByPartAPI } from "@/api/post";
-import { throttle } from "lodash";
+import { debounce } from "lodash";
 
 const searchQuery = ref("");
 const posts = ref([]);
@@ -73,7 +73,7 @@ const handleScroll = () => {
 
 
 // 使用 throttle 包装 handleScroll，避免频繁触发
-const throttledScroll = throttle(handleScroll, 300); // 每300ms触发一次
+const debouncedScroll = debounce(handleScroll, 300);
 
 const handlePartChange = (partIndex) => {
   currentPart.value = partIndex;
@@ -85,13 +85,13 @@ const handlePartChange = (partIndex) => {
 onMounted(() => {
   fetchPosts();
   if (postContainer.value) {
-    postContainer.value.addEventListener("scroll", throttledScroll);
+    postContainer.value.addEventListener("scroll", debouncedScroll);
   }
 });
 
 onUnmounted(() => {
   if (postContainer.value) {
-    postContainer.value.removeEventListener("scroll", throttledScroll);
+    postContainer.value.removeEventListener("scroll", debouncedScroll);
   }
 });
 

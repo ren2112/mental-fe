@@ -263,7 +263,6 @@ type OptionItem = {
 };
 
 const typeAll = ref<OptionItem[]>([
-  { id: 'ID', label: '帐号' },
   { id: 'Username', label: '姓名' },
   { id: 'Email', label: '邮箱' },
   { id: 'Phone', label: '电话' }

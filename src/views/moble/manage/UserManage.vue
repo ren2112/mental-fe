@@ -173,7 +173,7 @@
             v-model="selectedUser.Password"
             type="password"
             show-password
-            placeholder="如不填写，默认密码为 123456"
+            placeholder="默认密码为 123456"
           />
         </el-form-item>
 
@@ -182,7 +182,7 @@
             v-model="selectedUser.checkPassword"
             type="password"
             show-password
-            placeholder="如不填写，默认密码为 123456"
+            placeholder="默认密码为 123456"
           />
         </el-form-item>
         <el-form-item label="邮箱" prop="Email">
@@ -284,7 +284,6 @@ type OptionItem = {
 };
 
 const typeAll = ref<OptionItem[]>([
-  { id: 'ID', label: '帐号' },
   { id: 'Username', label: '姓名' },
   { id: 'Email', label: '邮箱' },
   { id: 'Phone', label: '电话' }

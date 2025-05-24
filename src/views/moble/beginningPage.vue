@@ -2,7 +2,7 @@
     <div class="container">
       <div class="button-group">
         <router-link to="/mob/login" >
-          <button class="auth-btn">账号登录</button>
+          <button class="auth-btn">登录</button>
         </router-link>
         <router-link to="/mob/index" >
           <button class="guest-btn">游客访问</button>
