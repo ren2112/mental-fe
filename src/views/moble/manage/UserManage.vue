@@ -169,10 +169,21 @@
           <el-input v-model="selectedUser.Username"/>
         </el-form-item>
         <el-form-item label="密码" prop="Password">
-          <el-input v-model="selectedUser.Password" type="password" show-password/>
+          <el-input
+            v-model="selectedUser.Password"
+            type="password"
+            show-password
+            placeholder="如不填写，默认密码为 123456"
+          />
         </el-form-item>
+
         <el-form-item label="确认密码" prop="checkPassword">
-          <el-input v-model="selectedUser.checkPassword" type="password" show-password/>
+          <el-input
+            v-model="selectedUser.checkPassword"
+            type="password"
+            show-password
+            placeholder="如不填写，默认密码为 123456"
+          />
         </el-form-item>
         <el-form-item label="邮箱" prop="Email">
           <el-input v-model="selectedUser.Email"/>

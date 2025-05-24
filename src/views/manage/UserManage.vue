@@ -157,11 +157,23 @@
           <el-input v-model="selectedUser.Username"/>
         </el-form-item>
         <el-form-item label="密码" prop="Password">
-          <el-input v-model="selectedUser.Password" type="password" show-password/>
+        <el-input
+          v-model="selectedUser.Password"
+          type="password"
+          show-password
+          placeholder="如不填写，默认密码为 123456"
+        />
         </el-form-item>
+
         <el-form-item label="确认密码" prop="checkPassword">
-          <el-input v-model="selectedUser.checkPassword" type="password" show-password/>
+          <el-input
+            v-model="selectedUser.checkPassword"
+            type="password"
+            show-password
+            placeholder="如不填写，默认密码为 123456"
+          />
         </el-form-item>
+
         <el-form-item label="邮箱" prop="Email">
           <el-input v-model="selectedUser.Email"/>
         </el-form-item>
@@ -472,44 +484,6 @@ async function updateUser (user: any) {
   }
 }
 
-// 修改密码
-// async function updatePass (user: User) {
-//   if (!passFormRef.value) return
-//   try {
-//     await passFormRef.value!.validate()
-//
-//     // 如果验证通过，执行提交逻辑
-//     try {
-//       const data = {
-//         id: user.ID,
-//         password: user.Password || '123',
-//       }
-//       const response = await updateUserAPI(data);
-//
-//       if (response.code === 0) {
-//         ElMessage({
-//           message: '密码更新成功',
-//           type: 'success'
-//         });
-//         passDialogVisible.value = false;
-//       } else {
-//         ElMessage({
-//           message: response.msg || '更新失败',
-//           type: 'error'
-//         });
-//       }
-//     } catch (error) {
-//       ElMessage({
-//         message: "无法连接服务器",
-//         type: 'error',
-//       });
-//     }
-//   } catch (error) {
-//     // 如果验证失败
-//     ElMessage.error('请检查表单是否有误')
-//   }
-// }
-
 // 重置密码
 async function resetPassword (user: any) {
   try {
@@ -597,7 +571,7 @@ async function addUser (user: any) {
     try {
       const data = {
         username: user.Username,
-        password: user.Password || '123',
+        password: user.Password ,
         email: user.Email,
         phone: user.Phone,
         department: user.Department
