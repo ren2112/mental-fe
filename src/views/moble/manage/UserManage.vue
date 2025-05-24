@@ -49,7 +49,7 @@
           :formatter="formatDepartment"
           sortable
           width="100vw"
-          show-overflow-tooltip 
+          show-overflow-tooltip
       />
       <el-table-column fixed="right" width="100vw" label="操作">
         <template #header>
@@ -71,10 +71,10 @@
 
 
     <!--编辑对话框-->
-    <el-dialog 
-      v-model="editDialogVisible" 
-      title="编辑用户信息" 
-      align-center 
+    <el-dialog
+      v-model="editDialogVisible"
+      title="编辑用户信息"
+      align-center
       draggable
       :width="dialogWidth"
       class="user-dialog"
@@ -153,10 +153,10 @@
 
 
     <!--添加对话框-->
-    <el-dialog 
-      v-model="addDialogVisible" 
-      title="添加用户信息" 
-      align-center 
+    <el-dialog
+      v-model="addDialogVisible"
+      title="添加用户信息"
+      align-center
       draggable
       :width="dialogWidth"
       class="user-dialog"
@@ -285,7 +285,7 @@ itemTotal.value = 0;
 
 
 const departmentAll = ref([
-  { id: -1, label: '所有用户' },
+  // { id: -1, label: '所有用户' },
   { id: 0, label: '区团工委' },
   { id: 1, label: '社区团组织' },
   { id: 2, label: '高校团组织' },
@@ -766,11 +766,11 @@ watch([pageSize, pageNum, department], fetchUsers, { immediate: true });
   .el-dialog__body {
     padding: 2vh;
   }
-  
+
   .el-dialog__header {
     padding: 2vh;
     margin-right: 0;
-    
+
     .el-dialog__title {
       // font-size: 2.2vh;
       font-weight: bold;

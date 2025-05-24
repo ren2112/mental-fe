@@ -2,7 +2,7 @@
 <div class="container">
     <div class="header">
         <div class="header-box">
-            <h3>视频贴子发布</h3>
+            <p>视频贴子发布:</p>
             <div class="btnbox">
                 <RouterLink to="/mob/txtimgPost" class="headerbtn">
                     发布图文
@@ -15,7 +15,7 @@
     <div class="datainputcontainer">
         <div class="partchoosediv">
             <div class="partchoosebox">
-                <h4>活动分区：</h4>
+                <p>活动分区:</p>
                 <div class="dropdownmenuBOX">
                     <mobDropDownMenu v-model="selectedIndex" />
                 </div>
@@ -25,7 +25,7 @@
             <input type="text" id="title_input" placeholder="请输入视频标题（最多40字）" maxlength="40" v-model="title">
         </div>
         <div class="videouploadbox">
-            选择视频文件：
+            <p>选择视频文件：</p>
             <mobVideoUpload v-model="videofile"/>
         </div>
         <div class="contentinputbox">
@@ -123,8 +123,8 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 90vw;
-    height: 100vh;
+    min-width: 300px;
+    min-height: 600px;
     background: white;
 }
 
@@ -134,16 +134,15 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
     background: rgba(0, 130, 65, 1);
     color: white;
     text-align: center;
-    padding-top: 2vh;
-    font-size: 1.2rem;
+    padding-top: 1vh;
+    font-size: 3vh;
     border-bottom-left-radius: 2vh;
     border-bottom-right-radius: 2vh;
 }
 
 .header-box {
     height: 100%;
-    padding: 0.2rem 1rem;
-    padding-left: 1rem;
+    padding: 0.1vh 5vw;
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -152,16 +151,16 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
 .btnbox {
     display: flex;
     gap: 2vw;
-    padding: 0.2rem 0.5rem;
+    padding: 0.5vw 0.5vh;
 }
 
 .headerbtn {
-    padding: 0.2rem 0.6rem;
+    padding: 0.5vw 0.5vh;
     background-color: white;
     border: transparent;
-    border-radius: 0.5rem;
+    border-radius: 0.5vh;
     color: rgba(0, 130, 65, 1);
-    font-size: 1rem;
+    font-size: 1.7vh;
     text-decoration: none;
     align-items: center;
     text-align: center;
@@ -181,6 +180,7 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
     border-bottom: 0.25vh solid rgba(0, 130, 65, 1);
     height: 6vh;
     display: flex;
+    font-size: 2vh;
     align-items: center;
     justify-content: space-between;
 }
@@ -196,6 +196,7 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
     width: 50%;
     height: 100%;
     display: flex;
+    margin-left: 5vw;
     align-items: center;
 }
 
@@ -206,12 +207,13 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
     border-bottom: 0.25vh solid rgba(0, 130, 65, 1);
 }
 .videouploadbox{
-    font-size: 1.1rem;
+    font-size: 1.5vh;
     width: 90%;
     margin: 0 5%;
     border-bottom: 0.3vh solid rgba(0, 130, 65, 1);
     height: 12vh;
     display: flex;
+    gap: 2vh;
 }
 .contentinputbox {
     width: 90%;
@@ -224,7 +226,7 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
 .intro_textarea{
   width: 100%;
   height: 100%;
-  font-size: 1rem;
+  font-size: 1.6vh;
   font-weight: 500;
   font-family: "Helvetica Neue", Arial, sans-serif; 
   resize: none;
@@ -236,7 +238,7 @@ const uploadVideoFile = async ()=>{ //上传视频返回url
 #title_input {
     width: 100%;
     height: 100%;
-    font-size: 1rem;
+    font-size: 2.5vh;
     font-weight: 600;
     outline: none;
     border: transparent;

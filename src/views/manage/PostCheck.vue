@@ -282,33 +282,39 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
   flex: 1;
   margin-top: 20px;
   width: 100%;
-  row-gap: 40px;
+  row-gap: 20px;
 
 
   .el-form {
-    gap: 10px;
-    row-gap: 40px;
-
+    gap: 20px; /* 统一间距 */
+    row-gap: 20px;
+    width: 100%;
+    max-width: 800px; /* 限制最大宽度 */
+    margin: 0 auto; /* 居中 */
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between; /* 水平居中内容 */
+    justify-content: center; /* 修改为居中 */
 
     .label-text {
       text-align: left;
       font-weight: bold;
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
 
 
     .search-box {
       position: relative;
+      min-width: 100px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
 
       /* 修改搜索框样式 */
       .el-input {
-        width: 500px;
+        width: 100%;
+        max-width: 500px;
 
-        --el-input-border-color: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         border-radius: 30px; /* 圆角 */
         border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
         transition: border-color 0.3s, background-color 0.3s;
@@ -319,8 +325,7 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
       }
       ::v-deep .el-input-group__append {
         border-radius: 30px; /* 圆角 */
-        border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
-        transition: border-color 0.3s, background-color 0.3s;
+        border: none;
       }
 
 
@@ -356,7 +361,8 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
     /* 修改选择器的样式 */
     .el-select {
       font-weight: normal;
-      width: 100px;
+      width: 120px; /* 固定宽度 */
+      flex-shrink: 0; /* 防止压缩 */
       border-radius: 30px; /* 圆角 */
       border: 1px solid rgba(0, 130, 65, 1); /* 边框颜色 */
       transition: border-color 0.3s, background-color 0.3s;
@@ -380,8 +386,8 @@ watch([pageSize, pageNum, partNum], fetchPosts, { immediate: true });
 
   /* 表格 */
   .el-table {
-    border-radius: 10px; /* 设置元素的圆角为 10 像素 */
-
+    border-radius: 10px; /* 设置元素的圆角 */
+    width: 100%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;

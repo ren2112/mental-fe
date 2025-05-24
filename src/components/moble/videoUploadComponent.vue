@@ -95,13 +95,12 @@ export default defineComponent({
   /* 基础容器样式 */
   .upload-container {
     position: relative;
-    width: 100%;
-    max-width: 104px;
-    max-height: 71%;
-    margin: 2% 0;
+    width: 12vh;
+    max-height: 9vh;
+    margin: 3vh 0;
     background: #f5f5f5;
     border: 2px dashed #999;
-    border-radius: 12px;
+    border-radius: 1vh;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -125,7 +124,7 @@ export default defineComponent({
   
   .upload-text {
     color: #666;
-    font-size: 1rem;
+    font-size: 1.3vh;
     user-select: none;
   }
   

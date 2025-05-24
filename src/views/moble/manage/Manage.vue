@@ -98,7 +98,22 @@ const goToPostModify = () => {
   padding-top: 2.5vh;
   border-bottom-left-radius: 2.5vh;
   border-bottom-right-radius: 2.5vh;
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  box-sizing: border-box;
+
+  .el-dropdown,
+  .el-button {
+    flex-shrink: 0;
+    min-width: 80px;
+    margin: 0 2px;
+    white-space: nowrap;
+  }
+
   /* 去除下拉菜单hover时的边框 */
   ::v-deep .el-dropdown {
     .el-button {
@@ -107,7 +122,20 @@ const goToPostModify = () => {
         outline: none !important;
         box-shadow: none !important;
       }
-    } 
+    }
   }
 }
+
+// @media screen and (max-width: 400px) {
+//   .header {
+//     justify-content: flex-start;
+//     gap: 4px;
+//     .el-button,
+//     .el-dropdown {
+//       min-width: 60px;
+//       font-size: 12px;
+//       padding: 0 6px;
+//     }
+//   }
+// }
 </style>
