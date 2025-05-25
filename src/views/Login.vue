@@ -37,10 +37,11 @@
 
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { ElMessage } from 'element-plus'
+import { validateTokenAPI } from '@/api/user';
 
 const authStore = useAuthStore();
 const email = ref(''); // 用户名绑定
@@ -68,6 +69,14 @@ const handleLogin = async () => {
     // alert(error || '网络错误，请稍后重试');
   }
 };
+onMounted(async () => {
+  const res=await validateTokenAPI() as any; // 验证 token 是否有效
+  if(res.code==0){
+    router.replace('/index');
+  }else{
+    authStore.clearToken()
+  }
+});
 </script>
 
 <style scoped>

@@ -28,6 +28,11 @@ export const getUserByTokenAPI = async () => {
     });
 };
 
+export const validateTokenAPI = async () => {
+    return await service.get('/api/noauth/validate-token', {
+    });
+};
+
 // 只从id获取用户接口 (/api/auth/admin/user-get)
 export const getUserAPI = async ( id :any) => {
     return await service.get('/api/noauth/user-get', {

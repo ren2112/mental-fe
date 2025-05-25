@@ -1,6 +1,7 @@
 import { useAuthStore } from '@/stores/auth';
 import axios, {  AxiosError, type InternalAxiosRequestConfig, type AxiosResponse } from 'axios'
 import { ElLoading, ElMessage } from "element-plus";
+import { useRouter } from 'vue-router';
 // 创建axios实例 进行基本参数配置
 const service = axios.create({
     // 默认请求地址，根据环境的不同可在.env 文件中进行修改
@@ -12,7 +13,7 @@ const service = axios.create({
 })
 
 let loadingInstance: any = null // 用于存储loading实例
-
+const router = useRouter();
 
 
 // 请求拦截器
@@ -53,7 +54,7 @@ service.interceptors.response.use(
         }
 
         const res = response.data
-        if (res.code !== 0) {
+        if (res.code == 1) {
             ElMessage.error(res.msg || '请求失败')
         }
 
