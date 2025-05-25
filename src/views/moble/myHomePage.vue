@@ -57,8 +57,7 @@ import { useAuthStore } from "@/stores/auth";
 import PostItem from "@/components/moble/postCard.vue";
 import FooterNav from "@/views/moble/footer.vue";
 import { ElMessage } from "element-plus";
-import { throttle } from "lodash";
-
+import { debounce } from "lodash";
 const route = useRoute();
 const router = useRouter();
 const userId = route.query.id;
