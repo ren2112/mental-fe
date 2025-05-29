@@ -22,7 +22,7 @@
         <button class="login-btn" @click="handleLogin">登 录</button>
   
         <div class="link-group">
-          <router-link to="/mob/register" class="nav-link">注册账号</router-link>
+          <!-- <router-link to="/mob/register" class="nav-link">注册账号</router-link> -->
           <router-link to="/mob/beginning" class="nav-link">返回首页</router-link>
         </div>
       </div>
@@ -143,7 +143,7 @@ onMounted(async () => {
   .link-group {
     margin-top: 1.5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
   }
   
   .nav-link {
