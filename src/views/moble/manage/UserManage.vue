@@ -633,7 +633,7 @@ async function addUser (user: User) {
     try {
       const data = {
         username: user.Username,
-        password: user.Password || '123',
+        password: user.Password,
         email: user.Email,
         phone: user.Phone,
         department: user.Department
