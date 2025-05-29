@@ -23,7 +23,7 @@
                   </div>
                   <div class="router_box">
                       <div class="register_box">
-                        <RouterLink to="/register" class="router_text">注册账号</RouterLink>
+                        <!-- <RouterLink to="/register" class="router_text">注册账号</RouterLink> -->
                       </div>
                       <div class="back_box">
                         <RouterLink to="/" class="router_text">返回首页</RouterLink>
